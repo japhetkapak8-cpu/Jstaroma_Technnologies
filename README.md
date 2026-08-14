@@ -1,0 +1,1 @@
+# Jstaroma_Technnologies
