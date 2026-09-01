@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Certifications & Achievements | JSTAROMA TECH
+  </title>
+
+  <meta
+    name="description"
+    content="Certifications, achievements, awards, training, and professional development from JSTAROMA TECH."
+  >
+
+
+  <!-- FONT AWESOME -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+
+  <!-- GOOGLE FONT -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- MAIN WEBSITE CSS -->
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+
+  <!-- ACHIEVEMENTS PAGE CSS -->
+
+  <link
+    rel="stylesheet"
+    href="css/achievements.css"
+  >
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header class="site-header">
+
+  <div class="nav-container">
+
+
+    <a
+      href="index.html"
+      class="brand"
+    >
+
+      <span class="brand-main">
+        JSTAROMA
+      </span>
+
+      <span class="brand-accent">
+        TECH
+      </span>
+
+    </a>
+
+
+    <button
+      class="mobile-menu-btn"
+      id="mobileMenuBtn"
+      type="button"
+      aria-label="Open navigation"
+    >
+
+      <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <nav
+      class="main-nav"
+      id="mainNav"
+    >
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html#about">
+        About
+      </a>
+
+      <a href="index.html#services">
+        Services
+      </a>
+
+      <a href="index.html#projects">
+        Projects
+      </a>
+
+      <a
+        href="achievements.html"
+        class="active-page"
+      >
+        Achievements
+      </a>
+
+      <a href="index.html#vision">
+        Vision
+      </a>
+
+      <a href="index.html#contact">
+        Contact
+      </a>
+
+      <a
+        href="admin/index.html"
+        class="admin-login-btn"
+      >
+        Admin Login
+      </a>
+
+    </nav>
+
+
+  </div>
+
+</header>
+
+
+
+
+<!-- ========================================
+     PAGE HERO
+======================================== -->
+
+<section class="achievements-hero">
+
+  <div class="section-container">
+
+    <div class="achievements-hero-content">
+
+
+      <span class="page-label">
+        CREDENTIALS
+      </span>
+
+
+      <h1>
+        Certifications &
+        <span>
+          Achievements
+        </span>
+      </h1>
+
+
+      <p>
+        Explore professional certifications,
+        awards, accomplishments, training,
+        and other achievements published
+        through JSTAROMA TECH.
+      </p>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+
+<!-- ========================================
+     ACHIEVEMENTS CONTENT
+======================================== -->
+
+<section class="achievements-page-section">
+
+  <div class="section-container">
+
+
+    <!-- FILTERS -->
+
+    <div
+      class="achievement-filters"
+      id="achievementFilters"
+    >
+
+
+      <button
+        class="achievement-filter active"
+        type="button"
+        data-filter="All"
+      >
+        All
+      </button>
+
+
+      <button
+        class="achievement-filter"
+        type="button"
+        data-filter="Certification"
+      >
+        Certifications
+      </button>
+
+
+      <button
+        class="achievement-filter"
+        type="button"
+        data-filter="Achievement"
+      >
+        Achievements
+      </button>
+
+
+      <button
+        class="achievement-filter"
+        type="button"
+        data-filter="Award"
+      >
+        Awards
+      </button>
+
+
+      <button
+        class="achievement-filter"
+        type="button"
+        data-filter="Training"
+      >
+        Training
+      </button>
+
+
+      <button
+        class="achievement-filter"
+        type="button"
+        data-filter="Other"
+      >
+        Other
+      </button>
+
+
+    </div>
+
+
+
+    <!-- STATUS -->
+
+    <div
+      class="achievements-status"
+      id="achievementsStatus"
+    >
+
+      Loading achievements...
+
+    </div>
+
+
+
+    <!-- GRID -->
+
+    <div
+      class="achievements-grid"
+      id="achievementsGrid"
+    >
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+<!-- ========================================
+     ACHIEVEMENT DETAILS MODAL
+======================================== -->
+
+<div
+  class="achievement-modal"
+  id="achievementModal"
+  aria-hidden="true"
+>
+
+
+  <div
+    class="achievement-modal-backdrop"
+    id="achievementModalBackdrop"
+  >
+  </div>
+
+
+  <div class="achievement-modal-dialog">
+
+
+    <button
+      class="achievement-modal-close"
+      id="achievementModalClose"
+      type="button"
+      aria-label="Close achievement"
+    >
+
+      <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+
+
+    <!-- IMAGE -->
+
+    <div class="achievement-modal-image-wrapper">
+
+
+      <img
+        src=""
+        alt="Achievement preview"
+        id="achievementModalImage"
+        class="achievement-modal-image"
+      >
+
+
+      <div
+        class="achievement-modal-placeholder"
+        id="achievementModalPlaceholder"
+      >
+
+        <i class="fa-solid fa-award"></i>
+
+        <span>
+          Achievement Preview
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- BODY -->
+
+    <div class="achievement-modal-body">
+
+
+      <span
+        class="achievement-modal-type"
+        id="achievementModalType"
+      >
+        ACHIEVEMENT
+      </span>
+
+
+      <h2 id="achievementModalTitle">
+        Achievement Title
+      </h2>
+
+
+      <p
+        class="achievement-modal-organization"
+        id="achievementModalOrganization"
+      >
+      </p>
+
+
+      <p
+        class="achievement-modal-date"
+        id="achievementModalDate"
+      >
+      </p>
+
+
+      <p
+        class="achievement-modal-description"
+        id="achievementModalDescription"
+      >
+      </p>
+
+
+
+      <!-- TAGS -->
+
+      <div
+        class="achievement-modal-tags"
+        id="achievementModalTags"
+      >
+      </div>
+
+
+
+      <!-- BUTTONS -->
+
+      <div class="achievement-modal-buttons">
+
+
+        <a
+          href="#"
+          id="achievementModalCredential"
+          class="achievement-modal-button primary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+          View Credential
+
+        </a>
+
+
+        <a
+          href="#"
+          id="achievementModalAttachment"
+          class="achievement-modal-button secondary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-solid fa-file-arrow-down"></i>
+
+          View Attachment
+
+        </a>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+<!-- ========================================
+     FOOTER
+======================================== -->
+
+<footer class="site-footer">
+
+  <div class="footer-container">
+
+
+    <div class="footer-brand">
+
+      <strong>
+
+        JSTAROMA
+
+        <span>
+          TECH
+        </span>
+
+      </strong>
+
+      <p>
+        GIS • Technology • Development
+      </p>
+
+    </div>
+
+
+    <p class="footer-copy">
+
+      ©
+
+      <span id="currentYear"></span>
+
+      JSTAROMA TECH.
+
+      All rights reserved.
+
+    </p>
+
+
+  </div>
+
+</footer>
+
+
+
+
+<!-- ========================================
+     BASIC PAGE JAVASCRIPT
+======================================== -->
+
+<script>
+
+
+  const currentYear =
+    document.getElementById(
+      "currentYear"
+    );
+
+
+  if (currentYear) {
+
+    currentYear.textContent =
+      new Date().getFullYear();
+
+  }
+
+
+
+  const mobileMenuBtn =
+    document.getElementById(
+      "mobileMenuBtn"
+    );
+
+
+  const mainNav =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  if (
+    mobileMenuBtn &&
+    mainNav
+  ) {
+
+
+    mobileMenuBtn.addEventListener(
+      "click",
+      () => {
+
+        mainNav.classList.toggle(
+          "open"
+        );
+
+      }
+    );
+
+
+
+    document
+      .querySelectorAll(
+        ".main-nav a"
+      )
+      .forEach(
+        link => {
+
+          link.addEventListener(
+            "click",
+            () => {
+
+              mainNav.classList.remove(
+                "open"
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+  }
+
+
+</script>
+
+
+
+
+<!-- ========================================
+     PUBLIC ACHIEVEMENTS SYSTEM
+======================================== -->
+
+<script
+  type="module"
+  src="js/public-achievements.js?v=1"
+></script>
+
+
+</body>
+
+</html>

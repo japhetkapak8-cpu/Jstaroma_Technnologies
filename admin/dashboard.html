@@ -14,10 +14,20 @@
     Dashboard | JStaroma Admin
   </title>
 
+
+  <!-- ========================================
+       ADMIN CSS
+  ========================================= -->
+
   <link
     rel="stylesheet"
     href="css/admin.css"
   >
+
+
+  <!-- ========================================
+       FONT AWESOME
+  ========================================= -->
 
   <link
     rel="stylesheet"
@@ -33,10 +43,14 @@
 <div class="admin-layout">
 
 
-  <!-- SIDEBAR -->
+  <!-- ========================================
+       SIDEBAR
+  ========================================= -->
 
   <aside class="admin-sidebar">
 
+
+    <!-- BRAND -->
 
     <div class="admin-brand">
 
@@ -60,8 +74,15 @@
     </div>
 
 
+
+    <!-- ========================================
+         NAVIGATION
+    ========================================= -->
+
     <nav class="admin-nav">
 
+
+      <!-- DASHBOARD -->
 
       <a
         href="dashboard.html"
@@ -75,6 +96,9 @@
       </a>
 
 
+
+      <!-- PROJECTS -->
+
       <a href="projects.html">
 
         <i class="fa-solid fa-folder-open"></i>
@@ -83,6 +107,21 @@
 
       </a>
 
+
+
+      <!-- ACHIEVEMENTS -->
+
+      <a href="achievements.html">
+
+        <i class="fa-solid fa-award"></i>
+
+        Achievements
+
+      </a>
+
+
+
+      <!-- PUBLIC WEBSITE -->
 
       <a href="../index.html">
 
@@ -96,11 +135,17 @@
     </nav>
 
 
+
+    <!-- ========================================
+         SIDEBAR FOOTER
+    ========================================= -->
+
     <div class="sidebar-footer">
 
       <button
         id="logoutBtn"
         class="logout-btn"
+        type="button"
       >
 
         <i class="fa-solid fa-right-from-bracket"></i>
@@ -116,12 +161,21 @@
 
 
 
-  <!-- MAIN -->
+
+
+  <!-- ========================================
+       MAIN
+  ========================================= -->
 
   <main class="admin-main">
 
 
+    <!-- ========================================
+         PAGE HEADER
+    ========================================= -->
+
     <div class="page-header">
+
 
       <div>
 
@@ -129,20 +183,50 @@
           JSTAROMA ADMIN
         </span>
 
+
         <h1>
           Dashboard
         </h1>
 
+
         <p>
-          Manage your portfolio and website content.
+          Manage your portfolio,
+          projects, certifications,
+          achievements, and website content.
         </p>
 
       </div>
 
 
+
       <div class="header-admin-icon">
 
         <i class="fa-solid fa-gauge-high"></i>
+
+      </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- ========================================
+         PROJECT STATISTICS
+    ========================================= -->
+
+    <div class="dashboard-section-heading">
+
+      <div>
+
+        <span class="admin-eyebrow">
+          PROJECTS
+        </span>
+
+        <h2>
+          Project Overview
+        </h2>
 
       </div>
 
@@ -153,6 +237,8 @@
     <div class="dashboard-stats">
 
 
+      <!-- TOTAL PROJECTS -->
+
       <div class="dashboard-stat">
 
         <div class="stat-icon blue">
@@ -160,6 +246,7 @@
           <i class="fa-solid fa-folder"></i>
 
         </div>
+
 
         <div>
 
@@ -177,6 +264,8 @@
 
 
 
+      <!-- PUBLISHED PROJECTS -->
+
       <div class="dashboard-stat">
 
         <div class="stat-icon green">
@@ -184,6 +273,7 @@
           <i class="fa-solid fa-eye"></i>
 
         </div>
+
 
         <div>
 
@@ -201,6 +291,8 @@
 
 
 
+      <!-- PROJECT DRAFTS -->
+
       <div class="dashboard-stat">
 
         <div class="stat-icon gold">
@@ -208,6 +300,7 @@
           <i class="fa-solid fa-file-pen"></i>
 
         </div>
+
 
         <div>
 
@@ -228,10 +321,140 @@
 
 
 
+
+
+    <!-- ========================================
+         ACHIEVEMENT STATISTICS
+    ========================================= -->
+
+    <div class="dashboard-section-heading achievement-heading">
+
+      <div>
+
+        <span class="admin-eyebrow">
+          CREDENTIALS
+        </span>
+
+        <h2>
+          Achievements Overview
+        </h2>
+
+      </div>
+
+
+      <a
+        href="achievements.html"
+        class="dashboard-manage-link"
+      >
+
+        Manage
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+      </a>
+
+    </div>
+
+
+
+    <div class="dashboard-stats">
+
+
+      <!-- TOTAL ACHIEVEMENTS -->
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon blue">
+
+          <i class="fa-solid fa-award"></i>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Total Achievements
+          </span>
+
+          <strong id="totalAchievements">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- PUBLISHED ACHIEVEMENTS -->
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon green">
+
+          <i class="fa-solid fa-circle-check"></i>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Published
+          </span>
+
+          <strong id="publishedAchievements">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ACHIEVEMENT DRAFTS -->
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon gold">
+
+          <i class="fa-solid fa-pen-to-square"></i>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Drafts
+          </span>
+
+          <strong id="draftAchievements">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- ========================================
+         QUICK ACTIONS
+    ========================================= -->
+
     <section class="admin-card">
 
 
       <div class="admin-card-header">
+
 
         <div>
 
@@ -240,23 +463,29 @@
           </h2>
 
           <p>
-            Manage your JStaroma portfolio.
+            Manage your JStaroma portfolio
+            and public website.
           </p>
 
         </div>
 
+
       </div>
+
 
 
       <div class="quick-actions">
 
+
+        <!-- ADD PROJECT -->
 
         <a
           href="projects.html"
           class="quick-action-card"
         >
 
-          <i class="fa-solid fa-plus"></i>
+          <i class="fa-solid fa-folder-plus"></i>
+
 
           <div>
 
@@ -265,7 +494,8 @@
             </strong>
 
             <span>
-              Add a new class or professional project.
+              Add a new class,
+              personal, or professional project.
             </span>
 
           </div>
@@ -274,12 +504,44 @@
 
 
 
+        <!-- ADD ACHIEVEMENT -->
+
         <a
-          href="../index.html#projects"
+          href="achievements.html"
           class="quick-action-card"
         >
 
+          <i class="fa-solid fa-award"></i>
+
+
+          <div>
+
+            <strong>
+              Add Achievement
+            </strong>
+
+            <span>
+              Add certifications,
+              awards, training,
+              and professional achievements.
+            </span>
+
+          </div>
+
+        </a>
+
+
+
+        <!-- VIEW PROJECTS -->
+
+        <a
+          href="../index.html#projects"
+          class="quick-action-card"
+          target="_blank"
+        >
+
           <i class="fa-solid fa-eye"></i>
+
 
           <div>
 
@@ -288,7 +550,36 @@
             </strong>
 
             <span>
-              See your published projects.
+              See your published
+              portfolio projects.
+            </span>
+
+          </div>
+
+        </a>
+
+
+
+        <!-- VIEW ACHIEVEMENTS -->
+
+        <a
+          href="../achievements.html"
+          class="quick-action-card"
+          target="_blank"
+        >
+
+          <i class="fa-solid fa-certificate"></i>
+
+
+          <div>
+
+            <strong>
+              View Achievements
+            </strong>
+
+            <span>
+              See published certifications
+              and achievements.
             </span>
 
           </div>
@@ -307,6 +598,11 @@
 
 </div>
 
+
+
+<!-- ========================================
+     DASHBOARD JAVASCRIPT
+======================================== -->
 
 <script
   type="module"

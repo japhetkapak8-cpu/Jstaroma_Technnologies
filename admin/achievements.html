@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Achievements | JStaroma Admin
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/admin.css"
+  >
+<link rel="stylesheet" href="css/achievements.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+  <!-- ========================================
+       SIDEBAR
+  ========================================= -->
+
+  <aside class="admin-sidebar">
+
+
+    <div class="admin-brand">
+
+      <div class="small-brand-mark">
+        JT
+      </div>
+
+      <div>
+
+        <strong>
+          JSTAROMA
+        </strong>
+
+        <span>
+          Admin
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <nav class="admin-nav">
+
+
+      <a href="dashboard.html">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        Dashboard
+
+      </a>
+
+
+      <a href="projects.html">
+
+        <i class="fa-solid fa-folder-open"></i>
+
+        Projects
+
+      </a>
+
+
+      <a
+        href="achievements.html"
+        class="active"
+      >
+
+        <i class="fa-solid fa-award"></i>
+
+        Achievements
+
+      </a>
+
+
+      <a href="../index.html">
+
+        <i class="fa-solid fa-globe"></i>
+
+        View Website
+
+      </a>
+
+
+    </nav>
+
+
+    <div class="sidebar-footer">
+
+      <button
+        id="logoutBtn"
+        class="logout-btn"
+        type="button"
+      >
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+      </button>
+
+    </div>
+
+
+  </aside>
+
+
+
+  <!-- ========================================
+       MAIN
+  ========================================= -->
+
+  <main class="admin-main">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+
+      <div>
+
+        <span class="admin-eyebrow">
+          CONTENT MANAGEMENT
+        </span>
+
+        <h1>
+          Achievements
+        </h1>
+
+        <p>
+          Manage certifications, awards,
+          training, and professional achievements.
+        </p>
+
+      </div>
+
+
+      <div class="page-header-actions">
+
+
+        <a
+          href="../achievements.html"
+          class="secondary-admin-btn"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+          View Public Page
+
+        </a>
+
+
+        <button
+          id="openAchievementFormBtn"
+          class="primary-admin-btn"
+          type="button"
+        >
+
+          <i class="fa-solid fa-plus"></i>
+
+          Add Achievement
+
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ========================================
+         STATS
+    ========================================= -->
+
+    <div class="dashboard-stats">
+
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon blue">
+
+          <i class="fa-solid fa-award"></i>
+
+        </div>
+
+        <div>
+
+          <span>
+            Total
+          </span>
+
+          <strong id="achievementTotal">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon green">
+
+          <i class="fa-solid fa-circle-check"></i>
+
+        </div>
+
+        <div>
+
+          <span>
+            Published
+          </span>
+
+          <strong id="achievementPublishedCount">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon gold">
+
+          <i class="fa-solid fa-file-pen"></i>
+
+        </div>
+
+        <div>
+
+          <span>
+            Drafts
+          </span>
+
+          <strong id="achievementDrafts">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ========================================
+         SEARCH / FILTER
+    ========================================= -->
+
+    <div class="admin-toolbar">
+
+
+      <div class="admin-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+          type="search"
+          id="achievementSearch"
+          placeholder="Search achievements..."
+        >
+
+      </div>
+
+
+      <select id="achievementTypeFilter">
+
+        <option value="All">
+          All Types
+        </option>
+
+        <option value="Certification">
+          Certification
+        </option>
+
+        <option value="Award">
+          Award
+        </option>
+
+        <option value="Training">
+          Training
+        </option>
+
+        <option value="Achievement">
+          Achievement
+        </option>
+
+      </select>
+
+
+    </div>
+
+
+
+    <!-- ========================================
+         ACHIEVEMENTS
+    ========================================= -->
+
+    <section class="admin-card">
+
+
+      <div class="admin-card-header">
+
+        <div>
+
+          <h2>
+            Your Achievements
+          </h2>
+
+          <p>
+            Published items appear automatically
+            on the public achievements page.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="achievementStatus"
+        class="admin-status"
+      >
+        Loading achievements...
+      </div>
+
+
+      <div
+        id="achievementAdminGrid"
+        class="admin-achievement-grid"
+      >
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+</div>
+
+
+
+<!-- ========================================
+     ACHIEVEMENT FORM MODAL
+========================================= -->
+
+<div
+  id="achievementFormModal"
+  class="admin-modal"
+  aria-hidden="true"
+>
+
+
+  <div
+    id="achievementFormBackdrop"
+    class="admin-modal-backdrop"
+  >
+  </div>
+
+
+  <div class="admin-modal-panel">
+
+
+    <!-- MODAL HEADER -->
+
+    <div class="admin-modal-header">
+
+
+      <div>
+
+        <span class="admin-eyebrow">
+          PORTFOLIO CONTENT
+        </span>
+
+        <h2 id="achievementFormTitle">
+          Add Achievement
+        </h2>
+
+      </div>
+
+
+      <button
+        id="closeAchievementFormBtn"
+        class="admin-modal-close"
+        type="button"
+        aria-label="Close"
+      >
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+
+    </div>
+
+
+
+    <!-- ========================================
+         FORM
+    ========================================= -->
+
+    <form id="achievementForm">
+
+
+      <input
+        type="hidden"
+        id="achievementId"
+      >
+
+
+      <!-- TYPE -->
+
+      <div class="form-group full-width">
+
+        <label for="achievementType">
+          Type *
+        </label>
+
+        <select
+          id="achievementType"
+          required
+        >
+
+          <option value="">
+            Select type
+          </option>
+
+          <option value="Certification">
+            Certification
+          </option>
+
+          <option value="Award">
+            Award
+          </option>
+
+          <option value="Training">
+            Training
+          </option>
+
+          <option value="Achievement">
+            Achievement
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- TITLE -->
+
+      <div class="form-group full-width">
+
+        <label for="achievementTitle">
+          Title *
+        </label>
+
+        <input
+          type="text"
+          id="achievementTitle"
+          placeholder="Example: Acquire Data for GIS Projects"
+          required
+        >
+
+      </div>
+
+
+
+      <!-- ORGANIZATION -->
+
+      <div class="form-group full-width">
+
+        <label for="achievementOrganization">
+          Organization / Issuer
+        </label>
+
+        <input
+          type="text"
+          id="achievementOrganization"
+          placeholder="Example: Esri"
+        >
+
+      </div>
+
+
+
+      <!-- TWO COLUMN ROW -->
+
+      <div class="form-grid">
+
+
+        <div class="form-group">
+
+          <label for="achievementDate">
+            Issue Date
+          </label>
+
+          <input
+            type="date"
+            id="achievementDate"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="credentialId">
+            Credential ID
+          </label>
+
+          <input
+            type="text"
+            id="credentialId"
+            placeholder="Optional"
+          >
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- CREDENTIAL URL -->
+
+      <div class="form-group full-width">
+
+        <label for="credentialUrl">
+          Credential URL
+        </label>
+
+        <input
+          type="url"
+          id="credentialUrl"
+          placeholder="https://..."
+        >
+
+        <small>
+          Optional verification or credential link.
+        </small>
+
+      </div>
+
+
+
+      <!-- ========================================
+           ACHIEVEMENT MEDIA
+      ========================================= -->
+
+      <div class="form-group full-width">
+
+
+        <label>
+          Achievement Media
+        </label>
+
+
+        <small>
+          Upload an image and/or supporting document.
+        </small>
+
+
+
+        <div class="achievement-upload-grid">
+
+
+          <!-- IMAGE -->
+
+          <div class="upload-box">
+
+
+            <div class="upload-box-icon">
+
+              <i class="fa-solid fa-image"></i>
+
+            </div>
+
+
+            <div class="upload-box-content">
+
+              <strong>
+                Upload Image
+              </strong>
+
+              <span>
+                JPG, JPEG, PNG, WEBP
+              </span>
+
+              <input
+                type="file"
+                id="achievementImageFile"
+                accept="image/jpeg,image/png,image/webp"
+              >
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- DOCUMENT -->
+
+          <div class="upload-box">
+
+
+            <div class="upload-box-icon">
+
+              <i class="fa-solid fa-file-arrow-up"></i>
+
+            </div>
+
+
+            <div class="upload-box-content">
+
+              <strong>
+                Upload Document
+              </strong>
+
+              <span>
+                PDF, DOC, DOCX
+              </span>
+
+              <input
+                type="file"
+                id="achievementDocumentFile"
+                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              >
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- IMAGE PREVIEW -->
+
+        <div
+          id="achievementImagePreview"
+          class="achievement-upload-preview"
+        >
+        </div>
+
+
+
+        <!-- DOCUMENT PREVIEW -->
+
+        <div
+          id="achievementDocumentPreview"
+          class="achievement-file-preview"
+        >
+        </div>
+
+
+
+        <!--
+          IMPORTANT:
+          JavaScript stores existing uploaded URLs here.
+          Do not remove these.
+        -->
+
+        <input
+          type="hidden"
+          id="achievementImageUrl"
+        >
+
+        <input
+          type="hidden"
+          id="achievementAttachmentUrl"
+        >
+
+
+      </div>
+
+
+
+      <!-- DESCRIPTION -->
+
+      <div class="form-group full-width">
+
+        <label for="achievementDescription">
+          Description
+        </label>
+
+        <textarea
+          id="achievementDescription"
+          rows="6"
+          placeholder="Describe the certification, award, training, or achievement..."
+        ></textarea>
+
+      </div>
+
+
+
+      <!-- TAGS -->
+
+      <div class="form-group full-width">
+
+        <label for="achievementTags">
+          Skills / Tags
+        </label>
+
+        <input
+          type="text"
+          id="achievementTags"
+          placeholder="GIS, ArcGIS Pro, Python, Leadership"
+        >
+
+        <small>
+          Separate tags using commas.
+        </small>
+
+      </div>
+
+
+
+      <!-- OPTIONS -->
+
+      <div class="achievement-options">
+
+
+        <label class="achievement-option">
+
+          <input
+            type="checkbox"
+            id="achievementFeatured"
+          >
+
+          <div>
+
+            <strong>
+              Featured
+            </strong>
+
+            <span>
+              Highlight this achievement.
+            </span>
+
+          </div>
+
+        </label>
+
+
+
+        <label class="achievement-option">
+
+          <input
+            type="checkbox"
+            id="achievementPublishedInput"
+            checked
+          >
+
+          <div>
+
+            <strong>
+              Published
+            </strong>
+
+            <span>
+              Show this item publicly.
+            </span>
+
+          </div>
+
+        </label>
+
+
+      </div>
+
+
+
+      <!-- MESSAGE -->
+
+      <div
+        id="achievementFormMessage"
+        class="form-message"
+      >
+      </div>
+
+
+
+      <!-- ACTIONS -->
+
+      <div class="admin-modal-actions">
+
+
+        <button
+          id="cancelAchievementBtn"
+          class="secondary-admin-btn"
+          type="button"
+        >
+
+          Cancel
+
+        </button>
+
+
+        <button
+          id="saveAchievementBtn"
+          class="primary-admin-btn"
+          type="submit"
+        >
+
+          <i class="fa-solid fa-floppy-disk"></i>
+
+          Save Achievement
+
+        </button>
+
+
+      </div>
+
+
+    </form>
+
+
+  </div>
+
+
+</div>
+
+
+
+<script
+  type="module"
+  src="js/achievements.js?v=3"
+></script>
+
+
+</body>
+
+</html>

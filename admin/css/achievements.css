@@ -1,0 +1,1810 @@
+/* =========================================================
+   JSTAROMA ADMIN
+   ACHIEVEMENTS PAGE
+========================================================= */
+
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
+.page-header-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+}
+
+
+.primary-admin-btn,
+.secondary-admin-btn {
+
+  min-height: 43px;
+
+  padding:
+    0
+    17px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 8px;
+
+  font-size: 0.78rem;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+
+.primary-admin-btn {
+
+  border:
+    1px solid
+    #168bd0;
+
+  background:
+    #168bd0;
+
+  color:
+    #ffffff;
+
+}
+
+
+.primary-admin-btn:hover {
+
+  border-color:
+    #0e73ad;
+
+  background:
+    #0e73ad;
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.secondary-admin-btn {
+
+  border:
+    1px solid
+    #d5e0e8;
+
+  background:
+    #ffffff;
+
+  color:
+    #294156;
+
+}
+
+
+.secondary-admin-btn:hover {
+
+  border-color:
+    #168bd0;
+
+  color:
+    #168bd0;
+
+}
+
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.admin-toolbar {
+
+  width: 100%;
+
+  margin:
+    26px
+    0;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+.admin-search {
+
+  position: relative;
+
+  flex: 1;
+
+}
+
+
+.admin-search i {
+
+  position: absolute;
+
+  top: 50%;
+
+  left: 15px;
+
+  transform:
+    translateY(-50%);
+
+  color:
+    #8295a7;
+
+  font-size: 0.8rem;
+
+  pointer-events: none;
+
+}
+
+
+.admin-search input {
+
+  width: 100%;
+
+  min-height: 45px;
+
+  padding:
+    0
+    15px
+    0
+    42px;
+
+  border:
+    1px solid
+    #d5e0e8;
+
+  border-radius: 9px;
+
+  background:
+    #ffffff;
+
+  color:
+    #1d3448;
+
+  font: inherit;
+
+  outline: none;
+
+}
+
+
+.admin-search input:focus {
+
+  border-color:
+    #168bd0;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      22,
+      139,
+      208,
+      0.08
+    );
+
+}
+
+
+.admin-toolbar select {
+
+  width: 190px;
+
+  min-height: 45px;
+
+  padding:
+    0
+    13px;
+
+  border:
+    1px solid
+    #d5e0e8;
+
+  border-radius: 9px;
+
+  background:
+    #ffffff;
+
+  color:
+    #273e52;
+
+  font: inherit;
+
+  outline: none;
+
+}
+
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.admin-status {
+
+  padding:
+    30px
+    5px;
+
+  color:
+    #75889a;
+
+  font-size: 0.82rem;
+
+}
+
+
+
+/* =========================================================
+   ACHIEVEMENT GRID
+========================================================= */
+
+.admin-achievement-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 20px;
+
+}
+
+
+
+/* =========================================================
+   ACHIEVEMENT CARD
+========================================================= */
+
+.admin-achievement-card {
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  border:
+    1px solid
+    #dbe5ec;
+
+  border-radius: 13px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 8px 25px
+    rgba(
+      18,
+      42,
+      65,
+      0.05
+    );
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+
+.admin-achievement-card:hover {
+
+  transform:
+    translateY(-3px);
+
+  border-color:
+    #b9d7e9;
+
+  box-shadow:
+    0 15px 35px
+    rgba(
+      18,
+      42,
+      65,
+      0.1
+    );
+
+}
+
+
+
+/* =========================================================
+   CARD IMAGE
+========================================================= */
+
+.admin-achievement-image {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 185px;
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #071e32,
+      #14527d
+    );
+
+}
+
+
+.admin-achievement-image img {
+
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position:
+    center;
+
+}
+
+
+.admin-achievement-image > i {
+
+  color:
+    #45bce8;
+
+  font-size: 2.1rem;
+
+}
+
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.admin-achievement-content {
+
+  padding:
+    20px;
+
+  display: flex;
+
+  flex: 1;
+
+  flex-direction: column;
+
+}
+
+
+.admin-achievement-top {
+
+  margin-bottom:
+    15px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+}
+
+
+.admin-achievement-type {
+
+  display: inline-flex;
+
+  width: fit-content;
+
+  padding:
+    5px
+    10px;
+
+  border-radius:
+    999px;
+
+  background:
+    #e7f4fc;
+
+  color:
+    #087dbe;
+
+  font-size:
+    0.62rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.5px;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.admin-achievement-status {
+
+  font-size:
+    0.66rem;
+
+  font-weight:
+    700;
+
+}
+
+
+.admin-achievement-status.published {
+
+  color:
+    #198c4e;
+
+}
+
+
+.admin-achievement-status.draft {
+
+  color:
+    #b2780b;
+
+}
+
+
+.admin-achievement-content h3 {
+
+  margin:
+    0
+    0
+    8px;
+
+  color:
+    #142b3f;
+
+  font-size:
+    1.05rem;
+
+  line-height:
+    1.4;
+
+}
+
+
+.admin-achievement-organization {
+
+  margin:
+    0
+    0
+    12px;
+
+  color:
+    #147fb9;
+
+  font-size:
+    0.75rem;
+
+  font-weight:
+    700;
+
+}
+
+
+.admin-achievement-description {
+
+  margin:
+    0;
+
+  color:
+    #667a8d;
+
+  font-size:
+    0.76rem;
+
+  line-height:
+    1.65;
+
+  display:
+    -webkit-box;
+
+  -webkit-box-orient:
+    vertical;
+
+  -webkit-line-clamp:
+    3;
+
+  overflow:
+    hidden;
+
+}
+
+
+
+/* =========================================================
+   FILE BADGES
+========================================================= */
+
+.admin-achievement-files {
+
+  margin-top:
+    18px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+}
+
+
+.admin-achievement-files span {
+
+  padding:
+    6px
+    9px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border:
+    1px solid
+    #dce5ec;
+
+  border-radius:
+    6px;
+
+  background:
+    #f7fafc;
+
+  color:
+    #435a6d;
+
+  font-size:
+    0.65rem;
+
+  font-weight:
+    700;
+
+}
+
+
+.admin-achievement-files i {
+
+  color:
+    #168bd0;
+
+}
+
+
+
+/* =========================================================
+   CARD ACTIONS
+========================================================= */
+
+.admin-achievement-actions {
+
+  padding:
+    14px
+    19px
+    18px;
+
+  margin-top:
+    auto;
+
+  display: flex;
+
+  gap: 8px;
+
+  border-top:
+    1px solid
+    #edf1f4;
+
+}
+
+
+.admin-achievement-actions button {
+
+  min-height:
+    38px;
+
+  padding:
+    0
+    12px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  border-radius:
+    7px;
+
+  font-size:
+    0.7rem;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+}
+
+
+.edit-achievement-btn {
+
+  flex: 1;
+
+  border:
+    1px solid
+    #d4dfe7;
+
+  background:
+    #ffffff;
+
+  color:
+    #2d4559;
+
+}
+
+
+.edit-achievement-btn:hover {
+
+  border-color:
+    #168bd0;
+
+  color:
+    #168bd0;
+
+}
+
+
+.publish-achievement-btn {
+
+  flex: 1;
+
+  border:
+    1px solid
+    #168bd0;
+
+  background:
+    #edf8fd;
+
+  color:
+    #117eb9;
+
+}
+
+
+.publish-achievement-btn:hover {
+
+  background:
+    #168bd0;
+
+  color:
+    #ffffff;
+
+}
+
+
+.delete-achievement-btn {
+
+  width:
+    40px;
+
+  flex:
+    0 0 40px;
+
+  border:
+    1px solid
+    #f1caca;
+
+  background:
+    #fff4f4;
+
+  color:
+    #c63737;
+
+}
+
+
+.delete-achievement-btn:hover {
+
+  border-color:
+    #c63737;
+
+  background:
+    #c63737;
+
+  color:
+    #ffffff;
+
+}
+
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.admin-modal {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index:
+    10000;
+
+  padding:
+    28px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+
+}
+
+
+.admin-modal.active {
+
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+
+}
+
+
+.admin-modal-backdrop {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    rgba(
+      5,
+      17,
+      28,
+      0.78
+    );
+
+  backdrop-filter:
+    blur(5px);
+
+}
+
+
+.admin-modal-panel {
+
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    min(
+      920px,
+      100%
+    );
+
+  max-height:
+    92vh;
+
+  overflow-y:
+    auto;
+
+  border-radius:
+    16px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 35px 100px
+    rgba(
+      0,
+      0,
+      0,
+      0.3
+    );
+
+}
+
+
+.admin-modal-header {
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 5;
+
+  padding:
+    24px
+    28px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border-bottom:
+    1px solid
+    #e5edf2;
+
+  background:
+    #ffffff;
+
+}
+
+
+.admin-modal-header h2 {
+
+  margin:
+    4px
+    0
+    0;
+
+  color:
+    #162c40;
+
+}
+
+
+.admin-modal-close {
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  flex:
+    0 0 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid
+    #d6e0e7;
+
+  border-radius:
+    50%;
+
+  background:
+    #ffffff;
+
+  color:
+    #32495d;
+
+  cursor:
+    pointer;
+
+}
+
+
+.admin-modal-close:hover {
+
+  background:
+    #168bd0;
+
+  border-color:
+    #168bd0;
+
+  color:
+    #ffffff;
+
+}
+
+
+
+/* =========================================================
+   MODAL FORM
+========================================================= */
+
+#achievementForm {
+
+  padding:
+    28px;
+
+}
+
+
+.form-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:
+    18px;
+
+}
+
+
+.form-group {
+
+  margin-bottom:
+    20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap:
+    7px;
+
+}
+
+
+.form-group label {
+
+  color:
+    #253d51;
+
+  font-size:
+    0.75rem;
+
+  font-weight:
+    700;
+
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+  width: 100%;
+
+  border:
+    1px solid
+    #d5e0e8;
+
+  border-radius:
+    8px;
+
+  background:
+    #ffffff;
+
+  color:
+    #21384c;
+
+  font: inherit;
+
+  outline:
+    none;
+
+}
+
+
+.form-group input,
+.form-group select {
+
+  min-height:
+    44px;
+
+  padding:
+    0
+    13px;
+
+}
+
+
+.form-group textarea {
+
+  min-height:
+    135px;
+
+  padding:
+    13px;
+
+  line-height:
+    1.6;
+
+  resize:
+    vertical;
+
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+  border-color:
+    #168bd0;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      22,
+      139,
+      208,
+      0.08
+    );
+
+}
+
+
+.form-group small {
+
+  color:
+    #8496a7;
+
+  font-size:
+    0.67rem;
+
+  line-height:
+    1.5;
+
+}
+
+
+
+/* =========================================================
+   FILE UPLOAD
+========================================================= */
+
+.achievement-upload-grid {
+
+  margin-top:
+    8px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:
+    15px;
+
+}
+
+
+.upload-box {
+
+  min-height:
+    150px;
+
+  padding:
+    20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    17px;
+
+  border:
+    2px dashed
+    #c9dae6;
+
+  border-radius:
+    12px;
+
+  background:
+    #f7fbfd;
+
+}
+
+
+.upload-box:hover {
+
+  border-color:
+    #168bd0;
+
+  background:
+    #f0f8fd;
+
+}
+
+
+.upload-box-icon {
+
+  width:
+    52px;
+
+  height:
+    52px;
+
+  flex:
+    0 0 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius:
+    11px;
+
+  background:
+    #e2f3fc;
+
+  color:
+    #168bd0;
+
+  font-size:
+    1.15rem;
+
+}
+
+
+.upload-box-content {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap:
+    5px;
+
+}
+
+
+.upload-box-content strong {
+
+  color:
+    #233b50;
+
+  font-size:
+    0.82rem;
+
+}
+
+
+.upload-box-content span {
+
+  color:
+    #8194a5;
+
+  font-size:
+    0.66rem;
+
+}
+
+
+.upload-box-content input[type="file"] {
+
+  width:
+    100%;
+
+  min-height:
+    auto;
+
+  margin-top:
+    6px;
+
+  padding:
+    6px;
+
+  border:
+    1px solid
+    #d9e3ea;
+
+  border-radius:
+    7px;
+
+  background:
+    #ffffff;
+
+  font-size:
+    0.68rem;
+
+}
+
+
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+.achievement-upload-preview {
+
+  margin-top:
+    15px;
+
+}
+
+
+.selected-upload-preview {
+
+  padding:
+    12px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    14px;
+
+  border:
+    1px solid
+    #dbe5ec;
+
+  border-radius:
+    9px;
+
+  background:
+    #f8fafc;
+
+}
+
+
+.selected-upload-preview img {
+
+  width:
+    100px;
+
+  height:
+    75px;
+
+  flex:
+    0 0 100px;
+
+  object-fit:
+    cover;
+
+  border-radius:
+    7px;
+
+  background:
+    #edf2f5;
+
+}
+
+
+.selected-upload-info {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap:
+    4px;
+
+}
+
+
+.selected-upload-info strong {
+
+  max-width:
+    100%;
+
+  overflow:
+    hidden;
+
+  color:
+    #263d50;
+
+  font-size:
+    0.74rem;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.selected-upload-info span,
+.selected-upload-info a {
+
+  color:
+    #798d9e;
+
+  font-size:
+    0.67rem;
+
+}
+
+
+.selected-upload-info a {
+
+  color:
+    #168bd0;
+
+  text-decoration:
+    none;
+
+}
+
+
+
+/* =========================================================
+   DOCUMENT PREVIEW
+========================================================= */
+
+.achievement-file-preview {
+
+  margin-top:
+    12px;
+
+}
+
+
+.uploaded-file-card {
+
+  padding:
+    12px
+    14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    11px;
+
+  border:
+    1px solid
+    #dbe5ec;
+
+  border-radius:
+    8px;
+
+  background:
+    #f8fafc;
+
+}
+
+
+.uploaded-file-card > i {
+
+  color:
+    #168bd0;
+
+  font-size:
+    1rem;
+
+}
+
+
+.uploaded-file-card div {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap:
+    3px;
+
+}
+
+
+.uploaded-file-card strong {
+
+  color:
+    #263d50;
+
+  font-size:
+    0.72rem;
+
+}
+
+
+.uploaded-file-card span,
+.uploaded-file-card a {
+
+  color:
+    #8193a4;
+
+  font-size:
+    0.66rem;
+
+}
+
+
+.uploaded-file-card a {
+
+  color:
+    #168bd0;
+
+  text-decoration:
+    none;
+
+}
+
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.achievement-options {
+
+  margin-top:
+    8px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:
+    13px;
+
+}
+
+
+.achievement-option {
+
+  padding:
+    16px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap:
+    11px;
+
+  border:
+    1px solid
+    #dde5eb;
+
+  border-radius:
+    9px;
+
+  background:
+    #ffffff;
+
+  cursor:
+    pointer;
+
+}
+
+
+.achievement-option input {
+
+  margin-top:
+    3px;
+
+}
+
+
+.achievement-option strong {
+
+  display: block;
+
+  margin-bottom:
+    3px;
+
+  color:
+    #293f52;
+
+  font-size:
+    0.75rem;
+
+}
+
+
+.achievement-option span {
+
+  color:
+    #8496a7;
+
+  font-size:
+    0.66rem;
+
+}
+
+
+
+/* =========================================================
+   FORM MESSAGE
+========================================================= */
+
+.form-message {
+
+  display: none;
+
+  margin-top:
+    18px;
+
+  padding:
+    12px
+    14px;
+
+  border-radius:
+    8px;
+
+  font-size:
+    0.75rem;
+
+}
+
+
+.form-message.success {
+
+  display: block;
+
+  background:
+    #e9f8ef;
+
+  color:
+    #247d49;
+
+}
+
+
+.form-message.error {
+
+  display: block;
+
+  background:
+    #fff0f0;
+
+  color:
+    #bd3939;
+
+}
+
+
+
+/* =========================================================
+   MODAL ACTIONS
+========================================================= */
+
+.admin-modal-actions {
+
+  margin-top:
+    25px;
+
+  padding-top:
+    22px;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap:
+    10px;
+
+  border-top:
+    1px solid
+    #e6edf2;
+
+}
+
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (
+  max-width: 1000px
+) {
+
+  .admin-achievement-grid {
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+  }
+
+}
+
+
+@media (
+  max-width: 720px
+) {
+
+  .page-header-actions {
+
+    width:
+      100%;
+
+    justify-content:
+      flex-start;
+
+  }
+
+
+  .admin-toolbar {
+
+    align-items:
+      stretch;
+
+    flex-direction:
+      column;
+
+  }
+
+
+  .admin-toolbar select {
+
+    width:
+      100%;
+
+  }
+
+
+  .admin-achievement-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .admin-modal {
+
+    padding:
+      8px;
+
+    align-items:
+      flex-end;
+
+  }
+
+
+  .admin-modal-panel {
+
+    max-height:
+      96vh;
+
+    border-radius:
+      15px
+      15px
+      0
+      0;
+
+  }
+
+
+  .form-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .achievement-upload-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .achievement-options {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .admin-modal-actions {
+
+    flex-direction:
+      column-reverse;
+
+  }
+
+
+  .admin-modal-actions button {
+
+    width:
+      100%;
+
+  }
+
+}
