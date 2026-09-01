@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Projects | JStaroma Admin
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/admin.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+  <aside class="admin-sidebar">
+
+
+    <div class="admin-brand">
+
+      <div class="small-brand-mark">
+        JT
+      </div>
+
+      <div>
+
+        <strong>
+          JSTAROMA
+        </strong>
+
+        <span>
+          Admin
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <nav class="admin-nav">
+
+      <a href="dashboard.html">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        Dashboard
+
+      </a>
+
+
+      <a
+        href="projects.html"
+        class="active"
+      >
+
+        <i class="fa-solid fa-folder-open"></i>
+
+        Projects
+
+      </a>
+
+
+      <a href="../index.html">
+
+        <i class="fa-solid fa-globe"></i>
+
+        View Website
+
+      </a>
+
+    </nav>
+
+
+    <div class="sidebar-footer">
+
+      <button
+        id="logoutBtn"
+        class="logout-btn"
+      >
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+      </button>
+
+    </div>
+
+
+  </aside>
+
+
+
+  <main class="admin-main">
+
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="admin-eyebrow">
+          CONTENT MANAGEMENT
+        </span>
+
+        <h1>
+          Projects
+        </h1>
+
+        <p>
+          Add, edit, publish, and remove projects.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ADD PROJECT -->
+
+    <section class="admin-card">
+
+
+      <div class="admin-card-header">
+
+        <div>
+
+          <h2 id="formTitle">
+            Add New Project
+          </h2>
+
+          <p>
+            Add a class, GIS, UAS, data,
+            or professional project.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <form
+        id="projectForm"
+        class="project-form"
+      >
+
+
+        <input
+          type="hidden"
+          id="projectId"
+        >
+
+
+        <div class="form-row">
+
+
+          <div class="form-group">
+
+            <label for="title">
+              Project Title
+            </label>
+
+            <input
+              type="text"
+              id="title"
+              required
+            >
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="category">
+              Category
+            </label>
+
+            <select id="category">
+
+              <option value="GIS">
+                GIS
+              </option>
+
+              <option value="Remote Sensing">
+                Remote Sensing
+              </option>
+
+              <option value="UAS">
+                UAS
+              </option>
+
+              <option value="Web GIS">
+                Web GIS
+              </option>
+
+              <option value="Programming">
+                Programming
+              </option>
+
+              <option value="Data">
+                Data
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label for="description">
+            Description
+          </label>
+
+          <textarea
+            id="description"
+            rows="5"
+            required
+          ></textarea>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label for="tools">
+            Tools Used
+          </label>
+
+          <input
+            type="text"
+            id="tools"
+            placeholder="ArcGIS Pro, Python, SQL"
+          >
+
+        </div>
+
+
+
+        <div class="form-row">
+
+
+          <div class="form-group">
+
+            <label for="projectUrl">
+              Project URL
+            </label>
+
+            <input
+              type="url"
+              id="projectUrl"
+              placeholder="https://..."
+            >
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="githubUrl">
+              GitHub URL
+            </label>
+
+            <input
+              type="url"
+              id="githubUrl"
+              placeholder="https://github.com/..."
+            >
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label for="projectImage">
+            Project Image
+          </label>
+
+          <input
+            type="file"
+            id="projectImage"
+            accept="image/png,image/jpeg,image/webp"
+          >
+
+        </div>
+
+
+
+        <label class="publish-option">
+
+          <input
+            type="checkbox"
+            id="published"
+          >
+
+          <span>
+            Publish this project
+          </span>
+
+        </label>
+
+
+
+        <div class="form-actions">
+
+
+          <button
+            type="submit"
+            id="saveProjectBtn"
+            class="primary-btn"
+          >
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            Save Project
+
+          </button>
+
+
+          <button
+            type="button"
+            id="cancelEditBtn"
+            class="secondary-btn hidden"
+          >
+            Cancel Edit
+          </button>
+
+
+        </div>
+
+
+        <p
+          id="projectMessage"
+          class="form-message"
+        ></p>
+
+
+      </form>
+
+
+    </section>
+
+
+
+    <!-- PROJECT LIST -->
+
+    <section class="admin-card">
+
+
+      <div class="admin-card-header">
+
+        <div>
+
+          <h2>
+            Your Projects
+          </h2>
+
+          <p>
+            Projects saved in your portfolio.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="projectsList"
+        class="admin-projects-list"
+      >
+
+        <p>
+          Loading projects...
+        </p>
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+</div>
+
+
+<script
+  type="module"
+  src="js/projects.js"
+></script>
+
+
+</body>
+
+</html>

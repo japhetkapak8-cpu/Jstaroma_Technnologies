@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Dashboard | JStaroma Admin
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/admin.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+  <!-- SIDEBAR -->
+
+  <aside class="admin-sidebar">
+
+
+    <div class="admin-brand">
+
+      <div class="small-brand-mark">
+        JT
+      </div>
+
+
+      <div>
+
+        <strong>
+          JSTAROMA
+        </strong>
+
+        <span>
+          Admin
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <nav class="admin-nav">
+
+
+      <a
+        href="dashboard.html"
+        class="active"
+      >
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        Dashboard
+
+      </a>
+
+
+      <a href="projects.html">
+
+        <i class="fa-solid fa-folder-open"></i>
+
+        Projects
+
+      </a>
+
+
+      <a href="../index.html">
+
+        <i class="fa-solid fa-globe"></i>
+
+        View Website
+
+      </a>
+
+
+    </nav>
+
+
+    <div class="sidebar-footer">
+
+      <button
+        id="logoutBtn"
+        class="logout-btn"
+      >
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+      </button>
+
+    </div>
+
+
+  </aside>
+
+
+
+  <!-- MAIN -->
+
+  <main class="admin-main">
+
+
+    <div class="page-header">
+
+      <div>
+
+        <span class="admin-eyebrow">
+          JSTAROMA ADMIN
+        </span>
+
+        <h1>
+          Dashboard
+        </h1>
+
+        <p>
+          Manage your portfolio and website content.
+        </p>
+
+      </div>
+
+
+      <div class="header-admin-icon">
+
+        <i class="fa-solid fa-gauge-high"></i>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="dashboard-stats">
+
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon blue">
+
+          <i class="fa-solid fa-folder"></i>
+
+        </div>
+
+        <div>
+
+          <span>
+            Total Projects
+          </span>
+
+          <strong id="totalProjects">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon green">
+
+          <i class="fa-solid fa-eye"></i>
+
+        </div>
+
+        <div>
+
+          <span>
+            Published
+          </span>
+
+          <strong id="publishedProjects">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="dashboard-stat">
+
+        <div class="stat-icon gold">
+
+          <i class="fa-solid fa-file-pen"></i>
+
+        </div>
+
+        <div>
+
+          <span>
+            Drafts
+          </span>
+
+          <strong id="draftProjects">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+
+    <section class="admin-card">
+
+
+      <div class="admin-card-header">
+
+        <div>
+
+          <h2>
+            Quick Actions
+          </h2>
+
+          <p>
+            Manage your JStaroma portfolio.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="quick-actions">
+
+
+        <a
+          href="projects.html"
+          class="quick-action-card"
+        >
+
+          <i class="fa-solid fa-plus"></i>
+
+          <div>
+
+            <strong>
+              Add Project
+            </strong>
+
+            <span>
+              Add a new class or professional project.
+            </span>
+
+          </div>
+
+        </a>
+
+
+
+        <a
+          href="../index.html#projects"
+          class="quick-action-card"
+        >
+
+          <i class="fa-solid fa-eye"></i>
+
+          <div>
+
+            <strong>
+              View Portfolio
+            </strong>
+
+            <span>
+              See your published projects.
+            </span>
+
+          </div>
+
+        </a>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+</div>
+
+
+<script
+  type="module"
+  src="js/dashboard.js"
+></script>
+
+
+</body>
+
+</html>

@@ -1,361 +1,1229 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JStaroma Technologies</title>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    JSTAROMA TECH | GIS, Technology & Development
+  </title>
+
   <meta
     name="description"
-    content="JStaroma Technologies provides geospatial, drone, disaster response, and logistics solutions."
+    content="JSTAROMA TECH portfolio featuring GIS, web development, programming, data, remote sensing, and UAS projects."
   >
-  <link rel="stylesheet" href="style.css">
+
+
+  <!-- ========================================
+       FONT AWESOME
+  ========================================= -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+
+  <!-- ========================================
+       GOOGLE FONT
+  ========================================= -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- ========================================
+       MAIN CSS
+  ========================================= -->
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
 </head>
+
 
 <body>
 
-  <header class="header">
-    <div class="container nav-container">
-      <a href="#home" class="logo">
-        JSTAROMA<span>TECH</span>
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header class="site-header">
+
+  <div class="nav-container">
+
+
+    <!-- BRAND -->
+
+    <a
+      href="#home"
+      class="brand"
+    >
+
+      <span class="brand-main">
+        JSTAROMA
+      </span>
+
+      <span class="brand-accent">
+        TECH
+      </span>
+
+    </a>
+
+
+
+    <!-- MOBILE BUTTON -->
+
+    <button
+      class="mobile-menu-btn"
+      id="mobileMenuBtn"
+      type="button"
+      aria-label="Open navigation"
+    >
+
+      <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav
+      class="main-nav"
+      id="mainNav"
+    >
+
+      <a href="#home">
+        Home
       </a>
 
-      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">
-        ☰
-      </button>
+      <a href="#about">
+        About
+      </a>
 
-      <nav class="nav" id="navMenu">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#vision">Vision</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+      <a href="#services">
+        Services
+      </a>
 
+      <a href="#projects">
+        Projects
+      </a>
 
-  <main>
+      <a href="#vision">
+        Vision
+      </a>
 
-    <!-- HERO -->
-    <section class="hero" id="home">
-      <div class="container hero-grid">
+      <a href="#contact">
+        Contact
+      </a>
 
-        <div class="hero-content">
-          <p class="eyebrow">Geospatial • UAS • Technology • Logistics</p>
+      <a
+        href="admin/index.html"
+        class="admin-login-btn"
+      >
+        Admin Login
+      </a>
 
-          <h1>
-            Technology built for
-            <span>real-world challenges.</span>
-          </h1>
+    </nav>
 
-          <p class="hero-description">
-            JStaroma Technologies develops geospatial intelligence,
-            drone operations, disaster response, and logistics solutions
-            designed to improve how communities understand, manage,
-            and connect their world.
-          </p>
 
-          <div class="hero-buttons">
-            <a href="#services" class="btn primary-btn">
-              Explore Our Services
-            </a>
+  </div>
 
-            <a href="#contact" class="btn secondary-btn">
-              Contact Us
-            </a>
-          </div>
-        </div>
+</header>
 
-        <div class="hero-card">
-          <div class="radar">
-            <div class="radar-center"></div>
-          </div>
 
-          <h3>Connected Intelligence</h3>
 
-          <p>
-            Combining location intelligence, aerial technology,
-            data, and logistics to support smarter decisions.
-          </p>
-        </div>
 
-      </div>
-    </section>
 
+<!-- ========================================
+     HERO
+======================================== -->
 
-    <!-- ABOUT -->
-    <section class="section" id="about">
-      <div class="container">
-
-        <p class="section-label">About JStaroma</p>
-
-        <div class="section-heading">
-          <h2>Building technology with purpose.</h2>
-
-          <p>
-            JStaroma Technologies is being developed as a technology
-            company focused on geospatial systems, unmanned aircraft,
-            emergency response, infrastructure, and future logistics
-            solutions.
-          </p>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <h3>GIS</h3>
-            <p>Spatial intelligence</p>
-          </div>
-
-          <div class="stat">
-            <h3>UAS</h3>
-            <p>Aerial operations</p>
-          </div>
-
-          <div class="stat">
-            <h3>DATA</h3>
-            <p>Decision support</p>
-          </div>
-
-          <div class="stat">
-            <h3>LOGISTICS</h3>
-            <p>Future connectivity</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- SERVICES -->
-    <section class="section dark-section" id="services">
-      <div class="container">
-
-        <p class="section-label">What We Do</p>
-
-        <div class="section-heading">
-          <h2>Our technology capabilities.</h2>
-
-          <p>
-            Starting with GIS and UAS capabilities while developing
-            toward larger technology and logistics systems.
-          </p>
-        </div>
-
-        <div class="service-grid">
-
-          <article class="service-card">
-            <div class="service-number">01</div>
-
-            <h3>GIS & Mapping</h3>
-
-            <p>
-              Spatial analysis, interactive maps, dashboards,
-              geospatial databases, and location intelligence.
-            </p>
-
-            <span>Learn more →</span>
-          </article>
-
-
-          <article class="service-card">
-            <div class="service-number">02</div>
-
-            <h3>Drone Operations</h3>
-
-            <p>
-              Aerial mapping, imagery collection, inspections,
-              remote sensing, and UAS-based data collection.
-            </p>
-
-            <span>Learn more →</span>
-          </article>
-
-
-          <article class="service-card">
-            <div class="service-number">03</div>
-
-            <h3>Disaster Technology</h3>
-
-            <p>
-              Mapping, situational awareness, damage assessment,
-              dashboards, and emergency response technology.
-            </p>
-
-            <span>Learn more →</span>
-          </article>
-
-
-          <article class="service-card">
-            <div class="service-number">04</div>
-
-            <h3>Logistics Systems</h3>
-
-            <p>
-              Future technology for transportation, supply-chain
-              intelligence, route planning, and remote delivery.
-            </p>
-
-            <span>Learn more →</span>
-          </article>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- VISION -->
-    <section class="section vision" id="vision">
-      <div class="container vision-grid">
-
-        <div>
-          <p class="section-label">Our Vision</p>
-
-          <h2>
-            Connecting communities through intelligent technology.
-          </h2>
-        </div>
-
-        <div class="vision-text">
-          <p>
-            Our long-term vision is to combine GIS, aviation,
-            unmanned aircraft systems, and logistics technologies
-            to improve infrastructure, emergency response, and
-            connectivity.
-          </p>
-
-          <p>
-            We believe technology should solve practical problems
-            and reach communities where traditional infrastructure
-            may be limited.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- FUTURE ROADMAP -->
-    <section class="section roadmap-section">
-      <div class="container">
-
-        <p class="section-label">Development Roadmap</p>
-
-        <h2>Building step by step.</h2>
-
-        <div class="timeline">
-
-          <div class="timeline-item">
-            <span>01</span>
-            <div>
-              <h3>Geospatial Technology</h3>
-              <p>GIS, mapping, web applications and spatial analysis.</p>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <span>02</span>
-            <div>
-              <h3>UAS Operations</h3>
-              <p>Drone mapping, remote sensing and aerial data collection.</p>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <span>03</span>
-            <div>
-              <h3>Disaster Response</h3>
-              <p>Emergency mapping and operational technology.</p>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <span>04</span>
-            <div>
-              <h3>Advanced Logistics</h3>
-              <p>Technology-enabled transportation and remote delivery.</p>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- CONTACT -->
-    <section class="contact-section" id="contact">
-      <div class="container contact-content">
-
-        <div>
-          <p class="section-label">Contact</p>
-
-          <h2>Let's build something meaningful.</h2>
-
-          <p>
-            Interested in geospatial technology, drone operations,
-            partnerships, or future projects?
-          </p>
-        </div>
-
-        <form
-  action="https://formspree.io/f/mwleqqzb"
-  method="POST"
-  class="contact-form"
->
-         <input
-  type="text"
-  name="name"
-  placeholder="Your name"
-  required
+<section
+  class="hero"
+  id="home"
 >
 
-<input
-  type="email"
-  name="email"
-  placeholder="Email address"
-  required
->
-
-<textarea
-  name="message"
-  rows="5"
-  placeholder="Tell us about your project"
-  required
-></textarea>
-
-<button type="submit" class="btn primary-btn">
-  Send Message
-</button>
-
-          <p id="formMessage"></p>
-
-        </form>
-
-      </div>
-    </section>
-
-  </main>
+  <div class="hero-content">
 
 
-  <footer>
-    <div class="container footer-content">
+    <div class="hero-text">
 
-      <div>
-        <h3>JSTAROMA TECHNOLOGIES</h3>
-        <p>Geospatial • UAS • Technology • Logistics</p>
-      </div>
+      <span class="hero-label">
+        GIS • TECHNOLOGY • DEVELOPMENT
+      </span>
+
+
+      <h1>
+
+        Turning Data Into
+
+        <span>
+          Meaningful Solutions.
+        </span>
+
+      </h1>
+
 
       <p>
-        © <span id="year"></span> JStaroma Technologies.
-        All rights reserved.
+        Building digital solutions through GIS,
+        web development, data visualization,
+        remote sensing, UAS technology,
+        and modern web applications.
+      </p>
+
+
+      <div class="hero-actions">
+
+        <a
+          href="#projects"
+          class="btn btn-primary"
+        >
+          View Projects
+
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+
+        <a
+          href="#contact"
+          class="btn btn-outline"
+        >
+          Contact Me
+        </a>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- HERO CARD -->
+
+    <div class="hero-card">
+
+      <div class="hero-card-icon">
+
+        <i class="fa-solid fa-layer-group"></i>
+
+      </div>
+
+      <h3>
+        GIS & Technology
+      </h3>
+
+      <p>
+        Combining spatial analysis,
+        programming, databases,
+        and web technologies.
       </p>
 
     </div>
-  </footer>
 
 
-  <script src="script.js"></script>
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     ABOUT
+======================================== -->
+
+<section
+  class="section about-section"
+  id="about"
+>
+
+  <div class="section-container">
+
+
+    <div class="section-heading">
+
+      <span class="section-label">
+        ABOUT
+      </span>
+
+      <h2>
+        Building With Technology
+      </h2>
+
+      <p>
+        My work combines geographic information
+        systems, web technologies, data,
+        and digital tools to create practical solutions.
+      </p>
+
+    </div>
+
+
+
+    <div class="about-grid">
+
+
+      <div class="about-content">
+
+        <h3>
+          Technology that connects
+          information and people.
+        </h3>
+
+        <p>
+          I develop projects across GIS,
+          web development, database systems,
+          data visualization, remote sensing,
+          and UAS technology.
+        </p>
+
+        <p>
+          My portfolio includes interactive web
+          applications, administrative systems,
+          mapping applications, dashboards,
+          and data-driven tools.
+        </p>
+
+      </div>
+
+
+
+      <div class="about-cards">
+
+
+        <div class="mini-card">
+
+          <i class="fa-solid fa-map"></i>
+
+          <strong>
+            GIS
+          </strong>
+
+          <span>
+            Mapping & spatial analysis
+          </span>
+
+        </div>
+
+
+        <div class="mini-card">
+
+          <i class="fa-solid fa-code"></i>
+
+          <strong>
+            Development
+          </strong>
+
+          <span>
+            Modern web applications
+          </span>
+
+        </div>
+
+
+        <div class="mini-card">
+
+          <i class="fa-solid fa-database"></i>
+
+          <strong>
+            Data
+          </strong>
+
+          <span>
+            Databases & analytics
+          </span>
+
+        </div>
+
+
+        <div class="mini-card">
+
+          <i class="fa-solid fa-plane-up"></i>
+
+          <strong>
+            UAS
+          </strong>
+
+          <span>
+            Drone & imagery applications
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     SERVICES
+======================================== -->
+
+<section
+  class="section services-section"
+  id="services"
+>
+
+  <div class="section-container">
+
+
+    <div class="section-heading">
+
+      <span class="section-label">
+        SERVICES
+      </span>
+
+      <h2>
+        What I Work With
+      </h2>
+
+      <p>
+        Technical areas represented throughout
+        my projects and professional work.
+      </p>
+
+    </div>
+
+
+
+    <div class="services-grid">
+
+
+      <article class="service-card">
+
+        <div class="service-icon">
+          <i class="fa-solid fa-earth-americas"></i>
+        </div>
+
+        <h3>
+          GIS
+        </h3>
+
+        <p>
+          Spatial analysis, mapping,
+          geodatabases, dashboards,
+          and geographic data visualization.
+        </p>
+
+      </article>
+
+
+
+      <article class="service-card">
+
+        <div class="service-icon">
+          <i class="fa-solid fa-laptop-code"></i>
+        </div>
+
+        <h3>
+          Web Development
+        </h3>
+
+        <p>
+          Responsive websites,
+          web applications,
+          portals, authentication,
+          and database integration.
+        </p>
+
+      </article>
+
+
+
+      <article class="service-card">
+
+        <div class="service-icon">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+
+        <h3>
+          Data
+        </h3>
+
+        <p>
+          SQL, databases,
+          dashboards,
+          reporting,
+          and data-driven solutions.
+        </p>
+
+      </article>
+
+
+
+      <article class="service-card">
+
+        <div class="service-icon">
+          <i class="fa-solid fa-satellite"></i>
+        </div>
+
+        <h3>
+          Remote Sensing
+        </h3>
+
+        <p>
+          Satellite imagery,
+          raster analysis,
+          imagery processing,
+          and spatial interpretation.
+        </p>
+
+      </article>
+
+
+
+      <article class="service-card">
+
+        <div class="service-icon">
+          <i class="fa-solid fa-plane-up"></i>
+        </div>
+
+        <h3>
+          UAS
+        </h3>
+
+        <p>
+          Drone technology,
+          aerial imagery,
+          mapping workflows,
+          and geographic applications.
+        </p>
+
+      </article>
+
+
+
+      <article class="service-card">
+
+        <div class="service-icon">
+          <i class="fa-solid fa-code"></i>
+        </div>
+
+        <h3>
+          Programming
+        </h3>
+
+        <p>
+          JavaScript, Python,
+          SQL and application development
+          for practical projects.
+        </p>
+
+      </article>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     PROJECTS
+======================================== -->
+
+<section
+  class="section projects-section"
+  id="projects"
+>
+
+  <div class="section-container">
+
+
+    <div class="section-heading">
+
+      <span class="section-label">
+        PORTFOLIO
+      </span>
+
+      <h2>
+        Projects
+      </h2>
+
+      <p>
+        Explore selected work across GIS,
+        remote sensing, UAS,
+        programming, Web GIS, and data.
+      </p>
+
+    </div>
+
+
+
+    <!-- PROJECT FILTERS -->
+
+    <div
+      class="project-filters"
+      id="projectFilters"
+    >
+
+
+      <button
+        class="project-filter active"
+        data-filter="All"
+        type="button"
+      >
+        All
+      </button>
+
+
+      <button
+        class="project-filter"
+        data-filter="GIS"
+        type="button"
+      >
+        GIS
+      </button>
+
+
+      <button
+        class="project-filter"
+        data-filter="Remote Sensing"
+        type="button"
+      >
+        Remote Sensing
+      </button>
+
+
+      <button
+        class="project-filter"
+        data-filter="UAS"
+        type="button"
+      >
+        UAS
+      </button>
+
+
+      <button
+        class="project-filter"
+        data-filter="Web GIS"
+        type="button"
+      >
+        Web GIS
+      </button>
+
+
+      <button
+        class="project-filter"
+        data-filter="Programming"
+        type="button"
+      >
+        Programming
+      </button>
+
+
+      <button
+        class="project-filter"
+        data-filter="Data"
+        type="button"
+      >
+        Data
+      </button>
+
+
+    </div>
+
+
+
+    <!-- STATUS -->
+
+    <div
+      class="projects-status"
+      id="projectsStatus"
+    >
+      Loading projects...
+    </div>
+
+
+
+    <!-- PROJECTS GENERATED HERE -->
+
+    <div
+      class="projects-grid"
+      id="projectsGrid"
+    >
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     VISION
+======================================== -->
+
+<section
+  class="section vision-section"
+  id="vision"
+>
+
+  <div class="section-container">
+
+
+    <div class="vision-card">
+
+
+      <div>
+
+        <span class="section-label">
+          VISION
+        </span>
+
+        <h2>
+          Technology With Purpose.
+        </h2>
+
+      </div>
+
+
+      <p>
+        My goal is to continue developing practical
+        technology that combines geographic information,
+        data, programming and digital communication
+        to solve real-world problems.
+      </p>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     CONTACT
+======================================== -->
+
+<section
+  class="section contact-section"
+  id="contact"
+>
+
+  <div class="section-container">
+
+
+    <!-- ========================================
+         SECTION HEADING
+    ======================================== -->
+
+    <div class="section-heading">
+
+      <span class="section-label">
+        CONTACT
+      </span>
+
+      <h2>
+        Let's Connect
+      </h2>
+
+      <p>
+        Interested in discussing GIS,
+        technology, projects,
+        or professional opportunities?
+      </p>
+
+    </div>
+
+
+
+    <!-- ========================================
+         CONTACT CARDS
+    ======================================== -->
+
+    <div class="contact-card">
+
+
+      <!-- ========================================
+           EMAIL
+      ======================================== -->
+
+      <a
+        href="mailto:Japhetkapak8@gmail.com"
+        class="contact-item"
+        aria-label="Send me an email"
+      >
+
+        <div class="contact-icon">
+
+          <i
+            class="fa-solid fa-envelope"
+            aria-hidden="true"
+          ></i>
+
+        </div>
+
+
+        <div class="contact-item-content">
+
+          <strong>
+            Email
+          </strong>
+
+          <span>
+            Get in touch by email
+          </span>
+
+        </div>
+
+
+        <div class="contact-arrow">
+
+          <i
+            class="fa-solid fa-arrow-right"
+            aria-hidden="true"
+          ></i>
+
+        </div>
+
+      </a>
+
+
+
+      <!-- ========================================
+           GITHUB
+      ======================================== -->
+
+      <a
+        href="https://github.com/japhetkapak8-cpu"
+        class="contact-item"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Visit my GitHub profile"
+      >
+
+        <div class="contact-icon">
+
+          <i
+            class="fa-brands fa-github"
+            aria-hidden="true"
+          ></i>
+
+        </div>
+
+
+        <div class="contact-item-content">
+
+          <strong>
+            GitHub
+          </strong>
+
+          <span>
+            Explore development projects
+          </span>
+
+        </div>
+
+
+        <div class="contact-arrow">
+
+          <i
+            class="fa-solid fa-arrow-up-right-from-square"
+            aria-hidden="true"
+          ></i>
+
+        </div>
+
+      </a>
+
+
+
+      <!-- ========================================
+           LINKEDIN
+      ======================================== -->
+
+      <a
+        href="https://www.linkedin.com/in/japhet-kapak-1767872a1/"
+        class="contact-item"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Visit my LinkedIn profile"
+      >
+
+        <div class="contact-icon">
+
+          <i
+            class="fa-brands fa-linkedin-in"
+            aria-hidden="true"
+          ></i>
+
+        </div>
+
+
+        <div class="contact-item-content">
+
+          <strong>
+            LinkedIn
+          </strong>
+
+          <span>
+            Professional networking
+          </span>
+
+        </div>
+
+
+        <div class="contact-arrow">
+
+          <i
+            class="fa-solid fa-arrow-up-right-from-square"
+            aria-hidden="true"
+          ></i>
+
+        </div>
+
+      </a>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     FOOTER
+======================================== -->
+
+<footer class="site-footer">
+
+  <div class="footer-container">
+
+
+    <div class="footer-brand">
+
+      <strong>
+        JSTAROMA
+        <span>
+          TECH
+        </span>
+      </strong>
+
+      <p>
+        GIS • Technology • Development
+      </p>
+
+    </div>
+
+
+    <p class="footer-copy">
+
+      ©
+      <span id="currentYear"></span>
+      JSTAROMA TECH.
+      All rights reserved.
+
+    </p>
+
+
+  </div>
+
+</footer>
+
+
+
+
+
+<!-- ========================================
+     PROJECT DETAILS MODAL
+======================================== -->
+
+<div
+  class="project-modal"
+  id="projectModal"
+  aria-hidden="true"
+>
+
+
+  <!-- BACKGROUND -->
+
+  <div
+    class="project-modal-backdrop"
+    id="projectModalBackdrop"
+  >
+  </div>
+
+
+
+  <!-- MODAL WINDOW -->
+
+  <div class="project-modal-dialog">
+
+
+    <!-- CLOSE BUTTON -->
+
+    <button
+      class="project-modal-close"
+      id="projectModalClose"
+      type="button"
+      aria-label="Close project"
+    >
+
+      <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+
+
+    <!-- LARGE IMAGE -->
+
+    <div class="project-modal-image-wrapper">
+
+
+      <img
+        src=""
+        alt="Project preview"
+        id="projectModalImage"
+        class="project-modal-image"
+      >
+
+
+      <div
+        class="project-modal-placeholder"
+        id="projectModalPlaceholder"
+      >
+
+        <i class="fa-solid fa-folder-open"></i>
+
+        <span>
+          Project Preview
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- PROJECT INFORMATION -->
+
+    <div class="project-modal-body">
+
+
+      <span
+        class="project-modal-category"
+        id="projectModalCategory"
+      >
+        PROJECT
+      </span>
+
+
+      <h2 id="projectModalTitle">
+        Project Title
+      </h2>
+
+
+      <p
+        class="project-modal-description"
+        id="projectModalDescription"
+      >
+      </p>
+
+
+
+      <!-- TOOLS -->
+
+      <div class="project-details-group">
+
+        <h3>
+          Tools & Technologies
+        </h3>
+
+
+        <div
+          class="project-modal-tools"
+          id="projectModalTools"
+        >
+        </div>
+
+      </div>
+
+
+
+      <!-- BUTTONS -->
+
+      <div class="project-modal-buttons">
+
+
+        <a
+          href="#"
+          id="projectModalLive"
+          class="modal-button modal-button-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+          Live Project
+
+        </a>
+
+
+
+        <a
+          href="#"
+          id="projectModalGithub"
+          class="modal-button modal-button-secondary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-brands fa-github"></i>
+
+          View GitHub
+
+        </a>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+<!-- ========================================
+     BASIC WEBSITE JS
+======================================== -->
+
+<script>
+
+  /*
+   * Current year
+   */
+
+  document.getElementById(
+    "currentYear"
+  ).textContent =
+    new Date().getFullYear();
+
+
+
+  /*
+   * Mobile navigation
+   */
+
+  const mobileMenuBtn =
+    document.getElementById(
+      "mobileMenuBtn"
+    );
+
+
+  const mainNav =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  mobileMenuBtn.addEventListener(
+    "click",
+    () => {
+
+      mainNav.classList.toggle(
+        "open"
+      );
+
+    }
+  );
+
+
+  document
+    .querySelectorAll(
+      ".main-nav a"
+    )
+    .forEach(
+      link => {
+
+        link.addEventListener(
+          "click",
+          () => {
+
+            mainNav.classList.remove(
+              "open"
+            );
+
+          }
+        );
+
+      }
+    );
+
+</script>
+
+
+
+<!-- PROJECT SYSTEM -->
+
+<script
+  type="module"
+  src="js/public-projects.js?v=20260901-3"
+></script>
+
 
 </body>
+
 </html>
