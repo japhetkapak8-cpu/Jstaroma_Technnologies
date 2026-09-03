@@ -1343,7 +1343,1882 @@ a {
   line-height: 1.75;
 
 }
+/* =========================================================
+   JSTAROMA PRODUCTS
+========================================================= */
 
+.products-section {
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #07111f 0%,
+      #091827 100%
+    );
+
+  color: #ffffff;
+
+}
+
+
+/* subtle background glow */
+
+.products-section::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: -240px;
+
+  right: -180px;
+
+  width: 650px;
+
+  height: 650px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(57, 198, 255, 0.12),
+      transparent 68%
+    );
+
+  pointer-events: none;
+
+}
+
+
+.products-section::after {
+
+  content: "";
+
+  position: absolute;
+
+  bottom: -300px;
+
+  left: -240px;
+
+  width: 600px;
+
+  height: 600px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(57, 198, 255, 0.055),
+      transparent 68%
+    );
+
+  pointer-events: none;
+
+}
+
+
+.products-section .section-container {
+
+  position: relative;
+
+  z-index: 2;
+
+}
+
+
+/* =========================================================
+   PRODUCTS HEADING
+========================================================= */
+
+.products-section .section-label {
+
+  color: var(--blue);
+
+}
+
+
+.products-section .section-heading h2 {
+
+  color: #ffffff;
+
+}
+
+
+.products-section .section-heading p {
+
+  color: #9fb0c2;
+
+}
+
+
+/* =========================================================
+   PRODUCTS GRID
+========================================================= */
+
+.jstaroma-products-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 28px;
+
+}
+
+
+/* =========================================================
+   MAIN PRODUCT CARD
+========================================================= */
+
+.jstaroma-product-card {
+
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(320px, 0.85fr)
+    minmax(420px, 1.15fr);
+
+  min-height: 540px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+
+  border-radius: var(--radius-xl);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  box-shadow:
+    0 35px 90px
+    rgba(
+      0,
+      0,
+      0,
+      0.28
+    );
+
+}
+
+
+/* top accent line */
+
+.jstaroma-product-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--blue),
+      transparent
+    );
+
+  opacity: 0.75;
+
+}
+
+
+/* =========================================================
+   PRODUCT CONTENT
+========================================================= */
+
+.product-content {
+
+  position: relative;
+
+  z-index: 3;
+
+  padding:
+    58px
+    52px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+}
+
+
+/* =========================================================
+   PRODUCT TOP
+========================================================= */
+
+.product-card-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 18px;
+
+  margin-bottom: 31px;
+
+}
+
+
+.product-logo {
+
+  width: 58px;
+
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(
+      57,
+      198,
+      255,
+      0.35
+    );
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(57, 198, 255, 0.17),
+      rgba(57, 198, 255, 0.055)
+    );
+
+  color: var(--blue);
+
+  font-size: 1.12rem;
+
+  font-weight: 800;
+
+  letter-spacing: -0.4px;
+
+  box-shadow:
+    inset 0 0 20px
+    rgba(
+      57,
+      198,
+      255,
+      0.04
+    );
+
+}
+
+
+.product-status {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    7px
+    11px;
+
+  border:
+    1px solid
+    rgba(
+      57,
+      198,
+      255,
+      0.2
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(
+      57,
+      198,
+      255,
+      0.06
+    );
+
+  color: #aeeaff;
+
+  font-size: 0.61rem;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+}
+
+
+/* status dot */
+
+.product-status::before {
+
+  content: "";
+
+  width: 6px;
+
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: var(--blue);
+
+  box-shadow:
+    0 0 10px
+    rgba(
+      57,
+      198,
+      255,
+      0.8
+    );
+
+}
+
+
+/* =========================================================
+   PRODUCT TYPOGRAPHY
+========================================================= */
+
+.product-type {
+
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: var(--blue);
+
+  font-size: 0.68rem;
+
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+
+}
+
+
+.product-content h3 {
+
+  margin-bottom: 17px;
+
+  color: #ffffff;
+
+  font-size:
+    clamp(
+      2.4rem,
+      4vw,
+      3.7rem
+    );
+
+  line-height: 1;
+
+  letter-spacing: -2px;
+
+}
+
+
+.product-description {
+
+  max-width: 540px;
+
+  color: #9fb1c2;
+
+  font-size: 0.94rem;
+
+  line-height: 1.8;
+
+}
+
+
+/* =========================================================
+   PRODUCT FEATURES
+========================================================= */
+
+.product-features {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  margin-top: 26px;
+
+}
+
+
+.product-features span {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    8px
+    11px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  border-radius: 8px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.025
+    );
+
+  color: #bfd0df;
+
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+}
+
+
+.product-features i {
+
+  color: var(--blue);
+
+  font-size: 0.72rem;
+
+}
+
+
+/* =========================================================
+   PRODUCT ACTIONS
+========================================================= */
+
+.product-actions {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 11px;
+
+  margin-top: 33px;
+
+}
+
+
+.product-primary-btn,
+.product-secondary-btn {
+
+  min-height: 46px;
+
+  padding:
+    0
+    18px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  border-radius: var(--radius-sm);
+
+  font-size: 0.78rem;
+
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+
+}
+
+
+.product-primary-btn {
+
+  border:
+    1px solid
+    var(--blue);
+
+  background:
+    var(--blue);
+
+  color:
+    #04111e;
+
+}
+
+
+.product-primary-btn:hover {
+
+  border-color:
+    var(--blue-light);
+
+  background:
+    var(--blue-light);
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.product-primary-btn i {
+
+  font-size: 0.7rem;
+
+  transition:
+    transform 0.2s ease;
+
+}
+
+
+.product-primary-btn:hover i {
+
+  transform:
+    translateX(3px);
+
+}
+
+
+.product-secondary-btn {
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.025
+    );
+
+  color: #d7e4ef;
+
+}
+
+
+.product-secondary-btn:hover {
+
+  border-color:
+    var(--blue);
+
+  color:
+    var(--blue);
+
+  background:
+    rgba(
+      57,
+      198,
+      255,
+      0.055
+    );
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+/* =========================================================
+   PRODUCT VISUAL AREA
+========================================================= */
+
+.product-visual {
+
+  position: relative;
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    48px
+    45px
+    48px
+    10px;
+
+}
+
+
+/* visual glow */
+
+.product-visual::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 470px;
+
+  height: 470px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(57, 198, 255, 0.11),
+      transparent 66%
+    );
+
+  pointer-events: none;
+
+}
+
+
+/* =========================================================
+   JSTAROMA SLIDES APP PREVIEW
+========================================================= */
+
+.slides-preview {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  max-width: 660px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.13
+    );
+
+  border-radius: 15px;
+
+  background: #07111f;
+
+  box-shadow:
+    0 35px 70px
+    rgba(
+      0,
+      0,
+      0,
+      0.38
+    );
+
+  transform:
+    perspective(1200px)
+    rotateY(-3deg)
+    rotateX(1deg);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+
+}
+
+
+.jstaroma-product-card:hover
+.slides-preview {
+
+  transform:
+    perspective(1200px)
+    rotateY(0deg)
+    rotateX(0deg)
+    translateY(-4px);
+
+  box-shadow:
+    0 45px 90px
+    rgba(
+      0,
+      0,
+      0,
+      0.42
+    );
+
+}
+
+
+/* =========================================================
+   PREVIEW TOP BAR
+========================================================= */
+
+.slides-preview-header {
+
+  height: 42px;
+
+  padding:
+    0
+    14px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+
+  background: #091725;
+
+}
+
+
+.preview-controls {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+}
+
+
+.preview-controls span {
+
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.2
+    );
+
+}
+
+
+.preview-controls span:first-child {
+
+  background:
+    rgba(
+      57,
+      198,
+      255,
+      0.75
+    );
+
+}
+
+
+.slides-preview-header small {
+
+  color: #75899b;
+
+  font-size: 0.53rem;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+
+}
+
+
+/* =========================================================
+   PREVIEW BODY
+========================================================= */
+
+.slides-preview-body {
+
+  display: grid;
+
+  grid-template-columns:
+    120px
+    minmax(0, 1fr);
+
+  min-height: 365px;
+
+}
+
+
+/* =========================================================
+   PREVIEW SIDEBAR
+========================================================= */
+
+.slides-sidebar {
+
+  padding:
+    18px
+    10px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  border-right:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+
+  background: #081421;
+
+}
+
+
+.slides-sidebar strong {
+
+  padding:
+    0
+    7px;
+
+  margin-bottom: 7px;
+
+  color: #5e7588;
+
+  font-size: 0.49rem;
+
+  letter-spacing: 1.4px;
+
+}
+
+
+.slides-sidebar span {
+
+  min-height: 31px;
+
+  padding:
+    0
+    8px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  border-radius: 6px;
+
+  color: #8ea2b4;
+
+  font-size: 0.55rem;
+
+  font-weight: 600;
+
+}
+
+
+.slides-sidebar span.selected {
+
+  background:
+    rgba(
+      57,
+      198,
+      255,
+      0.1
+    );
+
+  color:
+    var(--blue);
+
+}
+
+
+.slides-sidebar i {
+
+  font-size: 0.55rem;
+
+}
+
+
+/* =========================================================
+   POWERPOINT CANVAS
+========================================================= */
+
+.slides-canvas {
+
+  min-width: 0;
+
+  padding: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #26333d,
+      #1a242d
+    );
+
+}
+
+
+/* =========================================================
+   MINI POWERPOINT SLIDE
+========================================================= */
+
+.mini-slide {
+
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 16 / 9;
+
+  padding:
+    17px
+    19px
+    13px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  color:
+    var(--text-dark);
+
+  box-shadow:
+    0 15px 35px
+    rgba(
+      0,
+      0,
+      0,
+      0.35
+    );
+
+}
+
+
+/* =========================================================
+   MINI SLIDE HEADER
+========================================================= */
+
+.mini-slide-title {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 11px;
+
+}
+
+
+.mini-slide-title div {
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+.mini-slide-title small {
+
+  color:
+    var(--blue-dark);
+
+  font-size: 0.35rem;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+}
+
+
+.mini-slide-title strong {
+
+  margin-top: 2px;
+
+  color:
+    #13283c;
+
+  font-size: 0.85rem;
+
+  line-height: 1.1;
+
+}
+
+
+.mini-slide-title > span {
+
+  color: #a3b0bb;
+
+  font-size: 0.46rem;
+
+  font-weight: 700;
+
+}
+
+
+/* =========================================================
+   MINI SLIDE CONTENT
+========================================================= */
+
+.mini-slide-content {
+
+  min-height: 0;
+
+  display: grid;
+
+  flex: 1;
+
+  grid-template-columns:
+    minmax(0, 1.6fr)
+    minmax(95px, 0.7fr);
+
+  gap: 10px;
+
+}
+
+
+/* =========================================================
+   MINI GIS MAP
+========================================================= */
+
+.mini-map {
+
+  position: relative;
+
+  min-height: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #d5e1e8;
+
+  background:
+    linear-gradient(
+      145deg,
+      #eaf1f3,
+      #dce8eb
+    );
+
+}
+
+
+.mini-map-grid {
+
+  position: absolute;
+
+  inset: 0;
+
+  opacity: 0.45;
+
+  background-image:
+    linear-gradient(
+      rgba(50, 85, 100, 0.12) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(50, 85, 100, 0.12) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    22px
+    22px;
+
+}
+
+
+/* fake geographic regions */
+
+.mini-map-region {
+
+  position: absolute;
+
+  border:
+    1px solid
+    rgba(
+      19,
+      141,
+      204,
+      0.35
+    );
+
+  background:
+    rgba(
+      57,
+      198,
+      255,
+      0.13
+    );
+
+  transform:
+    rotate(-8deg);
+
+}
+
+
+.region-a {
+
+  top: 20%;
+
+  left: 15%;
+
+  width: 38%;
+
+  height: 47%;
+
+  border-radius:
+    42% 58% 53% 47% /
+    44% 42% 58% 56%;
+
+}
+
+
+.region-b {
+
+  right: 11%;
+
+  bottom: 14%;
+
+  width: 32%;
+
+  height: 37%;
+
+  border-radius:
+    56% 44% 61% 39% /
+    46% 54% 46% 54%;
+
+}
+
+
+/* fake roads */
+
+.mini-road {
+
+  position: absolute;
+
+  height: 2px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  box-shadow:
+    0 0 0 1px
+    rgba(
+      116,
+      135,
+      145,
+      0.18
+    );
+
+  transform-origin: left center;
+
+}
+
+
+.road-a {
+
+  width: 72%;
+
+  top: 44%;
+
+  left: 7%;
+
+  transform:
+    rotate(-13deg);
+
+}
+
+
+.road-b {
+
+  width: 62%;
+
+  top: 69%;
+
+  left: 27%;
+
+  transform:
+    rotate(17deg);
+
+}
+
+
+/* map points */
+
+.map-point {
+
+  position: absolute;
+
+  z-index: 3;
+
+  width: 7px;
+
+  height: 7px;
+
+  border:
+    2px solid
+    #ffffff;
+
+  border-radius: 50%;
+
+  background:
+    var(--blue-dark);
+
+  box-shadow:
+    0 2px 6px
+    rgba(
+      0,
+      0,
+      0,
+      0.25
+    );
+
+}
+
+
+.point-one {
+
+  top: 30%;
+
+  left: 32%;
+
+}
+
+
+.point-two {
+
+  top: 57%;
+
+  left: 57%;
+
+}
+
+
+.point-three {
+
+  top: 42%;
+
+  right: 18%;
+
+}
+
+
+.mini-map-label {
+
+  position: absolute;
+
+  left: 8px;
+
+  bottom: 6px;
+
+  padding:
+    3px
+    5px;
+
+  border-radius: 3px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.88
+    );
+
+  color:
+    #4c6576;
+
+  font-size: 0.28rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.7px;
+
+}
+
+
+/* =========================================================
+   MINI INSIGHT PANEL
+========================================================= */
+
+.mini-insights {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+}
+
+
+.mini-insights > div {
+
+  flex: 1;
+
+  padding:
+    7px
+    8px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #dfe7ec;
+
+  background:
+    #f8fafb;
+
+}
+
+
+.mini-insights small {
+
+  display: block;
+
+  margin-bottom: 3px;
+
+  color:
+    var(--blue-dark);
+
+  font-size: 0.27rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.6px;
+
+}
+
+
+.mini-insights strong {
+
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #304659;
+
+  font-size: 0.34rem;
+
+  line-height: 1.25;
+
+}
+
+
+.mini-insights span {
+
+  display: block;
+
+  width: 100%;
+
+  height: 3px;
+
+  margin-top: 3px;
+
+  border-radius: 10px;
+
+  background: #dbe4e9;
+
+}
+
+
+.mini-insights span:last-child {
+
+  width: 68%;
+
+}
+
+
+/* =========================================================
+   MINI SLIDE FOOTER
+========================================================= */
+
+.mini-slide-footer {
+
+  padding-top: 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  color: #8a9aa7;
+
+  font-size: 0.27rem;
+
+  font-weight: 600;
+
+}
+
+
+/* =========================================================
+   PRODUCT RESPONSIVE - TABLET
+========================================================= */
+
+@media (
+  max-width: 1050px
+) {
+
+  .jstaroma-product-card {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .product-content {
+
+    padding:
+      48px
+      44px
+      25px;
+
+  }
+
+
+  .product-visual {
+
+    padding:
+      25px
+      44px
+      50px;
+
+  }
+
+
+  .slides-preview {
+
+    max-width: 720px;
+
+    transform: none;
+
+  }
+
+
+  .jstaroma-product-card:hover
+  .slides-preview {
+
+    transform:
+      translateY(-4px);
+
+  }
+
+}
+
+
+/* =========================================================
+   PRODUCT RESPONSIVE - MOBILE
+========================================================= */
+
+@media (
+  max-width: 650px
+) {
+
+  .jstaroma-product-card {
+
+    min-height: auto;
+
+    border-radius: 18px;
+
+  }
+
+
+  .product-content {
+
+    padding:
+      34px
+      24px
+      20px;
+
+  }
+
+
+  .product-card-top {
+
+    margin-bottom: 25px;
+
+  }
+
+
+  .product-logo {
+
+    width: 52px;
+
+    height: 52px;
+
+  }
+
+
+  .product-status {
+
+    padding:
+      6px
+      9px;
+
+    font-size: 0.52rem;
+
+    letter-spacing: 0.7px;
+
+  }
+
+
+  .product-content h3 {
+
+    font-size: 2.35rem;
+
+  }
+
+
+  .product-description {
+
+    font-size: 0.88rem;
+
+  }
+
+
+  .product-features {
+
+    gap: 7px;
+
+  }
+
+
+  .product-features span {
+
+    padding:
+      7px
+      9px;
+
+    font-size: 0.64rem;
+
+  }
+
+
+  .product-actions {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .product-primary-btn,
+  .product-secondary-btn {
+
+    width: 100%;
+
+  }
+
+
+  .product-visual {
+
+    padding:
+      20px
+      15px
+      35px;
+
+  }
+
+
+  .slides-preview {
+
+    border-radius: 11px;
+
+  }
+
+
+  .slides-preview-body {
+
+    grid-template-columns:
+      78px
+      minmax(0, 1fr);
+
+    min-height: 255px;
+
+  }
+
+
+  .slides-sidebar {
+
+    padding:
+      12px
+      6px;
+
+  }
+
+
+  .slides-sidebar strong {
+
+    padding:
+      0
+      4px;
+
+    font-size: 0.4rem;
+
+  }
+
+
+  .slides-sidebar span {
+
+    min-height: 25px;
+
+    padding:
+      0
+      5px;
+
+    font-size: 0.43rem;
+
+  }
+
+
+  .slides-sidebar i {
+
+    display: none;
+
+  }
+
+
+  .slides-canvas {
+
+    padding: 14px;
+
+  }
+
+
+  .mini-slide {
+
+    padding:
+      10px
+      10px
+      7px;
+
+  }
+
+
+  .mini-slide-title {
+
+    margin-bottom: 6px;
+
+  }
+
+
+  .mini-slide-title strong {
+
+    font-size: 0.57rem;
+
+  }
+
+
+  .mini-slide-title small {
+
+    font-size: 0.25rem;
+
+  }
+
+
+  .mini-slide-content {
+
+    grid-template-columns:
+      minmax(0, 1.5fr)
+      minmax(60px, 0.7fr);
+
+    gap: 5px;
+
+  }
+
+
+  .mini-insights {
+
+    gap: 3px;
+
+  }
+
+
+  .mini-insights > div {
+
+    padding:
+      4px
+      5px;
+
+  }
+
+
+  .mini-insights strong {
+
+    display: none;
+
+  }
+
+
+  .mini-slide-footer {
+
+    padding-top: 4px;
+
+    font-size: 0.2rem;
+
+  }
+
+}
+
+
+/* =========================================================
+   PRODUCT RESPONSIVE - VERY SMALL PHONE
+========================================================= */
+
+@media (
+  max-width: 420px
+) {
+
+  .product-content {
+
+    padding:
+      29px
+      19px
+      16px;
+
+  }
+
+
+  .product-content h3 {
+
+    font-size: 2.05rem;
+
+  }
+
+
+  .product-type {
+
+    font-size: 0.58rem;
+
+  }
+
+
+  .product-features span {
+
+    width:
+      calc(
+        50% - 4px
+      );
+
+  }
+
+
+  .product-visual {
+
+    padding:
+      16px
+      9px
+      27px;
+
+  }
+
+
+  .slides-preview-body {
+
+    grid-template-columns:
+      65px
+      minmax(0, 1fr);
+
+  }
+
+
+  .slides-sidebar span {
+
+    font-size: 0.38rem;
+
+  }
+
+
+  .slides-canvas {
+
+    padding: 9px;
+
+  }
+
+}
 
 /* =========================================================
    PROJECT SECTION

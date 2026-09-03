@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    JStaroma Slides | JStaroma Technologies
+  </title>
+
+  <meta
+    name="description"
+    content="JStaroma Slides is a Microsoft PowerPoint add-in for professional slide creation, GIS and maps, image tools, dashboards, Brand Kits, and presentation workflows."
+  >
+
+
+  <!-- ========================================
+       FONT AWESOME
+  ========================================= -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+
+  <!-- ========================================
+       GOOGLE FONT
+  ========================================= -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- ========================================
+       JSTAROMA SLIDES CSS
+  ========================================= -->
+
+  <link
+    rel="stylesheet"
+    href="./slides.css"
+  >
+
+</head>
+
+
+<body>
+
+
+<!-- ========================================
+     HEADER
+======================================== -->
+
+<header class="site-header">
+
+  <div class="nav-container">
+
+
+    <!-- PRODUCT BRAND -->
+
+    <a
+      href="./"
+      class="brand"
+      aria-label="JStaroma Slides Home"
+    >
+
+      <div class="brand-mark">
+        JS
+      </div>
+
+
+      <div class="brand-text">
+
+        <strong>
+          JSTAROMA
+        </strong>
+
+        <span>
+          SLIDES
+        </span>
+
+      </div>
+
+    </a>
+
+
+
+    <!-- MOBILE MENU -->
+
+    <button
+      class="mobile-menu-button"
+      id="mobileMenuButton"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+    >
+
+      <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+
+    <!-- NAVIGATION -->
+
+    <nav
+      class="main-nav"
+      id="mainNav"
+    >
+
+      <a href="../">
+        JStaroma Tech
+      </a>
+
+      <a href="#home">
+        Overview
+      </a>
+
+      <a href="#features">
+        Features
+      </a>
+
+      <a href="gis-maps/">
+        GIS & Maps
+      </a>
+
+      <a href="#how-it-works">
+        How It Works
+      </a>
+
+      <a href="#plans">
+        Plans
+      </a>
+
+      <a
+        href="mailto:support@jstaromatechnologies.com"
+        class="nav-cta"
+      >
+        Contact
+      </a>
+
+    </nav>
+
+
+  </div>
+
+</header>
+
+
+
+
+
+<!-- ========================================
+     HERO
+======================================== -->
+
+<section
+  class="hero"
+  id="home"
+>
+
+  <div class="hero-container">
+
+
+    <!-- HERO CONTENT -->
+
+    <div class="hero-content">
+
+
+      <span class="hero-label">
+        MICROSOFT POWERPOINT ADD-IN
+      </span>
+
+
+      <h1>
+
+        Create smarter
+
+        <span>
+          PowerPoint presentations.
+        </span>
+
+      </h1>
+
+
+      <p class="hero-description">
+
+        JStaroma Slides brings professional slide layouts,
+        GIS-ready presentation tools, image workflows,
+        dashboards, Brand Kits, and presentation utilities
+        directly into Microsoft PowerPoint.
+
+      </p>
+
+
+
+      <div class="hero-actions">
+
+
+        <a
+          href="#features"
+          class="btn btn-primary"
+        >
+
+          Explore Features
+
+          <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+        <a
+          href="gis-maps/"
+          class="btn btn-secondary"
+        >
+
+          <i class="fa-solid fa-earth-americas"></i>
+
+          Explore GIS & Maps
+
+        </a>
+
+
+      </div>
+
+
+
+      <div class="hero-tags">
+
+        <span>
+          PowerPoint
+        </span>
+
+        <span>
+          GIS
+        </span>
+
+        <span>
+          Dashboards
+        </span>
+
+        <span>
+          Image Tools
+        </span>
+
+        <span>
+          Brand Kits
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ========================================
+         POWERPOINT PREVIEW
+    ========================================= -->
+
+    <div class="hero-visual">
+
+
+      <div class="app-preview">
+
+
+        <!-- WINDOW HEADER -->
+
+        <div class="app-preview-header">
+
+
+          <div class="window-controls">
+
+            <span></span>
+
+            <span></span>
+
+            <span></span>
+
+          </div>
+
+
+          <small>
+            JSTAROMA SLIDES
+          </small>
+
+
+        </div>
+
+
+
+        <!-- APP BODY -->
+
+        <div class="app-preview-body">
+
+
+          <!-- SIDEBAR -->
+
+          <aside class="preview-sidebar">
+
+
+            <strong>
+              CREATE
+            </strong>
+
+
+            <span>
+              Title Slide
+            </span>
+
+
+            <span>
+              Content Slide
+            </span>
+
+
+            <span>
+              Image + Text
+            </span>
+
+
+            <span class="active">
+              GIS / Map
+            </span>
+
+
+            <span>
+              Dashboard
+            </span>
+
+
+            <span>
+              Comparison
+            </span>
+
+
+          </aside>
+
+
+
+          <!-- POWERPOINT CANVAS -->
+
+          <div class="preview-canvas">
+
+
+            <div class="preview-slide">
+
+
+              <!-- SLIDE HEADER -->
+
+              <div class="preview-slide-header">
+
+
+                <div>
+
+                  <small>
+                    SPATIAL ANALYSIS
+                  </small>
+
+                  <strong>
+                    Geographic Analysis
+                  </strong>
+
+                </div>
+
+
+                <span class="preview-slide-number">
+                  04
+                </span>
+
+
+              </div>
+
+
+
+              <!-- SLIDE CONTENT -->
+
+              <div class="preview-slide-content">
+
+
+                <!-- MAP -->
+
+                <div class="preview-map">
+
+                  <span></span>
+
+                  <span></span>
+
+                  <span></span>
+
+                </div>
+
+
+
+                <!-- INSIGHTS -->
+
+                <div class="preview-insights">
+
+
+                  <div>
+
+                    <small>
+                      MAP INSIGHT
+                    </small>
+
+                    <span></span>
+
+                    <span></span>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      KEY FINDING
+                    </small>
+
+                    <span></span>
+
+                    <span></span>
+
+                  </div>
+
+
+                  <div>
+
+                    <small>
+                      INTERPRETATION
+                    </small>
+
+                    <span></span>
+
+                    <span></span>
+
+                  </div>
+
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     FEATURES
+======================================== -->
+
+<section
+  class="section section-light"
+  id="features"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <span class="section-label">
+        FEATURES
+      </span>
+
+
+      <h2>
+        Presentation tools built for better workflows.
+      </h2>
+
+
+      <p>
+
+        JStaroma Slides brings structured presentation
+        tools into PowerPoint so you can spend less time
+        formatting and more time communicating your work.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="features-grid">
+
+
+      <!-- GIS -->
+
+      <a
+        href="gis-maps/"
+        class="feature-card"
+      >
+
+
+        <div class="feature-icon">
+
+          <i class="fa-solid fa-earth-americas"></i>
+
+        </div>
+
+
+        <h3>
+          GIS & Maps
+        </h3>
+
+
+        <p>
+
+          Map-focused slide layouts for GIS analysis,
+          spatial reporting, research,
+          and geographic storytelling.
+
+        </p>
+
+
+        <span>
+          Explore GIS & Maps →
+        </span>
+
+
+      </a>
+
+
+
+      <!-- IMAGE TOOLS -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-icon">
+
+          <i class="fa-solid fa-image"></i>
+
+        </div>
+
+
+        <h3>
+          Image Tools
+        </h3>
+
+
+        <p>
+
+          Image placeholders, image grids,
+          replacement tools, and visual
+          presentation workflows.
+
+        </p>
+
+
+        <span>
+          In Development
+        </span>
+
+
+      </article>
+
+
+
+      <!-- DASHBOARDS -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-icon">
+
+          <i class="fa-solid fa-chart-column"></i>
+
+        </div>
+
+
+        <h3>
+          Dashboards
+        </h3>
+
+
+        <p>
+
+          Build structured KPI,
+          metrics, analytical,
+          and reporting slides.
+
+        </p>
+
+
+        <span>
+          In Development
+        </span>
+
+
+      </article>
+
+
+
+      <!-- BRAND KITS -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-icon">
+
+          <i class="fa-solid fa-palette"></i>
+
+        </div>
+
+
+        <h3>
+          Brand Kits
+        </h3>
+
+
+        <p>
+
+          Manage organization colors,
+          presentation fonts,
+          and reusable visual styles.
+
+        </p>
+
+
+        <span>
+          In Development
+        </span>
+
+
+      </article>
+
+
+
+      <!-- TEMPLATES -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-icon">
+
+          <i class="fa-solid fa-layer-group"></i>
+
+        </div>
+
+
+        <h3>
+          Templates
+        </h3>
+
+
+        <p>
+
+          Professional reusable slide layouts
+          for different presentation
+          and reporting needs.
+
+        </p>
+
+
+        <span>
+          In Development
+        </span>
+
+
+      </article>
+
+
+
+      <!-- LIVE MAP -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-icon">
+
+          <i class="fa-solid fa-map-location-dot"></i>
+
+        </div>
+
+
+        <h3>
+          Live Map
+        </h3>
+
+
+        <p>
+
+          Interactive ArcGIS mapping capabilities
+          designed for PowerPoint presentations.
+
+        </p>
+
+
+        <span>
+          Beta Development
+        </span>
+
+
+      </article>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     GIS
+======================================== -->
+
+<section class="section gis-section">
+
+
+  <div class="container">
+
+
+    <div class="gis-grid">
+
+
+      <!-- CONTENT -->
+
+      <div class="gis-content">
+
+
+        <span class="section-label">
+          GIS MEETS POWERPOINT
+        </span>
+
+
+        <h2>
+
+          Spatial analysis deserves
+          better presentation tools.
+
+        </h2>
+
+
+        <p>
+
+          JStaroma Slides is being built with GIS
+          professionals, students, researchers,
+          planners, analysts, and technical teams in mind.
+
+        </p>
+
+
+        <div class="gis-list">
+
+
+          <div>
+
+            <i class="fa-solid fa-check"></i>
+
+            GIS-focused slide layouts
+
+          </div>
+
+
+          <div>
+
+            <i class="fa-solid fa-check"></i>
+
+            Professional map frames
+
+          </div>
+
+
+          <div>
+
+            <i class="fa-solid fa-check"></i>
+
+            Spatial findings and insight panels
+
+          </div>
+
+
+          <div>
+
+            <i class="fa-solid fa-check"></i>
+
+            Map image replacement workflows
+
+          </div>
+
+
+          <div>
+
+            <i class="fa-solid fa-check"></i>
+
+            ArcGIS integration in development
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="hero-actions">
+
+
+          <a
+            href="gis-maps/"
+            class="btn btn-primary"
+          >
+
+            Explore GIS & Maps
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+          </a>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- VISUAL -->
+
+      <div class="gis-visual">
+
+
+        <div class="gis-map-card">
+
+
+          <span class="gis-map-badge">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            GIS PRESENTATION
+
+          </span>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     HOW IT WORKS
+======================================== -->
+
+<section
+  class="section section-soft"
+  id="how-it-works"
+>
+
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <span class="section-label">
+        WORKFLOW
+      </span>
+
+
+      <h2>
+        Built directly into PowerPoint.
+      </h2>
+
+
+      <p>
+
+        JStaroma Slides is designed to reduce repetitive
+        formatting and make structured slide creation faster.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="steps-grid">
+
+
+      <div class="step-card">
+
+
+        <span class="step-number">
+          01
+        </span>
+
+
+        <h3>
+          Open JStaroma Slides
+        </h3>
+
+
+        <p>
+
+          Launch the add-in directly from
+          Microsoft PowerPoint.
+
+        </p>
+
+
+      </div>
+
+
+
+      <div class="step-card">
+
+
+        <span class="step-number">
+          02
+        </span>
+
+
+        <h3>
+          Choose a Slide Tool
+        </h3>
+
+
+        <p>
+
+          Select a presentation layout,
+          GIS slide, image workflow,
+          dashboard, or other tool.
+
+        </p>
+
+
+      </div>
+
+
+
+      <div class="step-card">
+
+
+        <span class="step-number">
+          03
+        </span>
+
+
+        <h3>
+          Create & Customize
+        </h3>
+
+
+        <p>
+
+          JStaroma Slides creates the structure.
+          You keep control of your presentation,
+          content, colors, and data.
+
+        </p>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     PLANS
+======================================== -->
+
+<section
+  class="section section-dark"
+  id="plans"
+>
+
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <span class="section-label">
+        PLANS
+      </span>
+
+
+      <h2>
+        Start with the tools you need.
+      </h2>
+
+
+      <p>
+
+        JStaroma Slides is currently being prepared
+        for public distribution through Microsoft PowerPoint.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="plans-grid">
+
+
+      <!-- FREE -->
+
+      <article class="plan-card">
+
+
+        <span class="plan-label">
+          FREE
+        </span>
+
+
+        <h3>
+          JStaroma Slides
+        </h3>
+
+
+        <p>
+          Core presentation tools for everyday workflows.
+        </p>
+
+
+        <div class="plan-list">
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Core slide layouts
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Image tools
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            GIS slide layouts
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Presentation styles
+
+          </span>
+
+
+        </div>
+
+
+      </article>
+
+
+
+      <!-- PRO -->
+
+      <article class="plan-card featured">
+
+
+        <span class="plan-label">
+          PRO
+        </span>
+
+
+        <h3>
+          JStaroma Slides Pro
+        </h3>
+
+
+        <p>
+          Advanced presentation workflows and premium tools.
+        </p>
+
+
+        <div class="plan-list">
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Advanced templates
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Expanded Brand Kits
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Advanced GIS tools
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Premium dashboards
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            AI presentation tools
+
+          </span>
+
+
+          <span>
+
+            <i class="fa-solid fa-check"></i>
+
+            Cloud slide library
+
+          </span>
+
+
+        </div>
+
+
+      </article>
+
+
+    </div>
+
+
+  </div>
+
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     FAQ
+======================================== -->
+
+<section
+  class="section section-light"
+  id="faq"
+>
+
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <span class="section-label">
+        FAQ
+      </span>
+
+
+      <h2>
+        JStaroma Slides
+      </h2>
+
+
+      <p>
+
+        Common questions about the PowerPoint add-in
+        and its planned capabilities.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="faq-list">
+
+
+      <details>
+
+
+        <summary>
+          What is JStaroma Slides?
+        </summary>
+
+
+        <p>
+
+          JStaroma Slides is a Microsoft PowerPoint add-in
+          designed to help users create structured,
+          professional presentations using specialized
+          slide tools and workflows.
+
+        </p>
+
+
+      </details>
+
+
+
+      <details>
+
+
+        <summary>
+          Is JStaroma Slides available yet?
+        </summary>
+
+
+        <p>
+
+          JStaroma Slides is currently in development
+          and is being prepared for public distribution.
+
+        </p>
+
+
+      </details>
+
+
+
+      <details>
+
+
+        <summary>
+          Does it support GIS presentations?
+        </summary>
+
+
+        <p>
+
+          Yes. GIS and map-focused presentation tools
+          are a major part of JStaroma Slides,
+          including GIS layouts, map frames,
+          findings panels, and additional
+          ArcGIS capabilities under development.
+
+        </p>
+
+
+      </details>
+
+
+
+      <details>
+
+
+        <summary>
+          Will there be a Pro version?
+        </summary>
+
+
+        <p>
+
+          A Pro tier is planned for advanced templates,
+          Brand Kits, GIS capabilities,
+          dashboards, AI tools,
+          and cloud-based presentation features.
+
+        </p>
+
+
+      </details>
+
+
+    </div>
+
+
+  </div>
+
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     CTA
+======================================== -->
+
+<section class="cta-section">
+
+
+  <div class="container">
+
+
+    <div class="cta-box">
+
+
+      <div>
+
+
+        <span class="section-label">
+          JSTAROMA SLIDES
+        </span>
+
+
+        <h2>
+          Coming to Microsoft PowerPoint.
+        </h2>
+
+
+        <p>
+
+          JStaroma Slides is being developed as a
+          professional presentation workflow for
+          PowerPoint users, GIS professionals,
+          analysts, students, and organizations.
+
+        </p>
+
+
+      </div>
+
+
+
+      <a
+        href="mailto:support@jstaromatechnologies.com?subject=JStaroma%20Slides%20Early%20Access"
+        class="btn btn-primary"
+      >
+
+        Request Early Access
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+      </a>
+
+
+    </div>
+
+
+  </div>
+
+
+</section>
+
+
+
+
+
+<!-- ========================================
+     FOOTER
+======================================== -->
+
+<footer class="site-footer">
+
+
+  <div class="footer-grid">
+
+
+    <div class="footer-brand">
+
+
+      <strong>
+        JSTAROMA SLIDES
+      </strong>
+
+
+      <p>
+        A JStaroma Technologies product.
+      </p>
+
+
+    </div>
+
+
+
+    <div class="footer-links">
+
+
+      <a href="../">
+        JStaroma Technologies
+      </a>
+
+
+      <a href="gis-maps/">
+        GIS & Maps
+      </a>
+
+
+      <a href="../privacy/">
+        Privacy
+      </a>
+
+
+      <a href="../terms/">
+        Terms
+      </a>
+
+
+      <a href="mailto:support@jstaromatechnologies.com">
+        Support
+      </a>
+
+
+    </div>
+
+
+  </div>
+
+
+</footer>
+
+
+
+
+
+<!-- ========================================
+     JAVASCRIPT
+======================================== -->
+
+<script>
+
+
+  const mobileMenuButton =
+    document.getElementById(
+      "mobileMenuButton"
+    );
+
+
+  const mainNav =
+    document.getElementById(
+      "mainNav"
+    );
+
+
+  if (
+    mobileMenuButton &&
+    mainNav
+  ) {
+
+
+    mobileMenuButton.addEventListener(
+      "click",
+      () => {
+
+
+        const isOpen =
+          mainNav.classList.toggle(
+            "open"
+          );
+
+
+        mobileMenuButton.setAttribute(
+          "aria-expanded",
+          String(isOpen)
+        );
+
+
+        const icon =
+          mobileMenuButton.querySelector(
+            "i"
+          );
+
+
+        if (icon) {
+
+
+          if (isOpen) {
+
+            icon.classList.remove(
+              "fa-bars"
+            );
+
+            icon.classList.add(
+              "fa-xmark"
+            );
+
+          }
+
+
+          else {
+
+            icon.classList.remove(
+              "fa-xmark"
+            );
+
+            icon.classList.add(
+              "fa-bars"
+            );
+
+          }
+
+
+        }
+
+
+      }
+    );
+
+
+
+    mainNav
+      .querySelectorAll("a")
+      .forEach(
+        link => {
+
+
+          link.addEventListener(
+            "click",
+            () => {
+
+
+              mainNav.classList.remove(
+                "open"
+              );
+
+
+              mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+              );
+
+
+              const icon =
+                mobileMenuButton.querySelector(
+                  "i"
+                );
+
+
+              if (icon) {
+
+                icon.classList.remove(
+                  "fa-xmark"
+                );
+
+                icon.classList.add(
+                  "fa-bars"
+                );
+
+              }
+
+
+            }
+          );
+
+
+        }
+      );
+
+
+  }
+
+
+</script>
+
+
+</body>
+
+</html>

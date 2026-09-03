@@ -1,0 +1,3072 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    GIS & Maps | JStaroma Slides
+  </title>
+
+  <meta
+    name="description"
+    content="Create professional GIS and map-focused PowerPoint presentations with JStaroma Slides. Build map layouts, spatial analysis slides, GIS dashboards, and geographic presentations directly inside Microsoft PowerPoint."
+  >
+
+  <meta
+    name="keywords"
+    content="GIS PowerPoint, GIS presentation, map PowerPoint add-in, ArcGIS PowerPoint, JStaroma Slides, GIS maps, spatial analysis presentation"
+  >
+
+
+  <!-- MAIN PAGE CSS -->
+
+  <link
+    rel="stylesheet"
+    href="gis-maps.css"
+  >
+
+
+  <!-- =========================================================
+       PRICING PREVIEW STYLES
+       Can later be moved into gis-maps.css
+  ========================================================== -->
+
+  <style>
+
+    /* =========================================================
+       PRICING
+    ========================================================= */
+
+    .pricing-section {
+
+      padding:
+        110px 0;
+
+      background:
+        #07111f;
+
+      color:
+        #ffffff;
+
+    }
+
+
+    .pricing-heading {
+
+      max-width:
+        760px;
+
+      margin-bottom:
+        55px;
+
+    }
+
+
+    .pricing-heading h2 {
+
+      margin-top:
+        12px;
+
+      color:
+        #ffffff;
+
+      font-size:
+        clamp(
+          2.5rem,
+          5vw,
+          4.3rem
+        );
+
+      line-height:
+        1.03;
+
+      letter-spacing:
+        -2.5px;
+
+    }
+
+
+    .pricing-heading p {
+
+      max-width:
+        680px;
+
+      margin-top:
+        20px;
+
+      color:
+        #94a8b9;
+
+      font-size:
+        0.95rem;
+
+      line-height:
+        1.8;
+
+    }
+
+
+
+    /* =========================================================
+       PRICING TOP STATUS
+    ========================================================= */
+
+    .pricing-launch-status {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      margin-top:
+        24px;
+
+      padding:
+        8px 12px;
+
+      border:
+        1px solid
+        rgba(
+          57,
+          198,
+          255,
+          0.2
+        );
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(
+          57,
+          198,
+          255,
+          0.06
+        );
+
+      color:
+        #75d9ff;
+
+      font-size:
+        0.65rem;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        0.8px;
+
+    }
+
+
+    .pricing-launch-dot {
+
+      width:
+        7px;
+
+      height:
+        7px;
+
+      border-radius:
+        50%;
+
+      background:
+        #39c6ff;
+
+      box-shadow:
+        0 0 12px
+        rgba(
+          57,
+          198,
+          255,
+          0.7
+        );
+
+    }
+
+
+
+    /* =========================================================
+       GRID
+    ========================================================= */
+
+    .pricing-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap:
+        24px;
+
+      align-items:
+        stretch;
+
+    }
+
+
+
+    /* =========================================================
+       PLAN CARD
+    ========================================================= */
+
+    .pricing-card {
+
+      position:
+        relative;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      padding:
+        38px;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.09
+        );
+
+      border-radius:
+        22px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.025
+        );
+
+    }
+
+
+    .pricing-card-pro {
+
+      border-color:
+        rgba(
+          57,
+          198,
+          255,
+          0.35
+        );
+
+      background:
+
+        radial-gradient(
+          circle at top right,
+          rgba(
+            57,
+            198,
+            255,
+            0.12
+          ),
+          transparent 35%
+        ),
+
+        linear-gradient(
+          145deg,
+          rgba(
+            57,
+            198,
+            255,
+            0.055
+          ),
+          rgba(
+            255,
+            255,
+            255,
+            0.02
+          )
+        );
+
+      box-shadow:
+        0 30px 80px
+        rgba(
+          0,
+          0,
+          0,
+          0.25
+        );
+
+    }
+
+
+
+    /* =========================================================
+       PRO TOP LABEL
+    ========================================================= */
+
+    .pro-highlight {
+
+      position:
+        absolute;
+
+      top:
+        0;
+
+      right:
+        32px;
+
+      padding:
+        7px 14px;
+
+      border-radius:
+        0 0 8px 8px;
+
+      background:
+        #39c6ff;
+
+      color:
+        #04111e;
+
+      font-size:
+        0.55rem;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        1.1px;
+
+    }
+
+
+
+    /* =========================================================
+       CARD HEADER
+    ========================================================= */
+
+    .pricing-card-top {
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      justify-content:
+        space-between;
+
+      gap:
+        20px;
+
+    }
+
+
+    .plan-type {
+
+      display:
+        block;
+
+      margin-bottom:
+        9px;
+
+      color:
+        #8197a9;
+
+      font-size:
+        0.62rem;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        1.5px;
+
+    }
+
+
+    .plan-type.pro {
+
+      color:
+        #39c6ff;
+
+    }
+
+
+    .pricing-card h3 {
+
+      color:
+        #ffffff;
+
+      font-size:
+        1.45rem;
+
+      line-height:
+        1.25;
+
+    }
+
+
+    .plan-badge {
+
+      flex-shrink:
+        0;
+
+      padding:
+        6px 9px;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.1
+        );
+
+      border-radius:
+        999px;
+
+      color:
+        #91a6b7;
+
+      font-size:
+        0.5rem;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        0.8px;
+
+    }
+
+
+    .plan-badge.pro {
+
+      border-color:
+        rgba(
+          57,
+          198,
+          255,
+          0.24
+        );
+
+      background:
+        rgba(
+          57,
+          198,
+          255,
+          0.07
+        );
+
+      color:
+        #77d9ff;
+
+    }
+
+
+
+    /* =========================================================
+       PRICE
+    ========================================================= */
+
+    .plan-price {
+
+      margin-top:
+        34px;
+
+    }
+
+
+    .plan-price-main {
+
+      display:
+        flex;
+
+      align-items:
+        flex-end;
+
+      gap:
+        8px;
+
+    }
+
+
+    .plan-price strong {
+
+      color:
+        #ffffff;
+
+      font-size:
+        3.6rem;
+
+      font-weight:
+        800;
+
+      line-height:
+        0.95;
+
+      letter-spacing:
+        -3px;
+
+    }
+
+
+    .plan-price-main span {
+
+      padding-bottom:
+        5px;
+
+      color:
+        #7e93a5;
+
+      font-size:
+        0.72rem;
+
+    }
+
+
+    .plan-price-note {
+
+      display:
+        block;
+
+      margin-top:
+        10px;
+
+      color:
+        #718698;
+
+      font-size:
+        0.68rem;
+
+    }
+
+
+    .pricing-card-pro
+    .plan-price strong {
+
+      color:
+        #39c6ff;
+
+    }
+
+
+
+    /* =========================================================
+       PLAN DESCRIPTION
+    ========================================================= */
+
+    .plan-description {
+
+      min-height:
+        76px;
+
+      margin-top:
+        23px;
+
+      color:
+        #9bafbf;
+
+      font-size:
+        0.86rem;
+
+      line-height:
+        1.75;
+
+    }
+
+
+
+    /* =========================================================
+       FEATURES
+    ========================================================= */
+
+    .plan-divider {
+
+      width:
+        100%;
+
+      height:
+        1px;
+
+      margin:
+        28px 0;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.07
+        );
+
+    }
+
+
+    .plan-feature-title {
+
+      margin-bottom:
+        16px;
+
+      color:
+        #ffffff;
+
+      font-size:
+        0.7rem;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        0.8px;
+
+    }
+
+
+    .plan-features {
+
+      display:
+        grid;
+
+      gap:
+        13px;
+
+    }
+
+
+    .plan-feature {
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap:
+        10px;
+
+      color:
+        #c5d2dc;
+
+      font-size:
+        0.8rem;
+
+      line-height:
+        1.45;
+
+    }
+
+
+    .plan-check {
+
+      width:
+        20px;
+
+      height:
+        20px;
+
+      flex-shrink:
+        0;
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      margin-top:
+        1px;
+
+      border-radius:
+        50%;
+
+      background:
+        rgba(
+          57,
+          198,
+          255,
+          0.09
+        );
+
+      color:
+        #39c6ff;
+
+      font-size:
+        0.64rem;
+
+      font-weight:
+        900;
+
+    }
+
+
+
+    /* =========================================================
+       PLAN BUTTON
+    ========================================================= */
+
+    .plan-action {
+
+      margin-top:
+        auto;
+
+      padding-top:
+        34px;
+
+    }
+
+
+    .plan-preview-button {
+
+      width:
+        100%;
+
+      min-height:
+        50px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        9px;
+
+      font-size:
+        0.76rem;
+
+      font-weight:
+        800;
+
+      cursor:
+        default;
+
+      user-select:
+        none;
+
+    }
+
+
+    .plan-preview-free {
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.13
+        );
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.025
+        );
+
+      color:
+        #d2dce4;
+
+    }
+
+
+    .plan-preview-pro {
+
+      border:
+        1px solid
+        #39c6ff;
+
+      background:
+        #39c6ff;
+
+      color:
+        #04111e;
+
+    }
+
+
+    .plan-coming-note {
+
+      display:
+        block;
+
+      margin-top:
+        12px;
+
+      color:
+        #64798b;
+
+      font-size:
+        0.63rem;
+
+      text-align:
+        center;
+
+    }
+
+
+
+    /* =========================================================
+       COMPARISON NOTE
+    ========================================================= */
+
+    .pricing-bottom {
+
+      margin-top:
+        24px;
+
+      padding:
+        27px 30px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        30px;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.07
+        );
+
+      border-radius:
+        15px;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.018
+        );
+
+    }
+
+
+    .pricing-bottom strong {
+
+      display:
+        block;
+
+      color:
+        #ffffff;
+
+      font-size:
+        0.85rem;
+
+    }
+
+
+    .pricing-bottom p {
+
+      max-width:
+        650px;
+
+      margin-top:
+        5px;
+
+      color:
+        #778c9e;
+
+      font-size:
+        0.74rem;
+
+      line-height:
+        1.65;
+
+    }
+
+
+    .pricing-bottom-status {
+
+      flex-shrink:
+        0;
+
+      padding:
+        8px 11px;
+
+      border:
+        1px solid
+        rgba(
+          57,
+          198,
+          255,
+          0.22
+        );
+
+      border-radius:
+        999px;
+
+      color:
+        #39c6ff;
+
+      font-size:
+        0.58rem;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        0.8px;
+
+    }
+
+
+
+    /* =========================================================
+       RESPONSIVE PRICING
+    ========================================================= */
+
+    @media (
+      max-width: 850px
+    ) {
+
+      .pricing-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .pricing-bottom {
+
+        flex-direction:
+          column;
+
+        align-items:
+          flex-start;
+
+      }
+
+    }
+
+
+    @media (
+      max-width: 520px
+    ) {
+
+      .pricing-section {
+
+        padding:
+          80px 0;
+
+      }
+
+
+      .pricing-card {
+
+        padding:
+          28px 22px;
+
+      }
+
+
+      .pricing-card-top {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .plan-price strong {
+
+        font-size:
+          3rem;
+
+      }
+
+
+      .pro-highlight {
+
+        right:
+          20px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="site-header">
+
+  <div class="container nav-container">
+
+
+    <!-- BRAND -->
+
+    <a
+      href="../"
+      class="brand"
+      aria-label="JStaroma Slides Home"
+    >
+
+      <div class="brand-mark">
+        JS
+      </div>
+
+
+      <div class="brand-text">
+
+        <strong>
+          JSTAROMA
+        </strong>
+
+        <span>
+          SLIDES
+        </span>
+
+      </div>
+
+    </a>
+
+
+
+    <!-- DESKTOP NAV -->
+
+    <nav class="desktop-nav">
+
+      <a href="../">
+        Overview
+      </a>
+
+      <a
+        href="./"
+        class="active"
+      >
+        GIS & Maps
+      </a>
+
+      <a href="#features">
+        Features
+      </a>
+
+      <a href="#workflow">
+        How It Works
+      </a>
+
+      <a href="#use-cases">
+        Use Cases
+      </a>
+
+      <a href="#plans">
+        Plans
+      </a>
+
+    </nav>
+
+
+
+    <!-- HEADER CTA -->
+
+    <a
+      href="#plans"
+      class="nav-button"
+    >
+      Preview Plans
+    </a>
+
+
+
+    <!-- MOBILE BUTTON -->
+
+    <button
+      class="mobile-menu-button"
+      id="mobile-menu-button"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+  </div>
+
+
+
+  <!-- MOBILE NAV -->
+
+  <div
+    class="mobile-nav"
+    id="mobile-nav"
+  >
+
+    <a href="../">
+      Overview
+    </a>
+
+    <a href="./">
+      GIS & Maps
+    </a>
+
+    <a href="#features">
+      Features
+    </a>
+
+    <a href="#workflow">
+      How It Works
+    </a>
+
+    <a href="#use-cases">
+      Use Cases
+    </a>
+
+    <a href="#plans">
+      Plans
+    </a>
+
+  </div>
+
+</header>
+
+
+
+
+
+<main>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+  <div class="hero-grid-overlay"></div>
+
+
+  <div class="container hero-container">
+
+
+    <!-- HERO CONTENT -->
+
+    <div class="hero-content">
+
+
+      <div class="eyebrow">
+
+        <span class="eyebrow-dot"></span>
+
+        GIS & MAPS FOR POWERPOINT
+
+      </div>
+
+
+      <h1>
+
+        Turn spatial data into
+
+        <span>
+          presentation-ready stories.
+        </span>
+
+      </h1>
+
+
+      <p class="hero-description">
+
+        Create professional GIS and map-focused slides directly
+        inside Microsoft PowerPoint. JStaroma Slides gives you
+        structured layouts for maps, spatial findings, geographic
+        analysis, and visual storytelling.
+
+      </p>
+
+
+
+      <div class="hero-actions">
+
+
+        <a
+          href="#features"
+          class="button button-primary"
+        >
+          Explore GIS Tools
+        </a>
+
+
+        <a
+          href="#plans"
+          class="button button-secondary"
+        >
+          Preview Free & Pro
+        </a>
+
+
+      </div>
+
+
+
+      <div class="hero-tags">
+
+        <span>
+          GIS
+        </span>
+
+        <span>
+          ArcGIS Ready
+        </span>
+
+        <span>
+          Spatial Analysis
+        </span>
+
+        <span>
+          PowerPoint
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         GIS SLIDE MOCKUP
+    ====================================================== -->
+
+    <div class="hero-visual">
+
+
+      <div class="powerpoint-window">
+
+
+        <!-- WINDOW HEADER -->
+
+        <div class="window-header">
+
+
+          <div class="window-controls">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+          </div>
+
+
+          <span class="window-title">
+            GIS Analysis — JStaroma Slides
+          </span>
+
+
+          <span class="window-badge">
+            POWERPOINT
+          </span>
+
+
+        </div>
+
+
+
+        <!-- SLIDE PREVIEW -->
+
+        <div class="slide-preview">
+
+
+          <!-- TITLE -->
+
+          <div class="slide-title-row">
+
+
+            <div>
+
+              <span class="slide-category">
+                SPATIAL ANALYSIS
+              </span>
+
+              <h3>
+                Geographic Analysis
+              </h3>
+
+            </div>
+
+
+            <span class="slide-number">
+              04
+            </span>
+
+
+          </div>
+
+
+
+          <!-- BODY -->
+
+          <div class="slide-body">
+
+
+            <!-- MAP -->
+
+            <div class="map-preview">
+
+
+              <div class="map-grid"></div>
+
+
+              <div class="map-region region-one"></div>
+
+              <div class="map-region region-two"></div>
+
+              <div class="map-region region-three"></div>
+
+
+              <div class="map-road road-one"></div>
+
+              <div class="map-road road-two"></div>
+
+
+              <div class="map-marker marker-one">
+                <span></span>
+              </div>
+
+              <div class="map-marker marker-two">
+                <span></span>
+              </div>
+
+              <div class="map-marker marker-three">
+                <span></span>
+              </div>
+
+
+              <div class="map-scale">
+                0&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;10 km
+              </div>
+
+
+              <div class="map-source">
+                GIS MAP FRAME
+              </div>
+
+
+            </div>
+
+
+
+            <!-- ANALYSIS PANEL -->
+
+            <div class="analysis-panel">
+
+
+              <div class="analysis-item">
+
+                <span class="analysis-label">
+                  MAP INSIGHT
+                </span>
+
+                <strong>
+                  Spatial pattern identified
+                </strong>
+
+                <p>
+                  Highlight the primary geographic
+                  pattern shown in the map.
+                </p>
+
+              </div>
+
+
+
+              <div class="analysis-item">
+
+                <span class="analysis-label">
+                  KEY FINDING
+                </span>
+
+                <strong>
+                  Present your result
+                </strong>
+
+                <p>
+                  Connect your spatial analysis
+                  directly to the presentation narrative.
+                </p>
+
+              </div>
+
+
+
+              <div class="analysis-item">
+
+                <span class="analysis-label">
+                  INTERPRETATION
+                </span>
+
+                <p>
+                  Explain why the geographic pattern
+                  matters to your audience.
+                </p>
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- FOOTER -->
+
+          <div class="slide-footer">
+
+            <span>
+              Source: GIS Dataset
+            </span>
+
+            <span>
+              Projection: Project CRS
+            </span>
+
+            <span>
+              JSTAROMA SLIDES
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================================
+     INTRO
+========================================================= -->
+
+<section class="intro-section">
+
+  <div class="container intro-grid">
+
+
+    <div>
+
+      <span class="section-number">
+        01 / GIS PRESENTATIONS
+      </span>
+
+    </div>
+
+
+
+    <div>
+
+      <h2>
+        GIS belongs in the presentation,
+        not just the analysis.
+      </h2>
+
+
+      <p>
+
+        Maps often contain the most important information in a GIS
+        project, but presenting that information clearly can require
+        rebuilding layouts manually in PowerPoint.
+
+      </p>
+
+
+      <p>
+
+        JStaroma Slides provides presentation structures designed
+        specifically for geographic information, helping you combine
+        maps, findings, interpretation, and supporting information
+        within a consistent slide layout.
+
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================================
+     FEATURES
+========================================================= -->
+
+<section
+  class="features-section"
+  id="features"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <div>
+
+        <span class="section-number">
+          02 / CAPABILITIES
+        </span>
+
+        <h2>
+          Built for spatial storytelling.
+        </h2>
+
+      </div>
+
+
+      <p>
+
+        Go from a map to a structured presentation slide without
+        manually rebuilding the same GIS presentation layout
+        every time.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="feature-grid">
+
+
+      <!-- FEATURE 1 -->
+
+      <article class="feature-card feature-large">
+
+
+        <div class="feature-top">
+
+          <span class="feature-index">
+            01
+          </span>
+
+          <span class="feature-status">
+            AVAILABLE
+          </span>
+
+        </div>
+
+
+        <div class="feature-icon map-icon">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </div>
+
+
+        <h3>
+          GIS Slide Generator
+        </h3>
+
+
+        <p>
+
+          Create a structured GIS presentation slide with dedicated
+          space for your map, analysis, key finding, interpretation,
+          source information, projection, and date.
+
+        </p>
+
+
+      </article>
+
+
+
+      <!-- FEATURE 2 -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-top">
+
+          <span class="feature-index">
+            02
+          </span>
+
+          <span class="feature-status">
+            AVAILABLE
+          </span>
+
+        </div>
+
+
+        <h3>
+          Map Frames
+        </h3>
+
+
+        <p>
+
+          Create a consistent map area and replace map imagery while
+          preserving the surrounding presentation layout.
+
+        </p>
+
+
+        <div class="mini-map-frame">
+
+          <span>
+            MAP
+          </span>
+
+        </div>
+
+
+      </article>
+
+
+
+      <!-- FEATURE 3 -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-top">
+
+          <span class="feature-index">
+            03
+          </span>
+
+          <span class="feature-status">
+            AVAILABLE
+          </span>
+
+        </div>
+
+
+        <h3>
+          Spatial Findings
+        </h3>
+
+
+        <p>
+
+          Keep geographic analysis connected to the map with
+          dedicated areas for insights, findings, and interpretation.
+
+        </p>
+
+
+        <div class="mini-analysis">
+
+          <div></div>
+          <div></div>
+          <div></div>
+
+        </div>
+
+
+      </article>
+
+
+
+      <!-- FEATURE 4 -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-top">
+
+          <span class="feature-index">
+            04
+          </span>
+
+          <span class="feature-status">
+            AVAILABLE
+          </span>
+
+        </div>
+
+
+        <h3>
+          Map Image Actions
+        </h3>
+
+
+        <p>
+
+          Select a JStaroma map frame and replace or update the map
+          without rebuilding the entire slide.
+
+        </p>
+
+
+        <div class="action-preview">
+
+          <span>
+            Replace Map
+          </span>
+
+          <span>
+            Paste Map
+          </span>
+
+        </div>
+
+
+      </article>
+
+
+
+      <!-- FEATURE 5 -->
+
+      <article class="feature-card">
+
+
+        <div class="feature-top">
+
+          <span class="feature-index">
+            05
+          </span>
+
+          <span class="feature-status development">
+            IN DEVELOPMENT
+          </span>
+
+        </div>
+
+
+        <h3>
+          ArcGIS Map Links
+        </h3>
+
+
+        <p>
+
+          Connect ArcGIS map sources to your JStaroma Slides
+          geographic presentation workflow.
+
+        </p>
+
+
+        <div class="url-preview">
+
+          <span>
+            https://...arcgis.com/...
+          </span>
+
+        </div>
+
+
+      </article>
+
+
+
+      <!-- FEATURE 6 -->
+
+      <article class="feature-card feature-live">
+
+
+        <div class="feature-top">
+
+          <span class="feature-index">
+            06
+          </span>
+
+          <span class="feature-status development">
+            BETA
+          </span>
+
+        </div>
+
+
+        <div class="live-map-heading">
+
+          <div class="live-dot"></div>
+
+          LIVE MAP
+
+        </div>
+
+
+        <h3>
+          Interactive ArcGIS Maps
+        </h3>
+
+
+        <p>
+
+          JStaroma Live Map is being developed to bring interactive
+          ArcGIS map experiences directly into PowerPoint presentations.
+
+        </p>
+
+
+        <div class="live-map-preview">
+
+          <div class="live-grid"></div>
+
+          <div class="live-marker one"></div>
+          <div class="live-marker two"></div>
+
+          <span>
+            INTERACTIVE MAP
+          </span>
+
+        </div>
+
+
+      </article>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================================
+     WORKFLOW
+========================================================= -->
+
+<section
+  class="workflow-section"
+  id="workflow"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <div>
+
+        <span class="section-number">
+          03 / WORKFLOW
+        </span>
+
+        <h2>
+          From GIS analysis to presentation.
+        </h2>
+
+      </div>
+
+
+      <p>
+
+        A straightforward workflow designed to keep the focus on
+        communicating your geographic findings.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="workflow-grid">
+
+
+      <article class="workflow-step">
+
+        <span class="step-number">
+          01
+        </span>
+
+        <div class="step-line"></div>
+
+        <h3>
+          Create GIS Slide
+        </h3>
+
+        <p>
+          Choose GIS / Map from the JStaroma Slides task pane.
+        </p>
+
+      </article>
+
+
+
+      <article class="workflow-step">
+
+        <span class="step-number">
+          02
+        </span>
+
+        <div class="step-line"></div>
+
+        <h3>
+          Add Your Map
+        </h3>
+
+        <p>
+          Select the map frame and insert your geographic content.
+        </p>
+
+      </article>
+
+
+
+      <article class="workflow-step">
+
+        <span class="step-number">
+          03
+        </span>
+
+        <div class="step-line"></div>
+
+        <h3>
+          Add Findings
+        </h3>
+
+        <p>
+          Summarize the most important spatial pattern or result.
+        </p>
+
+      </article>
+
+
+
+      <article class="workflow-step">
+
+        <span class="step-number">
+          04
+        </span>
+
+        <div class="step-line"></div>
+
+        <h3>
+          Interpret
+        </h3>
+
+        <p>
+          Explain why the geographic pattern matters.
+        </p>
+
+      </article>
+
+
+
+      <article class="workflow-step">
+
+        <span class="step-number">
+          05
+        </span>
+
+        <div class="step-line"></div>
+
+        <h3>
+          Present
+        </h3>
+
+        <p>
+          Deliver your GIS analysis through a structured slide.
+        </p>
+
+      </article>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================================
+     USE CASES
+========================================================= -->
+
+<section
+  class="use-cases-section"
+  id="use-cases"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <div>
+
+        <span class="section-number">
+          04 / USE CASES
+        </span>
+
+        <h2>
+          Geographic presentations across disciplines.
+        </h2>
+
+      </div>
+
+
+      <p>
+
+        Designed for anyone who needs to communicate spatial
+        information clearly to an audience.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="use-case-grid">
+
+
+      <article>
+
+        <span>
+          01
+        </span>
+
+        <h3>
+          GIS Professionals
+        </h3>
+
+        <p>
+          Present spatial analysis, project findings,
+          and geographic decision support.
+        </p>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          02
+        </span>
+
+        <h3>
+          Students & Researchers
+        </h3>
+
+        <p>
+          Build map-focused academic presentations,
+          research findings, and project reports.
+        </p>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          03
+        </span>
+
+        <h3>
+          Disaster Response
+        </h3>
+
+        <p>
+          Communicate affected areas, response zones,
+          field information, and operational geography.
+        </p>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          04
+        </span>
+
+        <h3>
+          Urban Planning
+        </h3>
+
+        <p>
+          Present land use, zoning, infrastructure,
+          development, and community analysis.
+        </p>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          05
+        </span>
+
+        <h3>
+          Environmental Analysis
+        </h3>
+
+        <p>
+          Communicate environmental patterns,
+          natural resources, hazards, and change.
+        </p>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          06
+        </span>
+
+        <h3>
+          Remote Sensing
+        </h3>
+
+        <p>
+          Present satellite imagery, classifications,
+          change detection, and imagery analysis.
+        </p>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          07
+        </span>
+
+        <h3>
+          Location Intelligence
+        </h3>
+
+        <p>
+          Present markets, customers, facilities,
+          accessibility, and geographic business insights.
+        </p>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          08
+        </span>
+
+        <h3>
+          Public Sector
+        </h3>
+
+        <p>
+          Communicate geographic information for planning,
+          operations, infrastructure, and public programs.
+        </p>
+
+      </article>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================================
+     GIS PRESENTATION PRINCIPLES
+========================================================= -->
+
+<section class="principles-section">
+
+  <div class="container principles-grid">
+
+
+    <div>
+
+      <span class="section-number">
+        05 / SPATIAL STORYTELLING
+      </span>
+
+      <h2>
+        A map should communicate,
+        not just occupy the slide.
+      </h2>
+
+    </div>
+
+
+
+    <div class="principles-list">
+
+
+      <article>
+
+        <span>
+          01
+        </span>
+
+        <div>
+
+          <h3>
+            Give the map space.
+          </h3>
+
+          <p>
+            Geographic information remains the primary visual
+            element rather than being squeezed into a generic layout.
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          02
+        </span>
+
+        <div>
+
+          <h3>
+            Explain the pattern.
+          </h3>
+
+          <p>
+            Pair the map with the finding your audience
+            should understand.
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <article>
+
+        <span>
+          03
+        </span>
+
+        <div>
+
+          <h3>
+            Preserve context.
+          </h3>
+
+          <p>
+            Keep relevant source, projection, date,
+            and supporting information alongside the analysis.
+          </p>
+
+        </div>
+
+      </article>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================================
+     FREE / PRO PLAN PREVIEW
+========================================================= -->
+
+<section
+  class="pricing-section"
+  id="plans"
+>
+
+  <div class="container">
+
+
+    <!-- HEADING -->
+
+    <div class="pricing-heading">
+
+
+      <span class="section-number">
+        06 / JSTAROMA SLIDES PLANS
+      </span>
+
+
+      <h2>
+        Start free.
+        Go further with Pro.
+      </h2>
+
+
+      <p>
+
+        JStaroma Slides is not publicly available yet.
+        This is a preview of the planned Free and Pro versions
+        being designed for the public release.
+
+      </p>
+
+
+      <div class="pricing-launch-status">
+
+        <span class="pricing-launch-dot"></span>
+
+        PRODUCT PREVIEW — NOT YET PUBLICLY RELEASED
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- PLAN GRID -->
+
+    <div class="pricing-grid">
+
+
+      <!-- =====================================================
+           FREE
+      ====================================================== -->
+
+      <article class="pricing-card">
+
+
+        <div class="pricing-card-top">
+
+
+          <div>
+
+            <span class="plan-type">
+              FREE PLAN
+            </span>
+
+            <h3>
+              JStaroma Slides Free
+            </h3>
+
+          </div>
+
+
+          <span class="plan-badge">
+            PLANNED
+          </span>
+
+
+        </div>
+
+
+
+        <!-- PRICE -->
+
+        <div class="plan-price">
+
+
+          <div class="plan-price-main">
+
+            <strong>
+              $0
+            </strong>
+
+          </div>
+
+
+          <span class="plan-price-note">
+            Planned free version
+          </span>
+
+
+        </div>
+
+
+
+        <p class="plan-description">
+
+          Core PowerPoint productivity tools for students,
+          professionals, analysts, and everyday presentation workflows.
+
+        </p>
+
+
+
+        <div class="plan-divider"></div>
+
+
+
+        <span class="plan-feature-title">
+          PLANNED FEATURES
+        </span>
+
+
+
+        <div class="plan-features">
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Core professional slide layouts
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Title and content slides
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Image + Text layouts
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Image Grid tools
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            GIS / Map slide generator
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Map image replacement
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Basic presentation styles
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="plan-action">
+
+
+          <div
+            class="plan-preview-button plan-preview-free"
+          >
+            Free Version — Coming Soon
+          </div>
+
+
+          <span class="plan-coming-note">
+            Public download is not available yet
+          </span>
+
+
+        </div>
+
+
+      </article>
+
+
+
+
+
+      <!-- =====================================================
+           PRO
+      ====================================================== -->
+
+      <article class="pricing-card pricing-card-pro">
+
+
+        <div class="pro-highlight">
+          PREMIUM
+        </div>
+
+
+
+        <div class="pricing-card-top">
+
+
+          <div>
+
+            <span class="plan-type pro">
+              PRO PLAN
+            </span>
+
+            <h3>
+              JStaroma Slides Pro
+            </h3>
+
+          </div>
+
+
+          <span class="plan-badge pro">
+            PLANNED
+          </span>
+
+
+        </div>
+
+
+
+        <!-- PRICE -->
+
+        <div class="plan-price">
+
+
+          <div class="plan-price-main">
+
+            <strong>
+              Pro
+            </strong>
+
+          </div>
+
+
+          <span class="plan-price-note">
+            Pricing to be announced
+          </span>
+
+
+        </div>
+
+
+
+        <p class="plan-description">
+
+          Advanced presentation, GIS, branding, dashboard,
+          automation, and productivity tools for professional
+          and organizational workflows.
+
+        </p>
+
+
+
+        <div class="plan-divider"></div>
+
+
+
+        <span class="plan-feature-title">
+          PLANNED PRO FEATURES
+        </span>
+
+
+
+        <div class="plan-features">
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Everything included in Free
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Advanced GIS presentation layouts
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Advanced dashboard slides
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Premium slide templates
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Expanded Brand Kits
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Advanced image workflows
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            ArcGIS integration tools
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Interactive Live Map capabilities
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            AI presentation tools
+
+          </div>
+
+
+          <div class="plan-feature">
+
+            <span class="plan-check">
+              ✓
+            </span>
+
+            Saved and cloud slide library
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="plan-action">
+
+
+          <div
+            class="plan-preview-button plan-preview-pro"
+          >
+            JStaroma Slides Pro — Coming Soon
+          </div>
+
+
+          <span class="plan-coming-note">
+            Pricing and purchasing will be available at launch
+          </span>
+
+
+        </div>
+
+
+      </article>
+
+
+    </div>
+
+
+
+    <!-- BOTTOM NOTICE -->
+
+    <div class="pricing-bottom">
+
+
+      <div>
+
+        <strong>
+          JStaroma Slides is currently in development.
+        </strong>
+
+        <p>
+
+          The Free and Pro plans above show the planned product
+          structure. Features, pricing, and availability may change
+          before the public Microsoft PowerPoint release.
+
+        </p>
+
+      </div>
+
+
+      <span class="pricing-bottom-status">
+        COMING SOON
+      </span>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<!-- =========================================================
+     EARLY ACCESS
+========================================================= -->
+
+<section
+  class="availability-section"
+  id="availability"
+>
+
+  <div class="container availability-box">
+
+
+    <div>
+
+      <span class="section-number">
+        JSTAROMA SLIDES
+      </span>
+
+
+      <h2>
+        GIS presentation tools,
+        directly inside PowerPoint.
+      </h2>
+
+
+      <p>
+
+        JStaroma Slides is currently being developed,
+        tested, and prepared for future public
+        Microsoft PowerPoint distribution.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="availability-actions">
+
+
+      <span class="availability-label">
+        COMING SOON TO MICROSOFT POWERPOINT
+      </span>
+
+
+      <a
+        href="mailto:support@jstaromatechnologies.com?subject=JStaroma%20Slides%20GIS%20Early%20Access"
+        class="button button-primary"
+      >
+        Request Early Access
+      </a>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="site-footer">
+
+  <div class="container footer-grid">
+
+
+    <!-- PRODUCT -->
+
+    <div>
+
+
+      <a
+        href="../"
+        class="footer-brand"
+      >
+        JSTAROMA SLIDES
+      </a>
+
+
+      <p>
+        Professional presentation tools from
+        JStaroma Technologies.
+      </p>
+
+
+    </div>
+
+
+
+    <!-- PRODUCT LINKS -->
+
+    <div class="footer-column">
+
+      <strong>
+        Product
+      </strong>
+
+
+      <a href="../">
+        JStaroma Slides
+      </a>
+
+
+      <a href="./">
+        GIS & Maps
+      </a>
+
+
+      <a href="#features">
+        Features
+      </a>
+
+
+      <a href="#plans">
+        Free & Pro
+      </a>
+
+
+    </div>
+
+
+
+    <!-- COMPANY -->
+
+    <div class="footer-column">
+
+      <strong>
+        Company
+      </strong>
+
+
+      <a href="../../">
+        JStaroma Technologies
+      </a>
+
+
+      <a href="mailto:support@jstaromatechnologies.com">
+        Support
+      </a>
+
+
+    </div>
+
+
+
+    <!-- LEGAL -->
+
+    <div class="footer-column">
+
+      <strong>
+        Legal
+      </strong>
+
+
+      <a href="../../privacy/">
+        Privacy
+      </a>
+
+
+      <a href="../../terms/">
+        Terms
+      </a>
+
+
+    </div>
+
+
+  </div>
+
+
+
+  <!-- FOOTER BOTTOM -->
+
+  <div class="container footer-bottom">
+
+
+    <span>
+      © 2026 JStaroma Technologies
+    </span>
+
+
+    <span>
+      GIS & Maps for Microsoft PowerPoint
+    </span>
+
+
+  </div>
+
+</footer>
+
+
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script src="gis-maps.js"></script>
+
+
+</body>
+
+</html>
