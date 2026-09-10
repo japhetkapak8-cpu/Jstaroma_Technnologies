@@ -33,71 +33,121 @@ const loginMessage =
 
 
 // ========================================
-// CHECK EXISTING SESSION
+// CHECK ADMIN
 // ========================================
 
-async function checkSession() {
+async function checkAdmin(
+  userId
+) {
 
-  const {
-    data: {
-      session
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabase
+        .from("admins")
+        .select("user_id")
+        .eq(
+          "user_id",
+          userId
+        )
+        .maybeSingle();
+
+
+    if (error) {
+
+      console.error(
+        "Admin check failed:",
+        error
+      );
+
+      return false;
     }
-  } =
-    await supabase.auth
-      .getSession();
 
 
-  if (!session) {
-    return;
+    return Boolean(
+      data
+    );
+
   }
 
+  catch (
+    error
+  ) {
 
-  const isAdmin =
-    await checkAdmin(
-      session.user.id
+    console.error(
+      "Admin check error:",
+      error
     );
 
 
-  if (isAdmin) {
-
-    window.location.replace(
-      "dashboard.html"
-    );
+    return false;
 
   }
 
 }
 
 
-async function checkAdmin(
-  userId
-) {
+// ========================================
+// CHECK EXISTING SESSION
+// ========================================
 
-  const {
-    data,
+async function checkSession() {
+
+  try {
+
+    const {
+      data: {
+        user
+      },
+      error
+    } =
+      await supabase.auth
+        .getUser();
+
+
+    if (
+      error ||
+      !user
+    ) {
+
+      return;
+    }
+
+
+    const isAdmin =
+      await checkAdmin(
+        user.id
+      );
+
+
+    if (isAdmin) {
+
+      window.location.replace(
+        "dashboard.html"
+      );
+
+      return;
+    }
+
+
+    await supabase.auth
+      .signOut();
+
+  }
+
+  catch (
     error
-  } =
-    await supabase
-      .from("admins")
-      .select("user_id")
-      .eq(
-        "user_id",
-        userId
-      )
-      .maybeSingle();
-
-
-  if (error) {
+  ) {
 
     console.error(
+      "Session check error:",
       error
     );
 
-    return false;
   }
-
-
-  return !!data;
 
 }
 
@@ -106,86 +156,121 @@ async function checkAdmin(
 // LOGIN
 // ========================================
 
-loginForm.addEventListener(
-  "submit",
-  async event => {
+loginForm
+  ?.addEventListener(
+    "submit",
+    async event => {
 
-    event.preventDefault();
-
-
-    loginMessage.textContent =
-      "";
+      event.preventDefault();
 
 
-    loginBtn.disabled =
-      true;
+      loginMessage.textContent =
+        "";
 
 
-    loginBtn.innerHTML =
-      `
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        Signing in...
-      `;
+      loginBtn.disabled =
+        true;
 
 
-    const {
-      data,
-      error
-    } =
-      await supabase.auth
-        .signInWithPassword({
-
-          email:
-            emailInput.value.trim(),
-
-          password:
-            passwordInput.value
-
-        });
+      loginBtn.innerHTML =
+        `
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          Signing in...
+        `;
 
 
-    if (error) {
+      try {
 
-      showError(
-        error.message
-      );
+        const {
+          data,
+          error
+        } =
+          await supabase.auth
+            .signInWithPassword({
 
-      resetButton();
+              email:
+                emailInput.value
+                  .trim(),
 
-      return;
+              password:
+                passwordInput.value
+
+            });
+
+
+        if (
+          error ||
+          !data?.user
+        ) {
+
+          showError(
+            error?.message ||
+            "Could not sign in."
+          );
+
+
+          return;
+        }
+
+
+        const isAdmin =
+          await checkAdmin(
+            data.user.id
+          );
+
+
+        if (
+          !isAdmin
+        ) {
+
+          await supabase.auth
+            .signOut();
+
+
+          showError(
+            "You are not authorized to access the JStaroma admin portal."
+          );
+
+
+          return;
+        }
+
+
+        window.location.replace(
+          "dashboard.html"
+        );
+
+      }
+
+      catch (
+        error
+      ) {
+
+        console.error(
+          "Login error:",
+          error
+        );
+
+
+        showError(
+          "Could not sign in. Please try again."
+        );
+
+      }
+
+      finally {
+
+        resetButton();
+
+      }
+
     }
+  );
 
 
-    const isAdmin =
-      await checkAdmin(
-        data.user.id
-      );
-
-
-    if (!isAdmin) {
-
-      await supabase.auth
-        .signOut();
-
-
-      showError(
-        "You are not authorized to access the JStaroma admin portal."
-      );
-
-
-      resetButton();
-
-      return;
-    }
-
-
-    window.location.replace(
-      "dashboard.html"
-    );
-
-  }
-);
-
+// ========================================
+// SHOW ERROR
+// ========================================
 
 function showError(
   message
@@ -201,6 +286,10 @@ function showError(
 }
 
 
+// ========================================
+// RESET BUTTON
+// ========================================
+
 function resetButton() {
 
   loginBtn.disabled =
@@ -215,5 +304,9 @@ function resetButton() {
 
 }
 
+
+// ========================================
+// INITIALIZE
+// ========================================
 
 checkSession();

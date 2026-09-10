@@ -2,58 +2,16 @@ import { supabase }
 from "../../js/supabase.js";
 
 
-async function requireAdmin() {
-
-  const {
-    data: {
-      session
-    }
-  } =
-    await supabase.auth
-      .getSession();
-
-
-  if (!session) {
-
-    window.location.replace(
-      "index.html"
-    );
-
-    return false;
-  }
-
-
-  const {
-    data: admin
-  } =
-    await supabase
-      .from("admins")
-      .select("user_id")
-      .eq(
-        "user_id",
-        session.user.id
-      )
-      .maybeSingle();
-
-
-  if (!admin) {
-
-    await supabase.auth
-      .signOut();
-
-
-    window.location.replace(
-      "index.html"
-    );
-
-    return false;
-  }
-
-
-  return true;
-
+import {
+  requireAdmin,
+  logoutAdmin
 }
+from "./admin-auth.js";
 
+
+// ========================================
+// LOAD STATS
+// ========================================
 
 async function loadStats() {
 
@@ -71,6 +29,7 @@ async function loadStats() {
   if (error) {
 
     console.error(
+      "Could not load project stats:",
       error
     );
 
@@ -82,59 +41,99 @@ async function loadStats() {
     data || [];
 
 
-  document.getElementById(
-    "totalProjects"
-  ).textContent =
-    projects.length;
+  const totalElement =
+    document.getElementById(
+      "totalProjects"
+    );
 
 
-  document.getElementById(
-    "publishedProjects"
-  ).textContent =
-    projects.filter(
-      project =>
-        project.published
-    ).length;
+  const publishedElement =
+    document.getElementById(
+      "publishedProjects"
+    );
 
 
-  document.getElementById(
-    "draftProjects"
-  ).textContent =
-    projects.filter(
-      project =>
-        !project.published
-    ).length;
+  const draftElement =
+    document.getElementById(
+      "draftProjects"
+    );
+
+
+  if (
+    totalElement
+  ) {
+
+    totalElement.textContent =
+      String(
+        projects.length
+      );
+
+  }
+
+
+  if (
+    publishedElement
+  ) {
+
+    publishedElement.textContent =
+      String(
+        projects.filter(
+          project =>
+            project.published ===
+            true
+        ).length
+      );
+
+  }
+
+
+  if (
+    draftElement
+  ) {
+
+    draftElement.textContent =
+      String(
+        projects.filter(
+          project =>
+            project.published !==
+            true
+        ).length
+      );
+
+  }
 
 }
 
 
+// ========================================
+// LOGOUT
+// ========================================
+
 document.getElementById(
   "logoutBtn"
 )
-.addEventListener(
+?.addEventListener(
   "click",
-  async () => {
-
-    await supabase.auth
-      .signOut();
-
-
-    window.location.replace(
-      "index.html"
-    );
-
-  }
+  logoutAdmin
 );
 
 
+// ========================================
+// INITIALIZE
+// ========================================
+
 async function init() {
 
-  const authorized =
+  const user =
     await requireAdmin();
 
 
-  if (!authorized) {
+  if (
+    !user
+  ) {
+
     return;
+
   }
 
 
