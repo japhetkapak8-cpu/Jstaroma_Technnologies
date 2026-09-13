@@ -14,10 +14,16 @@
     Projects | JStaroma Admin
   </title>
 
+
+  <!-- ADMIN CSS -->
+
   <link
     rel="stylesheet"
     href="css/admin.css"
   >
+
+
+  <!-- FONT AWESOME -->
 
   <link
     rel="stylesheet"
@@ -33,8 +39,14 @@
 <div class="admin-layout">
 
 
+  <!-- ========================================
+       SIDEBAR
+  ========================================= -->
+
   <aside class="admin-sidebar">
 
+
+    <!-- BRAND -->
 
     <div class="admin-brand">
 
@@ -57,7 +69,11 @@
     </div>
 
 
+
+    <!-- NAVIGATION -->
+
     <nav class="admin-nav">
+
 
       <a href="dashboard.html">
 
@@ -80,7 +96,29 @@
       </a>
 
 
-      <a href="../index.html">
+      <a href="achievements.html">
+
+        <i class="fa-solid fa-award"></i>
+
+        Achievements
+
+      </a>
+
+
+      <a href="products.html">
+
+        <i class="fa-solid fa-box-open"></i>
+
+        Products
+
+      </a>
+
+
+      <a
+        href="../index.html"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
 
         <i class="fa-solid fa-globe"></i>
 
@@ -88,14 +126,19 @@
 
       </a>
 
+
     </nav>
 
+
+
+    <!-- SIDEBAR FOOTER -->
 
     <div class="sidebar-footer">
 
       <button
         id="logoutBtn"
         class="logout-btn"
+        type="button"
       >
 
         <i class="fa-solid fa-right-from-bracket"></i>
@@ -111,10 +154,17 @@
 
 
 
+  <!-- ========================================
+       MAIN CONTENT
+  ========================================= -->
+
   <main class="admin-main">
 
 
+    <!-- PAGE HEADER -->
+
     <div class="page-header">
+
 
       <div>
 
@@ -122,21 +172,41 @@
           CONTENT MANAGEMENT
         </span>
 
+
         <h1>
           Projects
         </h1>
 
+
         <p>
-          Add, edit, publish, and remove projects.
+          Add, edit, publish,
+          and remove portfolio projects.
         </p>
 
       </div>
+
+
+      <a
+        href="../index.html#projects"
+        class="secondary-admin-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+        View Public Projects
+
+      </a>
+
 
     </div>
 
 
 
-    <!-- ADD PROJECT -->
+    <!-- ========================================
+         ADD / EDIT PROJECT
+    ========================================= -->
 
     <section class="admin-card">
 
@@ -150,7 +220,8 @@
           </h2>
 
           <p>
-            Add a class, GIS, UAS, data,
+            Add a class, GIS, UAS,
+            data, programming,
             or professional project.
           </p>
 
@@ -172,6 +243,9 @@
         >
 
 
+
+        <!-- TITLE / CATEGORY -->
+
         <div class="form-row">
 
 
@@ -184,6 +258,7 @@
             <input
               type="text"
               id="title"
+              placeholder="Project title"
               required
             >
 
@@ -197,7 +272,10 @@
               Category
             </label>
 
-            <select id="category">
+            <select
+              id="category"
+              required
+            >
 
               <option value="GIS">
                 GIS
@@ -236,6 +314,8 @@
 
 
 
+        <!-- DESCRIPTION -->
+
         <div class="form-group">
 
           <label for="description">
@@ -245,12 +325,15 @@
           <textarea
             id="description"
             rows="5"
+            placeholder="Describe your project..."
             required
           ></textarea>
 
         </div>
 
 
+
+        <!-- TOOLS -->
 
         <div class="form-group">
 
@@ -264,9 +347,15 @@
             placeholder="ArcGIS Pro, Python, SQL"
           >
 
+          <small>
+            Separate tools with commas.
+          </small>
+
         </div>
 
 
+
+        <!-- LINKS -->
 
         <div class="form-row">
 
@@ -306,6 +395,8 @@
 
 
 
+        <!-- IMAGE -->
+
         <div class="form-group">
 
           <label for="projectImage">
@@ -318,9 +409,15 @@
             accept="image/png,image/jpeg,image/webp"
           >
 
+          <small>
+            Upload JPG, PNG, or WEBP.
+          </small>
+
         </div>
 
 
+
+        <!-- PUBLISH -->
 
         <label class="publish-option">
 
@@ -336,6 +433,8 @@
         </label>
 
 
+
+        <!-- ACTIONS -->
 
         <div class="form-actions">
 
@@ -358,17 +457,23 @@
             id="cancelEditBtn"
             class="secondary-btn hidden"
           >
+
             Cancel Edit
+
           </button>
 
 
         </div>
 
 
+
+        <!-- MESSAGE -->
+
         <p
           id="projectMessage"
           class="form-message"
-        ></p>
+        >
+        </p>
 
 
       </form>
@@ -378,7 +483,9 @@
 
 
 
-    <!-- PROJECT LIST -->
+    <!-- ========================================
+         PROJECT LIST
+    ========================================= -->
 
     <section class="admin-card">
 
@@ -392,7 +499,8 @@
           </h2>
 
           <p>
-            Projects saved in your portfolio.
+            Published projects appear
+            automatically on the public website.
           </p>
 
         </div>
@@ -421,9 +529,14 @@
 </div>
 
 
+
+<!-- ========================================
+     PROJECT JAVASCRIPT
+======================================== -->
+
 <script
   type="module"
-  src="js/projects.js"
+  src="js/projects.js?v=20260912-2"
 ></script>
 
 

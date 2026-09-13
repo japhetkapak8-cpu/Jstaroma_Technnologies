@@ -14,11 +14,16 @@
     Achievements | JStaroma Admin
   </title>
 
+
   <link
     rel="stylesheet"
     href="css/admin.css"
   >
-<link rel="stylesheet" href="css/achievements.css">
+
+  <link
+    rel="stylesheet"
+    href="css/achievements.css"
+  >
 
   <link
     rel="stylesheet"
@@ -33,10 +38,6 @@
 
 <div class="admin-layout">
 
-
-  <!-- ========================================
-       SIDEBAR
-  ========================================= -->
 
   <aside class="admin-sidebar">
 
@@ -95,7 +96,20 @@
       </a>
 
 
-      <a href="../index.html">
+      <a href="products.html">
+
+        <i class="fa-solid fa-box-open"></i>
+
+        Products
+
+      </a>
+
+
+      <a
+        href="../index.html"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
 
         <i class="fa-solid fa-globe"></i>
 
@@ -128,14 +142,8 @@
 
 
 
-  <!-- ========================================
-       MAIN
-  ========================================= -->
-
   <main class="admin-main">
 
-
-    <!-- PAGE HEADER -->
 
     <div class="page-header">
 
@@ -151,8 +159,9 @@
         </h1>
 
         <p>
-          Manage certifications, awards,
-          training, and professional achievements.
+          Manage certifications,
+          awards, training,
+          and professional achievements.
         </p>
 
       </div>
@@ -195,10 +204,6 @@
 
 
 
-    <!-- ========================================
-         STATS
-    ========================================= -->
-
     <div class="dashboard-stats">
 
 
@@ -225,7 +230,6 @@
       </div>
 
 
-
       <div class="dashboard-stat">
 
         <div class="stat-icon green">
@@ -247,7 +251,6 @@
         </div>
 
       </div>
-
 
 
       <div class="dashboard-stat">
@@ -276,10 +279,6 @@
     </div>
 
 
-
-    <!-- ========================================
-         SEARCH / FILTER
-    ========================================= -->
 
     <div class="admin-toolbar">
 
@@ -325,10 +324,6 @@
     </div>
 
 
-
-    <!-- ========================================
-         ACHIEVEMENTS
-    ========================================= -->
 
     <section class="admin-card">
 
@@ -376,10 +371,6 @@
 
 
 
-<!-- ========================================
-     ACHIEVEMENT FORM MODAL
-========================================= -->
-
 <div
   id="achievementFormModal"
   class="admin-modal"
@@ -396,8 +387,6 @@
 
   <div class="admin-modal-panel">
 
-
-    <!-- MODAL HEADER -->
 
     <div class="admin-modal-header">
 
@@ -430,11 +419,6 @@
     </div>
 
 
-
-    <!-- ========================================
-         FORM
-    ========================================= -->
-
     <form id="achievementForm">
 
 
@@ -443,8 +427,6 @@
         id="achievementId"
       >
 
-
-      <!-- TYPE -->
 
       <div class="form-group full-width">
 
@@ -482,9 +464,6 @@
       </div>
 
 
-
-      <!-- TITLE -->
-
       <div class="form-group full-width">
 
         <label for="achievementTitle">
@@ -494,15 +473,11 @@
         <input
           type="text"
           id="achievementTitle"
-          placeholder="Example: Acquire Data for GIS Projects"
           required
         >
 
       </div>
 
-
-
-      <!-- ORGANIZATION -->
 
       <div class="form-group full-width">
 
@@ -513,14 +488,10 @@
         <input
           type="text"
           id="achievementOrganization"
-          placeholder="Example: Esri"
         >
 
       </div>
 
-
-
-      <!-- TWO COLUMN ROW -->
 
       <div class="form-grid">
 
@@ -548,7 +519,6 @@
           <input
             type="text"
             id="credentialId"
-            placeholder="Optional"
           >
 
         </div>
@@ -556,9 +526,6 @@
 
       </div>
 
-
-
-      <!-- CREDENTIAL URL -->
 
       <div class="form-group full-width">
 
@@ -572,46 +539,31 @@
           placeholder="https://..."
         >
 
-        <small>
-          Optional verification or credential link.
-        </small>
-
       </div>
 
 
 
-      <!-- ========================================
-           ACHIEVEMENT MEDIA
-      ========================================= -->
-
       <div class="form-group full-width">
-
 
         <label>
           Achievement Media
         </label>
-
 
         <small>
           Upload an image and/or supporting document.
         </small>
 
 
-
         <div class="achievement-upload-grid">
 
 
-          <!-- IMAGE -->
-
           <div class="upload-box">
-
 
             <div class="upload-box-icon">
 
               <i class="fa-solid fa-image"></i>
 
             </div>
-
 
             <div class="upload-box-content">
 
@@ -631,22 +583,17 @@
 
             </div>
 
-
           </div>
 
 
 
-          <!-- DOCUMENT -->
-
           <div class="upload-box">
-
 
             <div class="upload-box-icon">
 
               <i class="fa-solid fa-file-arrow-up"></i>
 
             </div>
-
 
             <div class="upload-box-content">
 
@@ -666,15 +613,11 @@
 
             </div>
 
-
           </div>
 
 
         </div>
 
-
-
-        <!-- IMAGE PREVIEW -->
 
         <div
           id="achievementImagePreview"
@@ -683,22 +626,12 @@
         </div>
 
 
-
-        <!-- DOCUMENT PREVIEW -->
-
         <div
           id="achievementDocumentPreview"
           class="achievement-file-preview"
         >
         </div>
 
-
-
-        <!--
-          IMPORTANT:
-          JavaScript stores existing uploaded URLs here.
-          Do not remove these.
-        -->
 
         <input
           type="hidden"
@@ -715,8 +648,6 @@
 
 
 
-      <!-- DESCRIPTION -->
-
       <div class="form-group full-width">
 
         <label for="achievementDescription">
@@ -726,14 +657,10 @@
         <textarea
           id="achievementDescription"
           rows="6"
-          placeholder="Describe the certification, award, training, or achievement..."
         ></textarea>
 
       </div>
 
-
-
-      <!-- TAGS -->
 
       <div class="form-group full-width">
 
@@ -747,15 +674,9 @@
           placeholder="GIS, ArcGIS Pro, Python, Leadership"
         >
 
-        <small>
-          Separate tags using commas.
-        </small>
-
       </div>
 
 
-
-      <!-- OPTIONS -->
 
       <div class="achievement-options">
 
@@ -780,7 +701,6 @@
           </div>
 
         </label>
-
 
 
         <label class="achievement-option">
@@ -809,18 +729,12 @@
       </div>
 
 
-
-      <!-- MESSAGE -->
-
       <div
         id="achievementFormMessage"
         class="form-message"
       >
       </div>
 
-
-
-      <!-- ACTIONS -->
 
       <div class="admin-modal-actions">
 
@@ -861,10 +775,9 @@
 </div>
 
 
-
 <script
   type="module"
-  src="js/achievements.js?v=3"
+  src="js/achievements.js?v=20260912-4"
 ></script>
 
 

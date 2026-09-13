@@ -60,6 +60,16 @@
     href="style.css"
   >
 
+
+  <!-- ========================================
+       PRODUCT CSS
+  ========================================= -->
+
+  <link
+    rel="stylesheet"
+    href="products.css"
+  >
+
 </head>
 
 
@@ -93,7 +103,6 @@
     </a>
 
 
-
     <!-- MOBILE MENU BUTTON -->
 
     <button
@@ -106,7 +115,6 @@
       <i class="fa-solid fa-bars"></i>
 
     </button>
-
 
 
     <!-- NAVIGATION -->
@@ -128,7 +136,7 @@
         Services
       </a>
 
-      <a href="#products">
+      <a href="products.html" class="active">
         Products
       </a>
 
@@ -148,7 +156,6 @@
         Contact
       </a>
 
-
       <a
         href="admin/index.html"
         class="admin-login-btn"
@@ -162,9 +169,6 @@
   </div>
 
 </header>
-
-
-
 
 
 <!-- ========================================
@@ -256,7 +260,6 @@
     </div>
 
 
-
     <!-- HERO CARD -->
 
     <div class="hero-card">
@@ -303,9 +306,6 @@
 </section>
 
 
-
-
-
 <!-- ========================================
      ABOUT
 ======================================== -->
@@ -337,7 +337,6 @@
       </p>
 
     </div>
-
 
 
     <div class="about-grid">
@@ -378,7 +377,6 @@
         </p>
 
       </div>
-
 
 
       <!-- ABOUT CARDS -->
@@ -457,9 +455,6 @@
 </section>
 
 
-
-
-
 <!-- ========================================
      SERVICES
 ======================================== -->
@@ -493,7 +488,6 @@
     </div>
 
 
-
     <div class="services-grid">
 
 
@@ -522,8 +516,7 @@
       </article>
 
 
-
-      <!-- WEB -->
+      <!-- WEB DEVELOPMENT -->
 
       <article class="service-card">
 
@@ -549,7 +542,6 @@
       </article>
 
 
-
       <!-- DATA -->
 
       <article class="service-card">
@@ -573,7 +565,6 @@
         </p>
 
       </article>
-
 
 
       <!-- REMOTE SENSING -->
@@ -602,7 +593,6 @@
       </article>
 
 
-
       <!-- UAS -->
 
       <article class="service-card">
@@ -627,7 +617,6 @@
         </p>
 
       </article>
-
 
 
       <!-- PROGRAMMING -->
@@ -663,11 +652,8 @@
 </section>
 
 
-
-
-
 <!-- ========================================
-     JSTAROMA PRODUCTS
+     PRODUCTS
 ======================================== -->
 
 <section
@@ -677,6 +663,8 @@
 
   <div class="section-container">
 
+
+    <!-- PRODUCT HEADING -->
 
     <div class="section-heading">
 
@@ -691,421 +679,112 @@
 
 
       <p>
-        Explore software products and digital tools
-        developed by JStaroma Technologies.
+        Explore software products,
+        digital tools,
+        GIS solutions,
+        data products,
+        and technology developed
+        by JStaroma Technologies.
       </p>
 
     </div>
 
 
+    <!-- ========================================
+         PRODUCT SEARCH / FILTER
+    ========================================= -->
 
-    <div class="jstaroma-products-grid">
+    <div class="jstaroma-product-controls">
 
 
-      <!-- ========================================
-           JSTAROMA SLIDES
-      ========================================= -->
+      <!-- SEARCH -->
 
-      <article class="jstaroma-product-card">
+      <div class="jstaroma-product-search">
 
+        <i class="fa-solid fa-magnifying-glass"></i>
 
-        <!-- PRODUCT INFORMATION -->
+        <input
+          id="productSearch"
+          type="search"
+          placeholder="Search products..."
+          autocomplete="off"
+          aria-label="Search products"
+        >
 
-        <div class="product-content">
+      </div>
 
 
-          <div class="product-card-top">
+      <!-- CATEGORY -->
 
-            <div class="product-logo">
-              JS
-            </div>
+      <select
+        id="productCategoryFilter"
+        class="jstaroma-product-filter"
+        aria-label="Filter products by category"
+      >
 
+        <option value="All">
+          All Products
+        </option>
 
-            <span class="product-status">
-              IN DEVELOPMENT
-            </span>
+        <option value="Software">
+          Software
+        </option>
 
-          </div>
+        <option value="GIS">
+          GIS
+        </option>
 
+        <option value="Drone">
+          Drone
+        </option>
 
+        <option value="Data">
+          Data
+        </option>
 
-          <span class="product-type">
+        <option value="Service">
+          Services
+        </option>
 
-            MICROSOFT POWERPOINT ADD-IN
+        <option value="Other">
+          Other
+        </option>
 
-          </span>
+      </select>
 
 
+    </div>
 
-          <h3>
-            JStaroma Slides
-          </h3>
 
+    <!-- ========================================
+         PRODUCT STATUS
+    ========================================= -->
 
+    <div
+      id="productStatus"
+      class="products-status"
+      aria-live="polite"
+    >
 
-          <p class="product-description">
+      Loading products...
 
-            Create professional PowerPoint presentations
-            with structured slide layouts, GIS and map tools,
-            image workflows, dashboards, Brand Kits,
-            and presentation utilities.
+    </div>
 
-          </p>
 
+    <!-- ========================================
+         PRODUCTS GENERATED BY SUPABASE
+    ========================================= -->
 
-
-          <div class="product-features">
-
-
-            <span>
-
-              <i class="fa-solid fa-earth-americas"></i>
-
-              GIS & Maps
-
-            </span>
-
-
-            <span>
-
-              <i class="fa-solid fa-chart-column"></i>
-
-              Dashboards
-
-            </span>
-
-
-            <span>
-
-              <i class="fa-solid fa-image"></i>
-
-              Image Tools
-
-            </span>
-
-
-            <span>
-
-              <i class="fa-solid fa-palette"></i>
-
-              Brand Kits
-
-            </span>
-
-
-          </div>
-
-
-
-          <div class="product-actions">
-
-
-            <a
-              href="jstaroma-slides/"
-              class="product-primary-btn"
-            >
-
-              Explore JStaroma Slides
-
-              <i class="fa-solid fa-arrow-right"></i>
-
-            </a>
-
-
-            <a
-              href="jstaroma-slides/gis-maps/"
-              class="product-secondary-btn"
-            >
-
-              GIS & Maps
-
-            </a>
-
-
-          </div>
-
-
-        </div>
-
-
-
-        <!-- ========================================
-             PRODUCT VISUAL
-        ========================================= -->
-
-        <div class="product-visual">
-
-
-          <div class="slides-preview">
-
-
-            <!-- TOP BAR -->
-
-            <div class="slides-preview-header">
-
-
-              <div class="preview-controls">
-
-                <span></span>
-
-                <span></span>
-
-                <span></span>
-
-              </div>
-
-
-              <small>
-                JSTAROMA SLIDES
-              </small>
-
-
-            </div>
-
-
-
-            <!-- APP BODY -->
-
-            <div class="slides-preview-body">
-
-
-              <!-- SIDEBAR -->
-
-              <aside class="slides-sidebar">
-
-
-                <strong>
-                  CREATE
-                </strong>
-
-
-                <span>
-                  Title Slide
-                </span>
-
-
-                <span>
-                  Content Slide
-                </span>
-
-
-                <span>
-                  Image + Text
-                </span>
-
-
-                <span class="selected">
-
-                  <i class="fa-solid fa-earth-americas"></i>
-
-                  GIS / Map
-
-                </span>
-
-
-                <span>
-                  Dashboard
-                </span>
-
-
-                <span>
-                  Comparison
-                </span>
-
-
-              </aside>
-
-
-
-              <!-- POWERPOINT CANVAS -->
-
-              <div class="slides-canvas">
-
-
-                <div class="mini-slide">
-
-
-                  <!-- SLIDE HEADER -->
-
-                  <div class="mini-slide-title">
-
-
-                    <div>
-
-                      <small>
-                        SPATIAL ANALYSIS
-                      </small>
-
-
-                      <strong>
-                        Geographic Analysis
-                      </strong>
-
-                    </div>
-
-
-                    <span>
-                      04
-                    </span>
-
-
-                  </div>
-
-
-
-                  <!-- SLIDE CONTENT -->
-
-                  <div class="mini-slide-content">
-
-
-                    <!-- MAP -->
-
-                    <div class="mini-map">
-
-
-                      <div class="mini-map-grid"></div>
-
-
-                      <div class="mini-map-region region-a"></div>
-
-                      <div class="mini-map-region region-b"></div>
-
-
-                      <div class="mini-road road-a"></div>
-
-                      <div class="mini-road road-b"></div>
-
-
-                      <span class="map-point point-one"></span>
-
-                      <span class="map-point point-two"></span>
-
-                      <span class="map-point point-three"></span>
-
-
-                      <small class="mini-map-label">
-                        GIS MAP
-                      </small>
-
-
-                    </div>
-
-
-
-                    <!-- INSIGHTS -->
-
-                    <div class="mini-insights">
-
-
-                      <div>
-
-
-                        <small>
-                          MAP INSIGHT
-                        </small>
-
-
-                        <strong>
-                          Spatial pattern identified
-                        </strong>
-
-
-                        <span></span>
-
-                        <span></span>
-
-
-                      </div>
-
-
-
-                      <div>
-
-
-                        <small>
-                          KEY FINDING
-                        </small>
-
-
-                        <strong>
-                          Present your result
-                        </strong>
-
-
-                        <span></span>
-
-                        <span></span>
-
-
-                      </div>
-
-
-
-                      <div>
-
-
-                        <small>
-                          INTERPRETATION
-                        </small>
-
-
-                        <span></span>
-
-                        <span></span>
-
-
-                      </div>
-
-
-                    </div>
-
-
-                  </div>
-
-
-
-                  <!-- SLIDE FOOTER -->
-
-                  <div class="mini-slide-footer">
-
-                    <span>
-                      Source: GIS Dataset
-                    </span>
-
-                    <span>
-                      JSTAROMA SLIDES
-                    </span>
-
-                  </div>
-
-
-                </div>
-
-
-              </div>
-
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </article>
-
-
+    <div
+      class="jstaroma-products-grid"
+      id="productsGrid"
+    >
     </div>
 
 
   </div>
 
 </section>
-
-
-
 
 
 <!-- ========================================
@@ -1142,10 +821,7 @@
     </div>
 
 
-
-    <!-- ========================================
-         PROJECT FILTERS
-    ========================================= -->
+    <!-- PROJECT FILTERS -->
 
     <div
       class="project-filters"
@@ -1219,21 +895,19 @@
     </div>
 
 
-
     <!-- PROJECT STATUS -->
 
     <div
       class="projects-status"
       id="projectsStatus"
     >
+
       Loading projects...
+
     </div>
 
 
-
-    <!-- ========================================
-         PROJECT CARDS GENERATED WITH JS
-    ========================================= -->
+    <!-- PROJECTS GENERATED BY JS -->
 
     <div
       class="projects-grid"
@@ -1245,9 +919,6 @@
   </div>
 
 </section>
-
-
-
 
 
 <!-- ========================================
@@ -1267,7 +938,6 @@
 
       <div>
 
-
         <span class="section-label">
           VISION
         </span>
@@ -1277,9 +947,7 @@
           Technology With Purpose.
         </h2>
 
-
       </div>
-
 
 
       <p>
@@ -1298,9 +966,6 @@
   </div>
 
 </section>
-
-
-
 
 
 <!-- ========================================
@@ -1339,13 +1004,7 @@
     </div>
 
 
-
-    <!-- ========================================
-         CONTACT CARDS
-    ========================================= -->
-
     <div class="contact-card">
-
 
 
       <!-- EMAIL -->
@@ -1367,7 +1026,6 @@
         </div>
 
 
-
         <div class="contact-item-content">
 
           <strong>
@@ -1381,7 +1039,6 @@
         </div>
 
 
-
         <div class="contact-arrow">
 
           <i
@@ -1393,7 +1050,6 @@
 
 
       </a>
-
 
 
       <!-- GITHUB -->
@@ -1417,7 +1073,6 @@
         </div>
 
 
-
         <div class="contact-item-content">
 
           <strong>
@@ -1431,7 +1086,6 @@
         </div>
 
 
-
         <div class="contact-arrow">
 
           <i
@@ -1443,7 +1097,6 @@
 
 
       </a>
-
 
 
       <!-- LINKEDIN -->
@@ -1467,7 +1120,6 @@
         </div>
 
 
-
         <div class="contact-item-content">
 
           <strong>
@@ -1479,7 +1131,6 @@
           </span>
 
         </div>
-
 
 
         <div class="contact-arrow">
@@ -1501,9 +1152,6 @@
   </div>
 
 </section>
-
-
-
 
 
 <!-- ========================================
@@ -1537,7 +1185,6 @@
     </div>
 
 
-
     <p class="footer-copy">
 
       ©
@@ -1554,9 +1201,6 @@
   </div>
 
 </footer>
-
-
-
 
 
 <!-- ========================================
@@ -1579,8 +1223,7 @@
   </div>
 
 
-
-  <!-- MODAL WINDOW -->
+  <!-- MODAL -->
 
   <div class="project-modal-dialog">
 
@@ -1597,7 +1240,6 @@
       <i class="fa-solid fa-xmark"></i>
 
     </button>
-
 
 
     <!-- IMAGE -->
@@ -1630,8 +1272,7 @@
     </div>
 
 
-
-    <!-- PROJECT INFO -->
+    <!-- BODY -->
 
     <div class="project-modal-body">
 
@@ -1656,7 +1297,6 @@
       </p>
 
 
-
       <!-- TOOLS -->
 
       <div class="project-details-group">
@@ -1677,7 +1317,6 @@
       </div>
 
 
-
       <!-- BUTTONS -->
 
       <div class="project-modal-buttons">
@@ -1696,7 +1335,6 @@
           Live Project
 
         </a>
-
 
 
         <a
@@ -1726,9 +1364,6 @@
 </div>
 
 
-
-
-
 <!-- ========================================
      BASIC WEBSITE JAVASCRIPT
 ======================================== -->
@@ -1752,7 +1387,6 @@
       new Date().getFullYear();
 
   }
-
 
 
   /* ========================================
@@ -1795,6 +1429,7 @@
 
         if (icon) {
 
+
           if (
             mainNav.classList.contains(
               "open"
@@ -1823,12 +1458,12 @@
 
           }
 
+
         }
 
 
       }
     );
-
 
 
     document
@@ -1882,7 +1517,6 @@
 </script>
 
 
-
 <!-- ========================================
      PROJECT SYSTEM
 ======================================== -->
@@ -1890,6 +1524,16 @@
 <script
   type="module"
   src="js/public-projects.js?v=20260901-4"
+></script>
+
+
+<!-- ========================================
+     PRODUCT SYSTEM
+======================================== -->
+
+<script
+  type="module"
+  src="js/public-products.js?v=20260910-2"
 ></script>
 
 
