@@ -521,6 +521,44 @@ function createProductCard(
   );
 
 
+  const productText =
+    [
+      product.name,
+      product.description
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+
+  if (
+    productText.includes("wantok chat")
+  ) {
+
+    const legalLinks =
+      document.createElement(
+        "div"
+      );
+
+
+    legalLinks.className =
+      "product-legal-links";
+
+
+    legalLinks.innerHTML =
+      `
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/terms/">Terms of Use</a>
+      `;
+
+
+    actions.appendChild(
+      legalLinks
+    );
+
+  }
+
+
   content.appendChild(
     actions
   );

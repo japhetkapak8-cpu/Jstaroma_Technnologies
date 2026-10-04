@@ -778,6 +778,34 @@
 
 .products-section
 .dynamic-product-card
+.product-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+
+.products-section
+.dynamic-product-card
+.product-legal-links a {
+  color: #a9bfd3;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+
+.products-section
+.dynamic-product-card
+.product-legal-links a:hover {
+  color: #ffffff;
+}
+
+
+.products-section
+.dynamic-product-card
 .product-primary-btn {
   min-height: 46px;
 
