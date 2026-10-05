@@ -128,6 +128,8 @@ a {
   .legal-nav {
     width: min(100% - 32px, 1100px);
     min-height: 64px;
+    flex-wrap: wrap;
+    padding: 12px 0;
   }
 
   .legal-nav-links {

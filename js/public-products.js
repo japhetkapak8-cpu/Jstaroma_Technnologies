@@ -549,6 +549,7 @@ function createProductCard(
       `
         <a href="/privacy/">Privacy Policy</a>
         <a href="/terms/">Terms of Use</a>
+        <a href="/account-deletion/">Account Deletion</a>
       `;
 
 
