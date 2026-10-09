@@ -5,6 +5,9 @@ from "./supabase.js";
 let products = [];
 let filteredProducts = [];
 
+// Add Wantok Chat's published Google Play URL here when it is available.
+const wantokPlayStoreUrl = "";
+
 
 const grid =
   document.getElementById(
@@ -422,6 +425,18 @@ function createProductCard(
   }
 
 
+  const productText =
+    [
+      product.name,
+      product.description
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+  const isWantokChat =
+    productText.includes("wantok chat");
+
   const meta =
     document.createElement(
       "div"
@@ -449,7 +464,9 @@ function createProductCard(
 
 
   price.textContent =
-    numericPrice > 0
+    isWantokChat
+      ? "Download on Google Play"
+      : numericPrice > 0
       ? formatCurrency(
           numericPrice
         )
@@ -474,10 +491,11 @@ function createProductCard(
       : "Currently unavailable";
 
 
-  meta.append(
-    price,
-    availability
-  );
+  meta.appendChild(price);
+
+  if (!isWantokChat) {
+    meta.appendChild(availability);
+  }
 
 
   content.appendChild(
@@ -497,38 +515,40 @@ function createProductCard(
 
   const primary =
     document.createElement(
-      "a"
+      isWantokChat && !wantokPlayStoreUrl
+        ? "button"
+        : "a"
     );
-
-
-  primary.href =
-    "index.html#contact";
-
 
   primary.className =
     "product-primary-btn";
 
+  if (isWantokChat && !wantokPlayStoreUrl) {
+    primary.type = "button";
+    primary.disabled = true;
+    primary.textContent = "Play Store link coming soon";
+  } else {
+    primary.href =
+      isWantokChat
+        ? wantokPlayStoreUrl
+        : "index.html#contact";
 
-  primary.innerHTML =
-    `
-      Contact About Product
-      <i class="fa-solid fa-arrow-right"></i>
-    `;
+    if (isWantokChat) {
+      primary.target = "_blank";
+      primary.rel = "noopener noreferrer";
+    }
+
+    primary.innerHTML =
+      `
+        ${isWantokChat ? "Download on Google Play" : "Contact About Product"}
+        <i class="fa-solid fa-arrow-right"></i>
+      `;
+  }
 
 
   actions.appendChild(
     primary
   );
-
-
-  const productText =
-    [
-      product.name,
-      product.description
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
 
 
   const configuredPolicyLinks =
@@ -557,7 +577,7 @@ function createProductCard(
 
   const defaultPolicyLinks =
     configuredPolicyLinks.length === 0 &&
-    productText.includes("wantok chat")
+    isWantokChat
       ? [
           {
             label: "Privacy Policy",

@@ -857,6 +857,16 @@
 /* VISUAL */
 
 .products-section
+.dynamic-product-card
+.product-primary-btn:disabled {
+  border: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+  filter: none;
+}
+
+.products-section
 .dynamic-product-visual {
   position: relative;
 
