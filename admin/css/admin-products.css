@@ -710,6 +710,24 @@ body.modal-open {
   font-size: 10px;
 }
 
+.product-legal-form {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #dbe4ed;
+  border-radius: 12px;
+  background: #f7fafc;
+}
+
+.product-legal-form h3 {
+  color: #17334d;
+  font-size: 14px;
+}
+
+.product-legal-form .product-form-full small {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
 
 /* =========================================================
    PRICE

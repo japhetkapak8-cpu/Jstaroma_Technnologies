@@ -531,8 +531,62 @@ function createProductCard(
       .toLowerCase();
 
 
-  if (
+  const configuredPolicyLinks =
+    [
+      {
+        label: "Privacy Policy",
+        url: product.privacy_policy_url
+      },
+      {
+        label: "Terms of Use",
+        url: product.terms_of_use_url
+      },
+      {
+        label: "Account Deletion",
+        url: product.account_deletion_url
+      },
+      {
+        label: "Child Safety Standards",
+        url: product.child_safety_url
+      }
+    ]
+      .filter(
+        policy => Boolean(policy.url)
+      );
+
+
+  const defaultPolicyLinks =
+    configuredPolicyLinks.length === 0 &&
     productText.includes("wantok chat")
+      ? [
+          {
+            label: "Privacy Policy",
+            url: "/privacy/"
+          },
+          {
+            label: "Terms of Use",
+            url: "/terms/"
+          },
+          {
+            label: "Account Deletion",
+            url: "/account-deletion/"
+          },
+          {
+            label: "Child Safety Standards",
+            url: "/child-safety/"
+          }
+        ]
+      : [];
+
+
+  const visiblePolicyLinks =
+    configuredPolicyLinks.length > 0
+      ? configuredPolicyLinks
+      : defaultPolicyLinks;
+
+
+  if (
+    visiblePolicyLinks.length > 0
   ) {
 
     const legalLinks =
@@ -545,18 +599,59 @@ function createProductCard(
       "product-legal-links";
 
 
-    legalLinks.innerHTML =
-      `
-        <a href="/privacy/">Privacy Policy</a>
-        <a href="/terms/">Terms of Use</a>
-        <a href="/account-deletion/">Account Deletion</a>
-        <a href="/child-safety/">Child Safety Standards</a>
-      `;
+    visiblePolicyLinks.forEach(
+      policy => {
+
+      const safeUrl =
+        getSafePolicyUrl(
+          policy.url
+        );
 
 
-    actions.appendChild(
-      legalLinks
+      if (!safeUrl) {
+        return;
+      }
+
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+
+      link.href =
+        safeUrl;
+
+
+      link.textContent =
+        policy.label;
+
+
+      if (
+        safeUrl.startsWith("https://") ||
+        safeUrl.startsWith("http://")
+      ) {
+        link.target =
+          "_blank";
+
+        link.rel =
+          "noopener noreferrer";
+      }
+
+
+      legalLinks.appendChild(
+        link
+      );
+
+      }
     );
+
+
+    if (legalLinks.childElementCount > 0) {
+      actions.appendChild(
+        legalLinks
+      );
+    }
 
   }
 
@@ -635,6 +730,51 @@ function createProductCard(
 
 
   return article;
+
+}
+
+
+function getSafePolicyUrl(
+  value
+) {
+
+  if (
+    typeof value !== "string" ||
+    !value.trim()
+  ) {
+    return "";
+  }
+
+
+  const url =
+    value.trim();
+
+
+  if (
+    url.startsWith("/") &&
+    !url.startsWith("//") &&
+    !url.includes("\\")
+  ) {
+    return url;
+  }
+
+
+  try {
+    const parsedUrl =
+      new URL(url);
+
+    if (
+    parsedUrl.protocol === "https:" ||
+    parsedUrl.protocol === "http:"
+    ) {
+    return parsedUrl.href;
+    }
+  } catch {
+    return "";
+  }
+
+
+  return "";
 
 }
 

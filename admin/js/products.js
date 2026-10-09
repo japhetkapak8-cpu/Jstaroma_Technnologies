@@ -161,6 +161,26 @@ const productTags =
     "productTags"
   );
 
+const productPrivacyPolicyUrl =
+  document.getElementById(
+    "productPrivacyPolicyUrl"
+  );
+
+const productTermsOfUseUrl =
+  document.getElementById(
+    "productTermsOfUseUrl"
+  );
+
+const productAccountDeletionUrl =
+  document.getElementById(
+    "productAccountDeletionUrl"
+  );
+
+const productChildSafetyUrl =
+  document.getElementById(
+    "productChildSafetyUrl"
+  );
+
 const productFeatured =
   document.getElementById(
     "productFeatured"
@@ -1047,6 +1067,26 @@ function openEditProduct(
 
   resetForm();
 
+  const hasPolicyLinks =
+    [
+      product.privacy_policy_url,
+      product.terms_of_use_url,
+      product.account_deletion_url,
+      product.child_safety_url
+    ]
+      .some(Boolean);
+
+  const isLegacyWantokProduct =
+    !hasPolicyLinks &&
+    [
+      product.name,
+      product.description
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase()
+      .includes("wantok chat");
+
 
   productId.value =
     product.id ||
@@ -1089,6 +1129,38 @@ function openEditProduct(
     )
       ? product.tags.join(", ")
       : "";
+
+  productPrivacyPolicyUrl.value =
+    product.privacy_policy_url ||
+    (
+      isLegacyWantokProduct
+        ? "/privacy/"
+        : ""
+    );
+
+  productTermsOfUseUrl.value =
+    product.terms_of_use_url ||
+    (
+      isLegacyWantokProduct
+        ? "/terms/"
+        : ""
+    );
+
+  productAccountDeletionUrl.value =
+    product.account_deletion_url ||
+    (
+      isLegacyWantokProduct
+        ? "/account-deletion/"
+        : ""
+    );
+
+  productChildSafetyUrl.value =
+    product.child_safety_url ||
+    (
+      isLegacyWantokProduct
+        ? "/child-safety/"
+        : ""
+    );
 
 
   productFeatured.checked =
@@ -1664,6 +1736,31 @@ async function saveProduct(
 
   try {
 
+    const privacyPolicyUrl =
+      getOptionalPolicyUrl(
+        productPrivacyPolicyUrl.value,
+        "Privacy Policy"
+      );
+
+    const termsOfUseUrl =
+      getOptionalPolicyUrl(
+        productTermsOfUseUrl.value,
+        "Terms of Use"
+      );
+
+    const accountDeletionUrl =
+      getOptionalPolicyUrl(
+        productAccountDeletionUrl.value,
+        "Account Deletion"
+      );
+
+    const childSafetyUrl =
+      getOptionalPolicyUrl(
+        productChildSafetyUrl.value,
+        "Child Safety Standards"
+      );
+
+
     const originalProduct =
       products.find(
         item =>
@@ -1758,7 +1855,6 @@ async function saveProduct(
         )
         .filter(Boolean);
 
-
     const payload = {
 
       name,
@@ -1794,6 +1890,18 @@ async function saveProduct(
         imagePath,
 
       tags,
+
+      privacy_policy_url:
+        privacyPolicyUrl,
+
+      terms_of_use_url:
+        termsOfUseUrl,
+
+      account_deletion_url:
+        accountDeletionUrl,
+
+      child_safety_url:
+        childSafetyUrl,
 
       featured:
         productFeatured.checked,
@@ -1845,6 +1953,15 @@ async function saveProduct(
 
     if (result.error) {
 
+      if (
+        result.error.code === "PGRST204" ||
+        result.error.code === "42703"
+      ) {
+        throw new Error(
+          "The products table is missing policy link columns. Apply supabase/migrations/20261009_add_product_policy_links.sql, then try again."
+        );
+      }
+
       throw result.error;
 
     }
@@ -1878,6 +1995,54 @@ async function saveProduct(
     setSaving(false);
 
   }
+
+}
+
+
+function getOptionalPolicyUrl(
+  value,
+  label
+) {
+
+  const url =
+    value.trim();
+
+
+  if (!url) {
+    return null;
+  }
+
+
+  if (
+    url.startsWith("/") &&
+    !url.startsWith("//") &&
+    !url.includes("\\")
+  ) {
+    return url;
+  }
+
+
+  let parsedUrl;
+
+  try {
+    parsedUrl = new URL(url);
+  } catch {
+    throw new Error(
+      `${label} URL must be an https URL or a site path beginning with /.`
+    );
+  }
+
+
+  if (
+    parsedUrl.protocol !== "https:"
+  ) {
+    throw new Error(
+      `${label} URL must use https.`
+    );
+  }
+
+
+  return parsedUrl.href;
 
 }
 
