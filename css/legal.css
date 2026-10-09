@@ -104,6 +104,17 @@ a {
   white-space: pre-line;
 }
 
+.legal-main ul {
+  margin: 0 0 12px;
+  padding-left: 24px;
+  color: #bac7d4;
+  font-size: 0.96rem;
+}
+
+.legal-main li {
+  margin-bottom: 6px;
+}
+
 .legal-notice {
   margin-top: 40px !important;
   padding: 16px 18px;
