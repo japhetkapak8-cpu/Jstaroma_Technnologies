@@ -1,6 +1,9 @@
 import { supabase }
 from "../../js/supabase.js";
 
+import { loadAllRows }
+from "./content-data.js";
+
 
 /* =========================================================
    CONFIGURATION
@@ -338,6 +341,12 @@ async function requireAdmin() {
 
 async function loadAchievements() {
 
+  [totalElement, publishedElement, draftsElement]
+    .forEach(element => {
+      if (element) {
+        element.textContent = "...";
+      }
+    });
 
   setStatus(
     "Loading achievements..."
@@ -358,18 +367,12 @@ async function loadAchievements() {
   try {
 
 
-    const {
-
-      data,
-
-      error
-
-    } =
-      await supabase
+    achievements = await loadAllRows(() =>
+      supabase
         .from(
           "achievements"
         )
-        .select("*")
+        .select("*", { count: "exact" })
         .order(
           "featured",
           {
@@ -393,22 +396,9 @@ async function loadAchievements() {
             ascending:
               false
           }
-        );
-
-
-
-    if (
-      error
-    ) {
-
-      throw error;
-
-    }
-
-
-
-    achievements =
-      data || [];
+        )
+        .order("id", { ascending: true })
+    );
 
 
     updateStats();
@@ -437,8 +427,12 @@ async function loadAchievements() {
       [];
 
 
-    updateStats();
-
+    [totalElement, publishedElement, draftsElement]
+      .forEach(element => {
+        if (element) {
+          element.textContent = "Error";
+        }
+      });
 
     setStatus(
       error.message ||

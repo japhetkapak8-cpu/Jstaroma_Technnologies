@@ -8,100 +8,49 @@ import {
 }
 from "./admin-auth.js";
 
+import { loadPublicationStats }
+from "./content-data.js";
+
 
 // ========================================
 // LOAD STATS
 // ========================================
 
 async function loadStats() {
+  await Promise.all([
+    loadSectionStats("projects", "Projects"),
+    loadSectionStats("achievements", "Achievements"),
+    loadSectionStats("products", "Products")
+  ]);
+}
 
-  const {
-    data,
-    error
-  } =
-    await supabase
-      .from("projects")
-      .select(
-        "id, published"
-      );
+async function loadSectionStats(table, suffix) {
+  const totalElement = document.getElementById(`total${suffix}`);
+  const publishedElement = document.getElementById(`published${suffix}`);
+  const draftElement = document.getElementById(`draft${suffix}`);
+  const statusElement = document.getElementById(`${table}StatsStatus`);
+  const elements = [totalElement, publishedElement, draftElement];
 
+  elements.forEach(element => {
+    element.textContent = "...";
+  });
+  statusElement.hidden = true;
 
-  if (error) {
+  try {
+    const stats = await loadPublicationStats(supabase, table);
 
-    console.error(
-      "Could not load project stats:",
-      error
-    );
-
-    return;
+    totalElement.textContent = String(stats.total);
+    publishedElement.textContent = String(stats.published);
+    draftElement.textContent = String(stats.drafts);
   }
-
-
-  const projects =
-    data || [];
-
-
-  const totalElement =
-    document.getElementById(
-      "totalProjects"
-    );
-
-
-  const publishedElement =
-    document.getElementById(
-      "publishedProjects"
-    );
-
-
-  const draftElement =
-    document.getElementById(
-      "draftProjects"
-    );
-
-
-  if (
-    totalElement
-  ) {
-
-    totalElement.textContent =
-      String(
-        projects.length
-      );
-
+  catch (error) {
+    console.error(`Could not load ${table} stats:`, error);
+    elements.forEach(element => {
+      element.textContent = "Error";
+    });
+    statusElement.textContent = `Could not load ${table} counts. Please reload to try again.`;
+    statusElement.hidden = false;
   }
-
-
-  if (
-    publishedElement
-  ) {
-
-    publishedElement.textContent =
-      String(
-        projects.filter(
-          project =>
-            project.published ===
-            true
-        ).length
-      );
-
-  }
-
-
-  if (
-    draftElement
-  ) {
-
-    draftElement.textContent =
-      String(
-        projects.filter(
-          project =>
-            project.published !==
-            true
-        ).length
-      );
-
-  }
-
 }
 
 

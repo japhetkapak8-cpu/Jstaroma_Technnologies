@@ -398,6 +398,11 @@ async function initialize() {
 
 async function loadProducts() {
 
+  [totalProducts, publishedProducts, draftProducts, featuredProducts]
+    .forEach(element => {
+      element.textContent = "...";
+    });
+
   setProductsStatus(
     "Loading products..."
   );
@@ -405,28 +410,20 @@ async function loadProducts() {
 
   try {
 
-    const {
-      data,
-      error
-    } =
-      await supabase
+    const { loadAllRows } = await import("./content-data.js");
+
+    products = await loadAllRows(() =>
+      supabase
         .from("products")
-        .select("*")
+        .select("*", { count: "exact" })
         .order(
           "created_at",
           {
             ascending: false
           }
-        );
-
-
-    if (error) {
-      throw error;
-    }
-
-
-    products =
-      data || [];
+        )
+        .order("id", { ascending: true })
+    );
 
 
     updateStats();
@@ -436,6 +433,11 @@ async function loadProducts() {
   }
 
   catch (error) {
+
+    [totalProducts, publishedProducts, draftProducts, featuredProducts]
+      .forEach(element => {
+        element.textContent = "Error";
+      });
 
     console.error(
       error
