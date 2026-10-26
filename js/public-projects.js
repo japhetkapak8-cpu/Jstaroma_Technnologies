@@ -112,6 +112,12 @@ const projectModalGithub =
   );
 
 
+const projectModalPlayStore =
+  document.getElementById(
+    "projectModalPlayStore"
+  );
+
+
 
 /* =========================================================
    INITIALIZE
@@ -928,6 +934,15 @@ function openProjectModal(
 
 
 
+  /* PLAY STORE */
+
+  configureLink(
+    projectModalPlayStore,
+    project.play_store_url
+  );
+
+
+
   /* SHOW MODAL */
 
   projectModal.classList.add(
@@ -1136,7 +1151,7 @@ function renderModalTools(
 
 
 /* =========================================================
-   CONFIGURE LIVE / GITHUB LINK
+   CONFIGURE PROJECT LINK
 ========================================================= */
 
 function configureLink(

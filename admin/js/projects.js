@@ -63,6 +63,12 @@ const githubUrlInput =
   );
 
 
+const playStoreUrlInput =
+  document.getElementById(
+    "playStoreUrl"
+  );
+
+
 const projectImageInput =
   document.getElementById(
     "projectImage"
@@ -681,6 +687,11 @@ projectForm.addEventListener(
             githubUrlInput.value
           ),
 
+        play_store_url:
+          normalizeUrl(
+            playStoreUrlInput.value
+          ),
+
         published:
           publishedInput.checked,
 
@@ -976,6 +987,11 @@ function editProject(
 
   githubUrlInput.value =
     project.github_url ||
+    "";
+
+
+  playStoreUrlInput.value =
+    project.play_store_url ||
     "";
 
 
