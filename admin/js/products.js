@@ -161,6 +161,11 @@ const productTags =
     "productTags"
   );
 
+const productPlayStoreUrl =
+  document.getElementById(
+    "productPlayStoreUrl"
+  );
+
 const productPrivacyPolicyUrl =
   document.getElementById(
     "productPrivacyPolicyUrl"
@@ -1132,6 +1137,10 @@ function openEditProduct(
       ? product.tags.join(", ")
       : "";
 
+  productPlayStoreUrl.value =
+    product.play_store_url ||
+    "";
+
   productPrivacyPolicyUrl.value =
     product.privacy_policy_url ||
     (
@@ -1762,6 +1771,11 @@ async function saveProduct(
         "Child Safety Standards"
       );
 
+    const playStoreUrl =
+      getOptionalPlayStoreUrl(
+        productPlayStoreUrl.value
+      );
+
 
     const originalProduct =
       products.find(
@@ -1893,6 +1907,9 @@ async function saveProduct(
 
       tags,
 
+      play_store_url:
+        playStoreUrl,
+
       privacy_policy_url:
         privacyPolicyUrl,
 
@@ -1960,7 +1977,7 @@ async function saveProduct(
         result.error.code === "42703"
       ) {
         throw new Error(
-          "The products table is missing policy link columns. Apply supabase/migrations/20261009_add_product_policy_links.sql, then try again."
+          "The products table is missing product link columns. Apply supabase/migrations/20261009_add_product_policy_links.sql and supabase/migrations/20261027_add_product_play_store_link.sql, then try again."
         );
       }
 
@@ -1997,6 +2014,44 @@ async function saveProduct(
     setSaving(false);
 
   }
+
+}
+
+
+function getOptionalPlayStoreUrl(
+  value
+) {
+
+  const url =
+    value.trim();
+
+
+  if (!url) {
+    return null;
+  }
+
+
+  let parsedUrl;
+
+  try {
+    parsedUrl = new URL(url);
+  } catch {
+    throw new Error(
+      "Google Play Store URL must be a valid https URL."
+    );
+  }
+
+
+  if (
+    parsedUrl.protocol !== "https:"
+  ) {
+    throw new Error(
+      "Google Play Store URL must use https."
+    );
+  }
+
+
+  return parsedUrl.href;
 
 }
 

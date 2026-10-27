@@ -13,6 +13,18 @@ can select **View full project > Get it on Google Play** on the website.
 Leaving the field blank hides the button; clearing it on an existing project removes
 the link.
 
+## Product Play Store links
+
+Before deploying the updated product page, apply
+[`supabase/migrations/20261027_add_product_play_store_link.sql`](supabase/migrations/20261027_add_product_play_store_link.sql)
+to the site's Supabase database. This adds the optional `products.play_store_url`
+column without changing existing products.
+
+In **Admin > Products**, enter a product's Google Play URL in **Google Play Store URL**.
+Published products with a URL show a **Download on Google Play** button; products
+without one keep their existing contact action, and Wantok Chat continues to show
+that its Play Store link is coming soon.
+
 Run the project link regression tests with Node.js (no dependencies required):
 
 ```sh

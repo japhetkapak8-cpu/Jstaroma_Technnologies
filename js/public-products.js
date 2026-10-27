@@ -5,9 +5,6 @@ from "./supabase.js";
 let products = [];
 let filteredProducts = [];
 
-// Add Wantok Chat's published Google Play URL here when it is available.
-const wantokPlayStoreUrl = "";
-
 
 const grid =
   document.getElementById(
@@ -437,6 +434,11 @@ function createProductCard(
   const isWantokChat =
     productText.includes("wantok chat");
 
+  const playStoreUrl =
+    getSafePolicyUrl(
+      product.play_store_url
+    );
+
   const meta =
     document.createElement(
       "div"
@@ -515,7 +517,7 @@ function createProductCard(
 
   const primary =
     document.createElement(
-      isWantokChat && !wantokPlayStoreUrl
+      isWantokChat && !playStoreUrl
         ? "button"
         : "a"
     );
@@ -523,24 +525,24 @@ function createProductCard(
   primary.className =
     "product-primary-btn";
 
-  if (isWantokChat && !wantokPlayStoreUrl) {
+  if (isWantokChat && !playStoreUrl) {
     primary.type = "button";
     primary.disabled = true;
     primary.textContent = "Play Store link coming soon";
   } else {
     primary.href =
-      isWantokChat
-        ? wantokPlayStoreUrl
+      playStoreUrl
+        ? playStoreUrl
         : "index.html#contact";
 
-    if (isWantokChat) {
+    if (playStoreUrl) {
       primary.target = "_blank";
       primary.rel = "noopener noreferrer";
     }
 
     primary.innerHTML =
       `
-        ${isWantokChat ? "Download on Google Play" : "Contact About Product"}
+        ${playStoreUrl ? "Download on Google Play" : "Contact About Product"}
         <i class="fa-solid fa-arrow-right"></i>
       `;
   }
