@@ -27,7 +27,7 @@
 
   <link
     rel="stylesheet"
-    href="./css/admin-products.css?v=20261009-1"
+    href="./css/admin-products.css?v=20261027-2"
   >
 
 
@@ -386,15 +386,15 @@
 
       <select
         id="statusFilter"
-        aria-label="Filter products by status"
+        aria-label="Filter products by site visibility"
       >
 
         <option value="All">
-          All Statuses
+          All Visibility
         </option>
 
         <option value="Published">
-          Published
+          Live on site
         </option>
 
         <option value="Draft">
@@ -674,6 +674,26 @@
 
           <small>
             Use 0 for unavailable / Coming Soon.
+          </small>
+
+        </div>
+
+
+        <div class="product-form-group">
+
+          <label for="productLifecycleStatus">
+            Product Status
+          </label>
+
+          <select id="productLifecycleStatus">
+            <option value="coming_soon">Coming Soon</option>
+            <option value="in_progress">In Progress</option>
+            <option value="in_production">In Production</option>
+            <option value="published">Published</option>
+          </select>
+
+          <small>
+            This status appears on the public product card. The Published toggle below controls site visibility.
           </small>
 
         </div>
@@ -981,7 +1001,7 @@
 
 
 <script
-  src="./js/products.js?v=20261027-1"
+  src="./js/products.js?v=20261027-2"
 ></script>
 
 

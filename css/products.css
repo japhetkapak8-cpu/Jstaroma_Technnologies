@@ -548,7 +548,7 @@
 
 .products-section
 .dynamic-product-card
-.product-status.available {
+.product-status.published {
   color: #62e29c;
 
   background:
@@ -571,6 +571,23 @@
   border:
     1px solid
     rgba(243, 190, 89, 0.17);
+}
+
+
+.products-section
+.dynamic-product-card
+.product-status.in-progress,
+.products-section
+.dynamic-product-card
+.product-status.in-production {
+  color: #71b7ff;
+
+  background:
+    rgba(59, 130, 246, 0.10);
+
+  border:
+    1px solid
+    rgba(59, 130, 246, 0.20);
 }
 
 

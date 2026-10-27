@@ -131,6 +131,11 @@ const productStock =
     "productStock"
   );
 
+const productLifecycleStatus =
+  document.getElementById(
+    "productLifecycleStatus"
+  );
+
 const productImageFile =
   document.getElementById(
     "productImageFile"
@@ -787,12 +792,34 @@ function createProductCard(
 
   statusBadge.textContent =
     product.published
-      ? "Published"
+      ? "Live"
       : "Draft";
-
 
   badges.appendChild(
     statusBadge
+  );
+
+  const lifecycleBadge =
+    document.createElement(
+      "span"
+    );
+
+  const lifecycleStatus =
+    getProductLifecycleStatus(
+      product.lifecycle_status,
+      product.stock
+    );
+
+  lifecycleBadge.className =
+    `admin-badge lifecycle-${lifecycleStatus.replaceAll("_", "-")}`;
+
+  lifecycleBadge.textContent =
+    getProductLifecycleLabel(
+      lifecycleStatus
+    );
+
+  badges.appendChild(
+    lifecycleBadge
   );
 
 
@@ -1124,6 +1151,12 @@ function openEditProduct(
     product.stock ??
     0;
 
+  productLifecycleStatus.value =
+    getProductLifecycleStatus(
+      product.lifecycle_status,
+      product.stock
+    );
+
 
   productDescription.value =
     product.description ||
@@ -1294,6 +1327,9 @@ function resetForm() {
 
   productStock.value =
     "0";
+
+  productLifecycleStatus.value =
+    "coming_soon";
 
 
   productFeatured.checked =
@@ -1899,6 +1935,9 @@ async function saveProduct(
           0
         ),
 
+      lifecycle_status:
+        productLifecycleStatus.value,
+
       image_url:
         imageUrl,
 
@@ -1977,7 +2016,7 @@ async function saveProduct(
         result.error.code === "42703"
       ) {
         throw new Error(
-          "The products table is missing product link columns. Apply supabase/migrations/20261009_add_product_policy_links.sql and supabase/migrations/20261027_add_product_play_store_link.sql, then try again."
+          "The products table is missing product link or status columns. Apply supabase/migrations/20261009_add_product_policy_links.sql, supabase/migrations/20261027_add_product_play_store_link.sql, and supabase/migrations/20261027_add_product_lifecycle_status.sql, then try again."
         );
       }
 
@@ -2014,6 +2053,42 @@ async function saveProduct(
     setSaving(false);
 
   }
+
+}
+
+function getProductLifecycleStatus(
+  status,
+  stock
+) {
+
+  const allowedStatuses = [
+    "coming_soon",
+    "in_progress",
+    "in_production",
+    "published"
+  ];
+
+  if (allowedStatuses.includes(status)) {
+    return status;
+  }
+
+  return Number(stock || 0) > 0
+    ? "published"
+    : "coming_soon";
+
+}
+
+
+function getProductLifecycleLabel(
+  status
+) {
+
+  return {
+    coming_soon: "Coming Soon",
+    in_progress: "In Progress",
+    in_production: "In Production",
+    published: "Published"
+  }[status] || "Coming Soon";
 
 }
 

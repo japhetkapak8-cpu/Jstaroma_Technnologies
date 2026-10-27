@@ -278,26 +278,23 @@ function createProductCard(
       product.stock || 0
     );
 
-
-  if (stock > 0) {
-
-    status.textContent =
-      "AVAILABLE";
-
-    status.classList.add(
-      "available"
+  const lifecycleStatus =
+    getProductLifecycleStatus(
+      product.lifecycle_status,
+      stock
     );
 
-  } else {
+  status.textContent =
+    {
+      coming_soon: "COMING SOON",
+      in_progress: "IN PROGRESS",
+      in_production: "IN PRODUCTION",
+      published: "PUBLISHED"
+    }[lifecycleStatus];
 
-    status.textContent =
-      "COMING SOON";
-
-    status.classList.add(
-      "coming-soon"
-    );
-
-  }
+  status.classList.add(
+    lifecycleStatus.replaceAll("_", "-")
+  );
 
 
   top.append(
@@ -752,6 +749,29 @@ function createProductCard(
 
 
   return article;
+
+}
+
+
+function getProductLifecycleStatus(
+  status,
+  stock
+) {
+
+  const allowedStatuses = [
+    "coming_soon",
+    "in_progress",
+    "in_production",
+    "published"
+  ];
+
+  if (allowedStatuses.includes(status)) {
+    return status;
+  }
+
+  return stock > 0
+    ? "published"
+    : "coming_soon";
 
 }
 

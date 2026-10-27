@@ -150,18 +150,27 @@ test("admin saves, edits, and clears an optional product Play Store URL", async 
   const client = createClient();
   const { elements, errors, api, html } = await loadAdmin(client);
   assert.match(html, /id="productPlayStoreUrl"\s+type="url"/);
+  assert.match(html, /id="productLifecycleStatus"/);
   elements.get("productName").value = "Example App";
   elements.get("productCategory").value = "Software";
   elements.get("productPlayStoreUrl").value = ` ${playStoreUrl} `;
+  elements.get("productLifecycleStatus").value = "in_progress";
 
   await api.saveProduct({ preventDefault() {} });
 
   assert.equal(client.writes[0].operation, "insert");
   assert.equal(client.writes[0].payload.play_store_url, playStoreUrl);
+  assert.equal(client.writes[0].payload.lifecycle_status, "in_progress");
   assert.deepEqual(errors, []);
 
-  api.openEditProduct({ id: "app-1", name: "Example App", play_store_url: playStoreUrl });
+  api.openEditProduct({
+    id: "app-1",
+    name: "Example App",
+    play_store_url: playStoreUrl,
+    lifecycle_status: "in_production"
+  });
   assert.equal(elements.get("productPlayStoreUrl").value, playStoreUrl);
+  assert.equal(elements.get("productLifecycleStatus").value, "in_production");
 });
 
 test("admin rejects insecure product Play Store URLs and keeps the entered value", async () => {
@@ -185,6 +194,7 @@ test("published product cards use configured download links and preserve existin
   const linkedCard = createProductCard({
     name: "Example App",
     category: "Software",
+    lifecycle_status: "published",
     play_store_url: playStoreUrl
   });
   const download = findByClass(linkedCard, "product-primary-btn");
@@ -192,6 +202,8 @@ test("published product cards use configured download links and preserve existin
   assert.equal(download.target, "_blank");
   assert.equal(download.rel, "noopener noreferrer");
   assert.match(download.innerHTML, /Download on Google Play/);
+  const lifecycleBadge = findByClass(linkedCard, "product-status");
+  assert.equal(lifecycleBadge.textContent, "PUBLISHED");
 
   const ordinaryCard = createProductCard({ name: "Other Product" });
   assert.equal(findByClass(ordinaryCard, "product-primary-btn").href, "index.html#contact");
@@ -200,4 +212,17 @@ test("published product cards use configured download links and preserve existin
   const wantokButton = findByClass(wantokCard, "product-primary-btn");
   assert.equal(wantokButton.disabled, true);
   assert.equal(wantokButton.textContent, "Play Store link coming soon");
+  assert.equal(findByClass(wantokCard, "product-status").textContent, "COMING SOON");
+
+  const inProgressCard = createProductCard({
+    name: "In Development",
+    lifecycle_status: "in_progress"
+  });
+  assert.equal(findByClass(inProgressCard, "product-status").textContent, "IN PROGRESS");
+
+  const inProductionCard = createProductCard({
+    name: "In Production",
+    lifecycle_status: "in_production"
+  });
+  assert.equal(findByClass(inProductionCard, "product-status").textContent, "IN PRODUCTION");
 });

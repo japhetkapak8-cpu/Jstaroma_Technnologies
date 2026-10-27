@@ -25,6 +25,18 @@ Published products with a URL show a **Download on Google Play** button; product
 without one keep their existing contact action, and Wantok Chat continues to show
 that its Play Store link is coming soon.
 
+## Product lifecycle statuses
+
+Before deploying product lifecycle statuses, apply
+[`supabase/migrations/20261027_add_product_lifecycle_status.sql`](supabase/migrations/20261027_add_product_lifecycle_status.sql)
+to the site's Supabase database. Existing products are assigned **Published** when
+they have stock and **Coming Soon** otherwise.
+
+In **Admin > Products**, choose **Coming Soon**, **In Progress**, **In Production**,
+or **Published** in the Product Status field. This status is shown on the public
+product card; the separate Published toggle still controls whether the product is
+visible on the site.
+
 Run the project link regression tests with Node.js (no dependencies required):
 
 ```sh
