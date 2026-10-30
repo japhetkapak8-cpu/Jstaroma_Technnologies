@@ -5,6 +5,11 @@ from "../../js/supabase.js";
 const BUCKET_NAME =
   "project-images";
 
+const DOCUMENT_BUCKET_NAME = "project-documents";
+const projectDocumentInput = document.getElementById("projectDocument");
+const currentProjectDocument = document.getElementById("currentProjectDocument");
+const removeProjectDocument = document.getElementById("removeProjectDocument");
+
 
 let projects = [];
 
@@ -536,6 +541,7 @@ projectForm.addEventListener(
     let uploadedNewImagePath =
       null;
 
+    let uploadedNewDocumentPath = null;
 
     try {
 
@@ -560,6 +566,22 @@ projectForm.addEventListener(
         existingProject?.image_path ||
         null;
 
+      const selectedDocument = projectDocumentInput.files[0];
+      if (selectedDocument && removeProjectDocument.checked) {
+        throw new Error("Choose a new document or remove the current document, not both.");
+      }
+      if (selectedDocument) {
+        validateDocument(selectedDocument);
+      }
+
+      let documentUrl = existingProject?.document_url || null;
+      let documentPath = existingProject?.document_path || null;
+      let documentName = existingProject?.document_name || null;
+      if (removeProjectDocument.checked) {
+        documentUrl = null;
+        documentPath = null;
+        documentName = null;
+      }
 
       // ========================================
       // UPLOAD NEW IMAGE
@@ -655,6 +677,26 @@ projectForm.addEventListener(
       }
 
 
+      if (selectedDocument) {
+        const extension = getFileExtension(selectedDocument.name);
+        const filePath = `projects/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+        const { error } = await supabase.storage
+          .from(DOCUMENT_BUCKET_NAME)
+          .upload(filePath, selectedDocument, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: documentContentTypes[extension]
+          });
+        if (error) {
+          throw error;
+        }
+        uploadedNewDocumentPath = filePath;
+        const { data } = supabase.storage.from(DOCUMENT_BUCKET_NAME).getPublicUrl(filePath);
+        documentUrl = data.publicUrl;
+        documentPath = filePath;
+        documentName = selectedDocument.name;
+      }
+
       // ========================================
       // PROJECT PAYLOAD
       // ========================================
@@ -700,6 +742,10 @@ projectForm.addEventListener(
 
         image_path:
           imagePath,
+
+        document_url: documentUrl,
+        document_path: documentPath,
+        document_name: documentName,
 
         updated_at:
           new Date()
@@ -765,6 +811,12 @@ projectForm.addEventListener(
 
       }
 
+      uploadedNewImagePath = null;
+      uploadedNewDocumentPath = null;
+      let documentCleanupFailed = false;
+      if (existingProject?.document_path && existingProject.document_path !== documentPath) {
+        documentCleanupFailed = !(await removeStoredDocument(existingProject.document_path));
+      }
 
       // ========================================
       // DELETE OLD IMAGE AFTER SUCCESSFUL EDIT
@@ -819,6 +871,9 @@ projectForm.addEventListener(
         "success"
       );
 
+      if (documentCleanupFailed) {
+        showMessage("Project saved, but the old document could not be deleted from storage.", "error");
+      }
 
       resetForm();
 
@@ -842,7 +897,7 @@ projectForm.addEventListener(
       uploadedNewImagePath
     ) {
 
-      await supabase.storage
+      const { error: cleanupError } = await supabase.storage
         .from(
           BUCKET_NAME
         )
@@ -850,12 +905,19 @@ projectForm.addEventListener(
           uploadedNewImagePath
         ]);
 
+      if (cleanupError) {
+        console.warn("New image could not be removed after save failure:", cleanupError);
+      }
     }
 
+    let documentCleanupFailed = false;
+    if (uploadedNewDocumentPath) {
+      documentCleanupFailed = !(await removeStoredDocument(uploadedNewDocumentPath));
+    }
 
     showMessage(
-      error.message ||
-      "Could not save project.",
+      (error.message || "Could not save project.") +
+        (documentCleanupFailed ? " The uploaded document could not be removed from storage." : ""),
       "error"
     );
 
@@ -1005,6 +1067,12 @@ function editProject(
     project.image_path ||
     null;
 
+  projectImageInput.value = "";
+  projectDocumentInput.value = "";
+  removeProjectDocument.checked = false;
+  currentProjectDocument.textContent = project.document_name
+    ? `Current document: ${project.document_name}`
+    : project.document_url ? "Current document attached." : "No document attached.";
 
   formTitle.textContent =
     "Edit Project";
@@ -1117,9 +1185,13 @@ async function deleteProject(
     }
 
 
+    const documentRemoved = !project.document_path ||
+      await removeStoredDocument(project.document_path);
     showMessage(
-      "Project deleted successfully.",
-      "success"
+      documentRemoved
+        ? "Project deleted successfully."
+        : "Project deleted, but its document could not be removed from storage.",
+      documentRemoved ? "success" : "error"
     );
 
 
@@ -1191,6 +1263,36 @@ function resetForm() {
   projectImageInput.value =
     "";
 
+  projectDocumentInput.value = "";
+  removeProjectDocument.checked = false;
+  currentProjectDocument.textContent = "";
+}
+
+const documentContentTypes = {
+  pdf: "application/pdf",
+  doc: "application/msword",
+  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+};
+
+function validateDocument(file) {
+  const extension = getFileExtension(file.name);
+  const contentType = documentContentTypes[extension];
+  if (!Object.hasOwn(documentContentTypes, extension) ||
+      (file.type && file.type !== contentType && file.type !== "application/octet-stream")) {
+    throw new Error("Please upload a PDF or Word document (.doc or .docx).");
+  }
+  if (file.size === 0 || file.size > 10 * 1024 * 1024) {
+    throw new Error("Project document must be non-empty and no larger than 10 MB.");
+  }
+}
+
+async function removeStoredDocument(filePath) {
+  const { error } = await supabase.storage.from(DOCUMENT_BUCKET_NAME).remove([filePath]);
+  if (error) {
+    console.warn("Project document could not be deleted:", error);
+    return false;
+  }
+  return true;
 }
 
 

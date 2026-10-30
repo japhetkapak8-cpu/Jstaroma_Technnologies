@@ -438,6 +438,25 @@
 
 
 
+        <div class="form-group">
+          <label for="projectDocument">Project Document (optional)</label>
+          <input
+            type="file"
+            id="projectDocument"
+            accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            aria-describedby="projectDocumentHelp currentProjectDocument"
+          >
+          <small id="projectDocumentHelp">
+            Upload a PDF or Word document (.doc or .docx), up to 10 MB.
+            When editing, leave blank to keep the current document.
+          </small>
+          <p id="currentProjectDocument"></p>
+          <label>
+            <input type="checkbox" id="removeProjectDocument">
+            Remove current document
+          </label>
+        </div>
+
         <!-- PUBLISH -->
 
         <label class="publish-option">
@@ -557,7 +576,7 @@
 
 <script
   type="module"
-  src="js/projects.js?v=20261026-1"
+  src="js/projects.js?v=20261030-1"
 ></script>
 
 

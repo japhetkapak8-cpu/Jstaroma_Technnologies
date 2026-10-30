@@ -1102,12 +1102,15 @@
     <div class="project-modal-image-wrapper">
 
 
+      <a id="projectModalImageLink" target="_blank" rel="noopener noreferrer"
+        aria-label="View full-size project image (opens in a new tab)">
       <img
         src=""
         alt="Project preview"
         id="projectModalImage"
         class="project-modal-image"
       >
+      </a>
 
 
       <div
@@ -1176,6 +1179,20 @@
 
       <div class="project-modal-buttons">
 
+        <button type="button" id="projectModalDownloadImage"
+          class="modal-button modal-button-secondary" style="display: none;">
+          Download Image
+        </button>
+
+        <a id="projectModalDocument" class="modal-button modal-button-secondary"
+          target="_blank" rel="noopener noreferrer" style="display: none;">
+          View Document
+        </a>
+
+        <button type="button" id="projectModalDownloadDocument"
+          class="modal-button modal-button-secondary" style="display: none;">
+          Download Document
+        </button>
 
         <a
           href="#"
@@ -1224,6 +1241,7 @@
 
       </div>
 
+      <p id="projectDownloadMessage" role="status" aria-live="polite"></p>
 
     </div>
 
@@ -1393,7 +1411,7 @@
 
 <script
   type="module"
-  src="js/public-projects.js?v=20261026-1"
+  src="js/public-projects.js?v=20261030-1"
 ></script>
 
 

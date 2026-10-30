@@ -17,6 +17,11 @@ let currentFilter = "All";
 
 let lastFocusedElement = null;
 
+const projectModalImageLink = document.getElementById("projectModalImageLink");
+const projectModalDownloadImage = document.getElementById("projectModalDownloadImage");
+const projectModalDocument = document.getElementById("projectModalDocument");
+const projectModalDownloadDocument = document.getElementById("projectModalDownloadDocument");
+const projectDownloadMessage = document.getElementById("projectDownloadMessage");
 
 
 /* =========================================================
@@ -333,6 +338,13 @@ function createProjectCard(
 
   if (imageURL) {
 
+    const imageLink = document.createElement("a");
+    imageLink.href = imageURL;
+    imageLink.target = "_blank";
+    imageLink.rel = "noopener noreferrer";
+    imageLink.className = "project-image-link";
+    imageLink.setAttribute("aria-label", `View full-size image: ${project.title || "project"} (opens in a new tab)`);
+
     const image =
       document.createElement(
         "img"
@@ -376,9 +388,8 @@ function createProjectCard(
     );
 
 
-    imageWrapper.appendChild(
-      image
-    );
+    imageLink.appendChild(image);
+    imageWrapper.appendChild(imageLink);
 
   }
 
@@ -896,6 +907,12 @@ function openProjectModal(
     project
   );
 
+  projectDownloadMessage.textContent = "";
+  const imageURL = getProjectImage(project);
+  configureDownload(projectModalDownloadImage, imageURL, "project-image");
+  configureLink(projectModalDocument, project.document_url);
+  configureDownload(projectModalDownloadDocument, normalizeURL(project.document_url),
+    project.document_name || "project-document");
 
 
   /* TOOLS */
@@ -1021,6 +1038,8 @@ function setModalImage(
   projectModalImage.src =
     imageURL;
 
+  configureLink(projectModalImageLink, imageURL);
+  projectModalImageLink.style.display = "block";
 
   projectModalImage.alt =
     project.title
@@ -1058,6 +1077,8 @@ function showModalPlaceholder() {
   projectModalImage.style.display =
     "none";
 
+  projectModalImageLink.style.display = "none";
+  projectModalImageLink.removeAttribute("href");
 
   projectModalImage.removeAttribute(
     "src"
@@ -1163,7 +1184,6 @@ function configureLink(
     return;
   }
 
-
   const url =
     normalizeURL(
       value
@@ -1204,6 +1224,42 @@ function configureLink(
 }
 
 
+
+function configureDownload(element, url, fileName) {
+  element.style.display = url ? "inline-flex" : "none";
+  element.disabled = false;
+  element.onclick = url ? async () => {
+    element.disabled = true;
+    projectDownloadMessage.textContent = "Downloading...";
+    try {
+      // Blob URLs trigger downloads even when storage is on a different origin.
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Download failed (${response.status}).`);
+      }
+      const blob = await response.blob();
+      const objectURL = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectURL;
+      const imageExtension = {
+        "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"
+      }[blob.type];
+      link.download = fileName === "project-image" && imageExtension
+        ? `${fileName}.${imageExtension}` : fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(objectURL), 1000);
+      projectDownloadMessage.textContent = "Download started.";
+    } catch (error) {
+      console.error("Project download error:", error);
+      projectDownloadMessage.textContent =
+        "Could not download the file. Please try again or open it in a new tab.";
+    } finally {
+      element.disabled = false;
+    }
+  } : null;
+}
 
 /* =========================================================
    CLOSE PROJECT MODAL

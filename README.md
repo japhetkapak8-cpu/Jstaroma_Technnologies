@@ -1,5 +1,24 @@
 # Jstaroma_Technnologies
 
+## Project images and documents
+
+Visitors can click a project image to open the full-size original in a new tab.
+**View full project** includes **Download Image**, plus **View Document** and
+**Download Document** when a document is attached. Existing project links remain
+available.
+
+Before deploying, apply
+[`supabase/migrations/20261030_add_project_documents.sql`](supabase/migrations/20261030_add_project_documents.sql)
+in Supabase. It adds optional document fields and a public `project-documents`
+bucket with admin-only uploads/deletions and a 10 MB limit. Attached documents
+are public files; do not upload confidential material, even to draft projects.
+
+In **Admin > Projects**, use **Project Document** to attach one PDF or Word file
+(`.pdf`, `.doc`, `.docx`). Leave it blank when editing to keep the current file,
+choose another file to replace it, or select **Remove current document**.
+Replaced/removed documents and deleted projects' documents are cleaned up from
+storage. Failed database saves roll back new uploads and report errors.
+
 ## Project Play Store links
 
 Before deploying the updated project pages, apply
@@ -37,7 +56,7 @@ or **Published** in the Product Status field. This status is shown on the public
 product card; the separate Published toggle still controls whether the product is
 visible on the site.
 
-Run the project link regression tests with Node.js (no dependencies required):
+Run the project link, image and document regression tests with Node.js (no dependencies required):
 
 ```sh
 node --experimental-vm-modules --test admin/js/tests/project-links.test.cjs
