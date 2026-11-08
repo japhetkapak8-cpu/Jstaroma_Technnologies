@@ -1,0 +1,294 @@
+.analytics-refresh {
+  padding: 12px 18px;
+  border: 1px solid #1678cc;
+  border-radius: 8px;
+  background: #1678cc;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.analytics-refresh:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.analytics-refresh:focus-visible {
+  outline: 3px solid #12263f;
+  outline-offset: 3px;
+}
+
+.analytics-connection,
+.analytics-panel {
+  padding: 24px;
+}
+
+.analytics-connection p,
+.analytics-panel p {
+  color: #64798d;
+  line-height: 1.6;
+}
+
+.analytics-connection p:last-child {
+  margin-bottom: 0;
+}
+
+.analytics-stats small {
+  display: block;
+  margin-top: 8px;
+  color: #64798d;
+  line-height: 1.5;
+}
+
+.analytics-stats strong {
+  overflow-wrap: anywhere;
+}
+
+.analytics-charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.analytics-panel h2 {
+  margin-top: 0;
+}
+
+.analytics-chart {
+  min-height: 100px;
+  color: #64798d;
+}
+
+.analytics-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.analytics-chart polyline {
+  fill: none;
+  stroke: #1678cc;
+  stroke-width: 3;
+}
+
+.analytics-chart circle {
+  fill: #1678cc;
+}
+
+.analytics-chart text {
+  fill: #64798d;
+  font-size: 12px;
+}
+
+.analytics-table-wrap {
+  overflow-x: auto;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.analytics-table caption {
+  text-align: left;
+  padding-bottom: 12px;
+  color: #64798d;
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e4eaf0;
+}
+
+.analytics-error,
+.analytics-connection .analytics-error {
+  color: #b42318;
+}
+
+.analytics-section-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.analytics-section-nav a {
+  padding: 10px 14px;
+  border: 1px solid #dce4ec;
+  border-radius: 8px;
+  background: white;
+  color: #12263f;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.analytics-section-nav a:hover,
+.analytics-section-nav a:focus-visible {
+  border-color: #1678cc;
+  color: #1678cc;
+}
+
+.analytics-toolbar {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 14px;
+}
+
+.analytics-toolbar label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.analytics-toolbar p {
+  flex-basis: 100%;
+  margin-bottom: 0;
+}
+
+.analytics-toolbar .investor-toggle {
+  display: flex;
+  align-items: center;
+}
+
+.analytics-toolbar input,
+.analytics-toolbar select,
+.analytics-panel select,
+.interactive-map select {
+  max-width: 100%;
+  border: 1px solid #ccd7e2;
+  border-radius: 8px;
+  padding: 10px;
+  font: inherit;
+  background: white;
+  color: #12263f;
+}
+
+.analytics-toolbar button,
+.map-controls button {
+  padding: 11px 14px;
+  border: 1px solid #1678cc;
+  border-radius: 8px;
+  background: #e6f2ff;
+  color: #12263f;
+  font: inherit;
+  cursor: pointer;
+}
+
+.analytics-toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.metric-unavailable {
+  color: #64798d;
+}
+
+.platform-stat {
+  align-items: start;
+  border-top: 3px solid #2386df;
+}
+
+.analytics-detail {
+  scroll-margin-top: 20px;
+}
+
+.interactive-map svg {
+  width: 100%;
+  height: 340px;
+  display: block;
+  margin-top: 12px;
+  background: #eaf3f9;
+  border-radius: 12px;
+  touch-action: pan-y;
+}
+
+.interactive-map path {
+  fill: #b9c9d8;
+  stroke: #fff;
+  stroke-width: 0.08;
+  cursor: pointer;
+}
+
+.interactive-map path:hover,
+.interactive-map path:focus,
+.interactive-map path.selected {
+  fill: #1678cc;
+  outline: none;
+  stroke: #071d31;
+}
+
+.map-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.map-attribution {
+  font-size: 12px;
+}
+
+.investor-mode .analytics-detail {
+  display: none;
+}
+
+.admin-sidebar {
+  overflow-y: auto;
+}
+
+.analytics-sidebar-sections {
+  padding: 0 18px 18px;
+  font-size: 13px;
+}
+
+.analytics-sidebar-sections summary {
+  color: #bcd0e2;
+}
+
+.analytics-sidebar-sections a {
+  display: block;
+  color: #dce8f3;
+  text-decoration: none;
+  padding: 8px;
+}
+
+.analytics-sidebar-sections a:hover,
+.analytics-sidebar-sections a:focus-visible {
+  color: white;
+  background: #123c61;
+  border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+  .analytics-sidebar-sections {
+    display: none;
+  }
+}
+
+details summary {
+  cursor: pointer;
+  color: #1678cc;
+  padding: 12px 0;
+}
+
+@media (max-width: 1100px) {
+  .analytics-charts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .analytics-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
