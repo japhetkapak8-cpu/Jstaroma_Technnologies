@@ -1,0 +1,6 @@
+project_id = "jstaroma-technologies"
+
+[functions.wantok-chat-analytics]
+# The handler validates the token with Jstaroma Auth and checks public.admins.
+# This also supports Supabase's newer asymmetric signing keys.
+verify_jwt = false

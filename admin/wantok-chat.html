@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wantok Chat Analytics | JStaroma Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/wantok-chat.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <div class="small-brand-mark">JT</div>
+        <div><strong>JSTAROMA</strong><span>Admin</span></div>
+      </div>
+      <nav class="admin-nav" aria-label="Admin navigation">
+        <a href="dashboard.html"><i class="fa-solid fa-chart-line" aria-hidden="true"></i>Dashboard</a>
+        <a href="projects.html"><i class="fa-solid fa-folder-open" aria-hidden="true"></i>Projects</a>
+        <a href="achievements.html"><i class="fa-solid fa-award" aria-hidden="true"></i>Achievements</a>
+        <a href="products.html"><i class="fa-solid fa-box-open" aria-hidden="true"></i>Products</a>
+        <a href="wantok-chat.html" class="active" aria-current="page"><i class="fa-solid fa-comments" aria-hidden="true"></i>Wantok Chat</a>
+        <a href="../index.html" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-globe" aria-hidden="true"></i>View Website</a>
+      </nav>
+      <details class="analytics-sidebar-sections" open>
+        <summary>Analytics sections</summary>
+        <nav aria-label="Analytics sidebar">
+          <a href="#overviewSection">Overview</a><a href="#geographySection">Geography</a>
+          <a href="#growthSection">Growth &amp; retention</a><a href="#engagementSection">Messaging &amp; calls</a>
+          <a href="#performanceSection">Performance &amp; devices</a><a href="#financeSection">Infrastructure &amp; finance</a>
+          <a href="#safetySection">Trust &amp; safety</a><a href="#sourcesSection">Sources</a>
+        </nav>
+      </details>
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="logout-btn" type="button"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout</button>
+      </div>
+    </aside>
+    <main class="admin-main" id="analyticsMain">
+      <div class="page-header">
+        <div>
+          <span class="admin-eyebrow">JSTAROMA ADMIN</span>
+          <h1>Wantok Chat Analytics</h1>
+          <p>Aggregated insights from Wantok Chat's separate Supabase project.</p>
+        </div>
+        <button id="refreshAnalytics" class="analytics-refresh" type="button" disabled>Refresh analytics</button>
+      </div>
+      <nav class="analytics-section-nav" aria-label="Wantok analytics sections">
+        <a href="#overviewSection">Overview</a><a href="#geographySection">Geography</a>
+        <a href="#growthSection">Growth &amp; retention</a><a href="#engagementSection">Messaging &amp; calls</a>
+        <a href="#performanceSection">Performance &amp; devices</a><a href="#financeSection">Infrastructure &amp; finance</a>
+        <a href="#safetySection">Trust &amp; safety</a><a href="#sourcesSection">Sources</a>
+      </nav>
+      <form id="analyticsFilters" class="analytics-toolbar admin-card">
+        <label>UTC date range
+          <select id="datePreset"><option value="7">Last 7 complete days</option><option value="30" selected>Last 30 complete days</option><option value="90">Last 90 complete days</option><option value="custom">Custom</option></select>
+        </label>
+        <label>Start <input id="dateStart" type="date" required></label>
+        <label>End <input id="dateEnd" type="date" required></label>
+        <button id="applyDateRange" type="submit" disabled>Apply range</button>
+        <button id="exportAnalytics" type="button" disabled>Export aggregate CSV</button>
+        <label class="investor-toggle"><input id="investorView" type="checkbox"> Investor summary</label>
+        <p id="filterStatus" role="status">Totals are current records; filters affect period registrations, messages and calls only.</p>
+      </form>
+      <section class="analytics-connection admin-card" aria-label="Data connection">
+        <strong id="connectionLabel">Not connected</strong>
+        <p id="analyticsStatus" role="status" aria-live="polite">Checking Jstaroma admin authorization...</p>
+        <p id="analyticsPeriod">Counts will be current stored-record totals. MAU, DAU and retention require verified app activity tracking.</p>
+        <p id="activityTrackingStatus">Chat-message activity is not app activity. MAU, DAU, growth charts and retention are Not connected until their sources are verified.</p>
+        <p id="analyticsUpdated">No verified snapshot loaded.</p>
+      </section>
+      <section id="overviewSection" aria-labelledby="overviewHeading">
+        <h2 id="overviewHeading">Overview</h2>
+        <div class="dashboard-stats analytics-stats">
+          <div class="dashboard-stat"><div><span>Registered users</span><strong id="registered_users">Not connected</strong><small>Total registered accounts</small></div></div>
+          <div class="dashboard-stat"><div><span>Monthly active users (MAU)</span><strong id="mau">Not connected</strong><small>Requires verified app activity tracking</small></div></div>
+          <div class="dashboard-stat"><div><span>Daily active users (DAU)</span><strong id="dau">Not connected</strong><small>Requires verified app activity tracking</small></div></div>
+          <div class="dashboard-stat"><div><span>Messages</span><strong id="messages">Not connected</strong><small id="messagesDescription">Stored messages excluding call-type and deleted-for-everyone records</small></div></div>
+          <div class="dashboard-stat"><div><span>Calls</span><strong id="calls">Not connected</strong><small id="callsDescription">All stored call records, across all statuses; not completed calls</small></div></div>
+          <div class="dashboard-stat"><div><span>Groups</span><strong id="groups">Not connected</strong><small>Total existing groups</small></div></div>
+        </div>
+        <div id="summaryMetrics" class="dashboard-stats analytics-stats"></div>
+        <article class="admin-card analytics-panel">
+          <h2>Executive summary</h2>
+          <p id="investorSummary">Not connected. No investment conclusions can be drawn from unavailable metrics.</p>
+          <p>Counts describe surviving database records, not verified lifetime growth or paying customers. Revenue, costs, app activity and performance require independent verified sources.</p>
+        </article>
+      </section>
+      <section id="geographySection" class="analytics-detail" aria-labelledby="geographyHeading">
+        <h2 id="geographyHeading">Geographic distribution</h2>
+        <p>Countries: Not connected (requires verified Firebase Analytics export). Provinces: Not connected (profile province field and account relationship unverified).</p>
+        <p>Missing locations belong to Unknown, not PNG by default. Groups below 10 users and any complementary totals, percentages or trends must be withheld. Maps show boundaries only until an approved fixed, privacy-safe aggregate is available.</p>
+        <div class="analytics-charts">
+          <article class="admin-card analytics-panel">
+            <h3>World map</h3>
+            <p id="worldMapStatus" role="status">Boundaries not loaded.</p>
+            <div id="worldMap" class="interactive-map"></div>
+            <p id="worldMapSelection" aria-live="polite">Select a country to inspect source availability.</p>
+            <p class="map-attribution">Made with <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener noreferrer">Natural Earth</a>, public domain, 1:110m. Small countries may not have polygons. Boundaries are not an endorsement.</p>
+            <details><summary>Country leaderboard and Unknown</summary><div id="worldLeaderboard" class="analytics-table-wrap">Not connected</div></details>
+          </article>
+          <article class="admin-card analytics-panel">
+            <h3>Papua New Guinea: 22 provinces</h3>
+            <p id="pngMapStatus" role="status">Boundaries not loaded.</p>
+            <div id="pngMap" class="interactive-map"></div>
+            <p id="pngMapSelection" aria-live="polite">Select a province to inspect source availability.</p>
+            <p class="map-attribution">PNG National Statistics Office / OCHA ROAP via <a href="https://www.geoboundaries.org/" target="_blank" rel="noopener noreferrer">geoBoundaries</a>, 2019, <a href="https://creativecommons.org/licenses/by/3.0/igo/" target="_blank" rel="noopener noreferrer">CC BY 3.0 IGO</a>. Upstream simplified boundaries.</p>
+            <details><summary>Provincial leaderboard and Unknown</summary><div id="pngLeaderboard" class="analytics-table-wrap">Not connected</div></details>
+          </article>
+        </div>
+      </section>
+      <section id="growthSection" class="analytics-detail" aria-labelledby="growthSectionHeading">
+        <h2 id="growthSectionHeading">User growth &amp; retention</h2>
+        <article class="admin-card analytics-panel">
+          <h3>Registrations in selected period</h3>
+          <label>Chart interval <select id="registrationInterval"><option value="daily">Daily</option><option value="weekly">Weekly (Monday UTC)</option><option value="monthly">Monthly (UTC)</option></select></label>
+          <p>Counts use surviving accounts' registration dates. Deleted accounts are absent; partial weeks/months contain only selected dates. This is not reconstructed historical account growth.</p>
+          <div id="registrationChart" class="analytics-chart">Not connected</div>
+          <p id="registrationEmpty" role="status"></p>
+        </article>
+        <div id="growthMetrics" class="dashboard-stats analytics-stats"></div>
+        <div class="analytics-charts">
+        <section class="admin-card analytics-panel" aria-labelledby="growthHeading">
+          <h2 id="growthHeading">Registered user growth</h2>
+          <p>Daily total registered users.</p>
+          <div id="registeredGrowth" class="analytics-chart">Not connected</div>
+        </section>
+        <section class="admin-card analytics-panel" aria-labelledby="activityHeading">
+          <h2 id="activityHeading">Daily active user trend</h2>
+          <p>Daily unique active users.</p>
+          <div id="activeGrowth" class="analytics-chart">Not connected</div>
+          <p>MAU trend: Not connected. App activity tracking is required.</p>
+        </section>
+        </div>
+        <section class="admin-card analytics-panel" aria-labelledby="retentionHeading">
+          <h2 id="retentionHeading">User retention</h2>
+          <p>Day 1, 7 and 30 return rates for eligible registration cohorts. App activity tracking is not connected.</p>
+          <p id="retentionStatus">Not connected</p>
+          <div class="analytics-table-wrap">
+            <table class="analytics-table">
+              <caption>Retention by days since registration</caption>
+              <thead><tr><th scope="col">Return day</th><th scope="col">Eligible users</th><th scope="col">Returning users</th><th scope="col">Retention</th></tr></thead>
+              <tbody id="retentionRows">
+                <tr><th scope="row">Day 1</th><td>Not connected</td><td>Not connected</td><td>Not connected</td></tr>
+                <tr><th scope="row">Day 7</th><td>Not connected</td><td>Not connected</td><td>Not connected</td></tr>
+                <tr><th scope="row">Day 30</th><td>Not connected</td><td>Not connected</td><td>Not connected</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+      <section id="engagementSection" class="analytics-detail" aria-labelledby="engagementHeading">
+          <h2 id="engagementHeading">Messaging &amp; calls</h2>
+          <p>Selected UTC period. Message aggregates exclude call-type and deleted-for-everyone rows. Call type counts include all statuses; completion, missed-status column and duration definitions remain unverified.</p>
+          <div id="engagementMetrics" class="dashboard-stats analytics-stats"></div>
+          <div class="analytics-charts">
+            <article class="admin-card analytics-panel"><h3>Daily visible-message records</h3><div id="messageTrend" class="analytics-chart">Not connected</div><p id="messagesEmpty" role="status"></p></article>
+            <article class="admin-card analytics-panel"><h3>Daily call records</h3><div id="callTrend" class="analytics-chart">Not connected</div><p id="callsEmpty" role="status"></p></article>
+          </div>
+          <p>Message/call trends are engagement events, never MAU, DAU or unique app-active users.</p>
+        </section>
+        <section id="performanceSection" class="analytics-detail" aria-labelledby="performanceHeading">
+          <h2 id="performanceHeading">App performance &amp; devices</h2>
+          <div id="performanceMetrics" class="dashboard-stats analytics-stats"></div>
+          <article class="admin-card analytics-panel">
+            <h3>Devices and installation trends</h3>
+            <table class="analytics-table"><thead><tr><th scope="col">Breakdown</th><th scope="col">Status</th><th scope="col">Required source</th></tr></thead><tbody>
+              <tr><th scope="row">Android versions</th><td>Not connected</td><td>Firebase / Google Play aggregate export</td></tr>
+              <tr><th scope="row">Device models</th><td>Not connected</td><td>Privacy-suppressed Firebase aggregates</td></tr>
+              <tr><th scope="row">App versions</th><td>Not connected</td><td>Firebase / Google Play aggregate export</td></tr>
+              <tr><th scope="row">Installation trend</th><td>Not connected</td><td>Google Play Console aggregate export</td></tr>
+            </tbody></table>
+          </article>
+        </section>
+        <section id="financeSection" class="analytics-detail" aria-labelledby="financeHeading">
+          <h2 id="financeHeading">Infrastructure &amp; finance</h2>
+          <p>Billing currency, tax, reconciliation and period attribution must be verified before presenting financial totals. No currency is assumed.</p>
+          <div id="financeMetrics" class="dashboard-stats analytics-stats"></div>
+        </section>
+        <section id="safetySection" class="analytics-detail" aria-labelledby="safetyHeading">
+          <h2 id="safetyHeading">Trust &amp; safety</h2>
+          <p>Aggregate workflows only. No reporter identity, account identity, private conversations, GPS coordinates or recordings are exposed.</p>
+          <div id="safetyMetrics" class="dashboard-stats analytics-stats"></div>
+        </section>
+        <section id="sourcesSection" class="analytics-detail admin-card analytics-panel" aria-labelledby="sourcesHeading">
+          <h2 id="sourcesHeading">Verified source coverage</h2>
+          <p>Prepared integrations are not live connections. Only server-validated Wantok aggregates can populate verified fields. No Firebase, Google Play, LiveKit, billing or moderation API has been configured.</p>
+          <div id="sourceRegistry" class="analytics-table-wrap"></div>
+        </section>
+      <noscript><p class="analytics-error">JavaScript is required to verify admin access and load analytics.</p></noscript>
+    </main>
+  </div>
+  <script type="module" src="js/wantok-chat.js"></script>
+</body>
+</html>
