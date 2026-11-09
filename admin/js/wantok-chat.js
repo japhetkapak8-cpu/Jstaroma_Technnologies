@@ -89,6 +89,9 @@ function renderSnapshot(snapshot) {
   }
   const hasData = METRIC_KEYS.some(key => snapshot.metrics[key] !== null) ||
     snapshot.growth !== null || snapshot.retention !== null;
+  const hero = document.getElementById("analyticsHero");
+  hero.classList.remove("source-loading", "source-connected", "source-unavailable");
+  hero.classList.add(hasData ? "source-connected" : "source-unavailable");
   document.getElementById("connectionLabel").textContent = hasData
     ? "Verified aggregate source" : "Not connected";
   document.getElementById("analyticsUpdated").textContent = snapshot.generated_at
@@ -139,12 +142,15 @@ function renderSnapshot(snapshot) {
 }
 
 async function loadAnalytics() {
+  const hero = document.getElementById("analyticsHero");
   refreshButton.disabled = true;
   document.getElementById("applyDateRange").disabled = true;
   statusElement.classList.remove("analytics-error");
   statusElement.textContent = "Loading aggregated statistics...";
   // Clear the previous snapshot on refresh so failures never look like live data.
   renderSnapshot(disconnectedSnapshot());
+  hero.classList.add("source-loading");
+  hero.classList.remove("source-connected", "source-unavailable");
   try {
     const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
     if (sessionError || !sessionData.session) throw new Error("Admin session unavailable. Please sign in again.");

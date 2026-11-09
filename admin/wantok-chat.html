@@ -37,22 +37,39 @@
       </div>
     </aside>
     <main class="admin-main" id="analyticsMain">
-      <div class="page-header">
+      <div class="page-header analytics-hero source-loading" id="analyticsHero">
         <div class="analytics-heading">
-          <span class="analytics-hero-icon" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
-          <div>
-            <span class="admin-eyebrow">JSTAROMA ADMIN</span>
+          <span class="analytics-hero-icon" aria-hidden="true">
+            <i class="fa-solid fa-comments"></i>
+            <span class="analytics-icon-spark"><i class="fa-solid fa-bolt"></i></span>
+          </span>
+          <div class="analytics-hero-copy">
+            <span class="analytics-kicker"><i class="fa-solid fa-terminal" aria-hidden="true"></i> WANTOK CHAT <span>/</span> ANALYTICS</span>
             <h1>Wantok Chat Analytics</h1>
-            <p>Aggregated insights from Wantok Chat's separate Supabase project.</p>
+            <p>A sharper view of verified platform aggregates.</p>
+            <div class="analytics-hero-tags">
+              <span><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Privacy-safe aggregates</span>
+              <span><i class="fa-regular fa-clock" aria-hidden="true"></i> Snapshot reporting</span>
+            </div>
           </div>
         </div>
-        <button id="refreshAnalytics" class="analytics-refresh" type="button" disabled><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Refresh analytics</button>
+        <div class="analytics-hero-aside">
+          <div class="analytics-source-state" aria-live="polite">
+            <span class="analytics-source-dot" aria-hidden="true"></span>
+            <div><small>DATA SOURCE</small><strong id="connectionLabel">Not connected</strong></div>
+          </div>
+          <div class="analytics-signal" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <button id="refreshAnalytics" class="analytics-refresh" type="button" disabled><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Refresh snapshot</button>
+          <small class="analytics-refresh-note"><i class="fa-regular fa-clock" aria-hidden="true"></i> Manual refresh · not a live stream</small>
+        </div>
       </div>
       <nav class="analytics-section-nav" aria-label="Wantok analytics sections">
-        <a href="#overviewSection">Overview</a><a href="#geographySection">Geography</a>
-        <a href="#growthSection">Growth &amp; retention</a><a href="#engagementSection">Messaging &amp; calls</a>
-        <a href="#performanceSection">Performance &amp; devices</a><a href="#financeSection">Infrastructure &amp; finance</a>
-        <a href="#safetySection">Trust &amp; safety</a><a href="#sourcesSection">Sources</a>
+        <a href="#overviewSection"><i class="fa-solid fa-grip" aria-hidden="true"></i>Overview</a><a href="#geographySection"><i class="fa-solid fa-globe" aria-hidden="true"></i>Geography</a>
+        <a href="#growthSection"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i>Growth &amp; retention</a><a href="#engagementSection"><i class="fa-solid fa-comments" aria-hidden="true"></i>Messaging &amp; calls</a>
+        <a href="#performanceSection"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i>Performance &amp; devices</a><a href="#financeSection"><i class="fa-solid fa-server" aria-hidden="true"></i>Infrastructure &amp; finance</a>
+        <a href="#safetySection"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i>Trust &amp; safety</a><a href="#sourcesSection"><i class="fa-solid fa-database" aria-hidden="true"></i>Sources</a>
       </nav>
       <form id="analyticsFilters" class="analytics-toolbar admin-card">
         <label>UTC date range
@@ -66,14 +83,19 @@
         <p id="filterStatus" role="status">Totals are current records; filters affect period registrations, messages and calls only.</p>
       </form>
       <section class="analytics-connection admin-card" aria-label="Data connection">
-        <strong id="connectionLabel">Not connected</strong>
-        <p id="analyticsStatus" role="status" aria-live="polite">Checking Jstaroma admin authorization...</p>
-        <p id="analyticsPeriod">Counts will be current stored-record totals. MAU, DAU and retention require verified app activity tracking.</p>
-        <p id="activityTrackingStatus">Chat-message activity is not app activity. MAU, DAU, growth charts and retention are Not connected until their sources are verified.</p>
-        <p id="analyticsUpdated">No verified snapshot loaded.</p>
+        <span class="analytics-connection-icon" aria-hidden="true"><i class="fa-solid fa-satellite-dish"></i></span>
+        <div class="analytics-connection-copy">
+          <strong>Snapshot details</strong>
+          <p id="analyticsStatus" role="status" aria-live="polite">Checking Jstaroma admin authorization...</p>
+        </div>
+        <div class="analytics-connection-details">
+          <p id="analyticsPeriod">Counts will be current stored-record totals. MAU, DAU and retention require verified app activity tracking.</p>
+          <p id="activityTrackingStatus">Chat-message activity is not app activity. MAU, DAU, growth charts and retention are Not connected until their sources are verified.</p>
+          <p id="analyticsUpdated">No verified snapshot loaded.</p>
+        </div>
       </section>
       <section id="overviewSection" aria-labelledby="overviewHeading">
-        <h2 id="overviewHeading">Overview</h2>
+        <h2 id="overviewHeading" class="analytics-section-heading"><i class="fa-solid fa-grip" aria-hidden="true"></i> Overview</h2>
         <div class="dashboard-stats analytics-stats">
           <div class="dashboard-stat"><span class="stat-icon blue analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-users"></i></span><div><span>Registered users</span><strong id="registered_users">Not connected</strong><small>Total registered accounts</small></div></div>
           <div class="dashboard-stat"><span class="stat-icon green analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-user-check"></i></span><div><span>Monthly active users (MAU)</span><strong id="mau">Not connected</strong><small>Requires verified app activity tracking</small></div></div>
