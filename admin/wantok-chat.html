@@ -38,12 +38,15 @@
     </aside>
     <main class="admin-main" id="analyticsMain">
       <div class="page-header">
-        <div>
-          <span class="admin-eyebrow">JSTAROMA ADMIN</span>
-          <h1>Wantok Chat Analytics</h1>
-          <p>Aggregated insights from Wantok Chat's separate Supabase project.</p>
+        <div class="analytics-heading">
+          <span class="analytics-hero-icon" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
+          <div>
+            <span class="admin-eyebrow">JSTAROMA ADMIN</span>
+            <h1>Wantok Chat Analytics</h1>
+            <p>Aggregated insights from Wantok Chat's separate Supabase project.</p>
+          </div>
         </div>
-        <button id="refreshAnalytics" class="analytics-refresh" type="button" disabled>Refresh analytics</button>
+        <button id="refreshAnalytics" class="analytics-refresh" type="button" disabled><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Refresh analytics</button>
       </div>
       <nav class="analytics-section-nav" aria-label="Wantok analytics sections">
         <a href="#overviewSection">Overview</a><a href="#geographySection">Geography</a>
@@ -72,12 +75,12 @@
       <section id="overviewSection" aria-labelledby="overviewHeading">
         <h2 id="overviewHeading">Overview</h2>
         <div class="dashboard-stats analytics-stats">
-          <div class="dashboard-stat"><div><span>Registered users</span><strong id="registered_users">Not connected</strong><small>Total registered accounts</small></div></div>
-          <div class="dashboard-stat"><div><span>Monthly active users (MAU)</span><strong id="mau">Not connected</strong><small>Requires verified app activity tracking</small></div></div>
-          <div class="dashboard-stat"><div><span>Daily active users (DAU)</span><strong id="dau">Not connected</strong><small>Requires verified app activity tracking</small></div></div>
-          <div class="dashboard-stat"><div><span>Messages</span><strong id="messages">Not connected</strong><small id="messagesDescription">Stored messages excluding call-type and deleted-for-everyone records</small></div></div>
-          <div class="dashboard-stat"><div><span>Calls</span><strong id="calls">Not connected</strong><small id="callsDescription">All stored call records, across all statuses; not completed calls</small></div></div>
-          <div class="dashboard-stat"><div><span>Groups</span><strong id="groups">Not connected</strong><small>Total existing groups</small></div></div>
+          <div class="dashboard-stat"><span class="stat-icon blue analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-users"></i></span><div><span>Registered users</span><strong id="registered_users">Not connected</strong><small>Total registered accounts</small></div></div>
+          <div class="dashboard-stat"><span class="stat-icon green analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-user-check"></i></span><div><span>Monthly active users (MAU)</span><strong id="mau">Not connected</strong><small>Requires verified app activity tracking</small></div></div>
+          <div class="dashboard-stat"><span class="stat-icon gold analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-user-clock"></i></span><div><span>Daily active users (DAU)</span><strong id="dau">Not connected</strong><small>Requires verified app activity tracking</small></div></div>
+          <div class="dashboard-stat"><span class="stat-icon blue analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-message"></i></span><div><span>Messages</span><strong id="messages">Not connected</strong><small id="messagesDescription">Stored messages excluding call-type and deleted-for-everyone records</small></div></div>
+          <div class="dashboard-stat"><span class="stat-icon green analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span><div><span>Calls</span><strong id="calls">Not connected</strong><small id="callsDescription">All stored call records, across all statuses; not completed calls</small></div></div>
+          <div class="dashboard-stat"><span class="stat-icon gold analytics-stat-icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span><div><span>Groups</span><strong id="groups">Not connected</strong><small>Total existing groups</small></div></div>
         </div>
         <div id="summaryMetrics" class="dashboard-stats analytics-stats"></div>
         <article class="admin-card analytics-panel">

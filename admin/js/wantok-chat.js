@@ -33,7 +33,10 @@ function renderChart(id, growth, key, label) {
     y: 180 - point[key] / maximum * 145,
     point
   }));
-  svg.append(svgElement("polyline", { points: points.map(point => `${point.x},${point.y}`).join(" ") }));
+  svg.append(svgElement("polyline", {
+    points: points.map(point => `${point.x},${point.y}`).join(" "),
+    pathLength: 1
+  }));
   for (const { x, y, point } of points) {
     const dot = svgElement("circle", { cx: x, cy: y, r: 3 });
     dot.append(svgElement("title", {}, `${point.date}: ${numberFormat.format(point[key])}`));

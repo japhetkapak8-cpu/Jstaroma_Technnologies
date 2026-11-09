@@ -14,6 +14,41 @@ const BASE_LABELS = {
   mau: "MAU", dau: "DAU", messages: "Visible message records (current)",
   calls: "All call records (current)", groups: "Group records (current)"
 };
+const METRIC_ICONS = {
+  online_users: "fa-circle-dot",
+  new_registrations: "fa-user-plus",
+  monthly_growth: "fa-chart-line",
+  total_audio_calls: "fa-phone",
+  total_video_calls: "fa-video",
+  crash_free_sessions: "fa-shield-heart",
+  returning_users: "fa-arrow-rotate-left",
+  inactive_users: "fa-user-clock",
+  period_messages: "fa-comments",
+  period_calls: "fa-phone-volume",
+  text_messages: "fa-message",
+  voice_notes: "fa-microphone",
+  shared_photos: "fa-images",
+  audio_calls: "fa-phone",
+  video_calls: "fa-video",
+  missed_calls: "fa-phone-slash",
+  completed_calls: "fa-phone",
+  average_call_duration: "fa-stopwatch",
+  startup_time: "fa-rocket",
+  network_errors: "fa-wifi",
+  installations: "fa-download",
+  database_usage: "fa-database",
+  media_storage: "fa-hard-drive",
+  livekit_minutes: "fa-clock",
+  livekit_bandwidth: "fa-gauge-high",
+  hosting_cost: "fa-server",
+  revenue: "fa-arrow-trend-up",
+  expenses: "fa-receipt",
+  profit: "fa-scale-balanced",
+  account_reports: "fa-flag",
+  blocks: "fa-ban",
+  moderation_actions: "fa-shield-halved",
+  safety_incidents: "fa-triangle-exclamation"
+};
 let range = null;
 let lastSnapshot = null;
 let drawChart;
@@ -111,6 +146,12 @@ export async function initializePlatform({ reload, renderChart }) {
       const [, label, source] = PLATFORM_METRICS.find(metric => metric[0] === key);
       const card = document.createElement("article");
       card.className = "dashboard-stat platform-stat";
+      const icon = document.createElement("span");
+      icon.className = "stat-icon blue analytics-stat-icon";
+      icon.setAttribute("aria-hidden", "true");
+      const glyph = document.createElement("i");
+      glyph.className = `fa-solid ${METRIC_ICONS[key] || "fa-chart-simple"}`;
+      icon.append(glyph);
       const body = document.createElement("div");
       const title = document.createElement("span");
       title.textContent = label;
@@ -121,7 +162,7 @@ export async function initializePlatform({ reload, renderChart }) {
       detail.textContent = source;
       detail.title = source;
       body.append(title, value, detail);
-      card.append(body);
+      card.append(icon, body);
       parent.append(card);
     }
   }

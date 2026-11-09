@@ -1,4 +1,28 @@
+.analytics-heading {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.analytics-hero-icon {
+  display: grid;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border: 1px solid #cfe5f8;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #eef8ff, #dceeff);
+  box-shadow: 0 12px 28px rgba(22, 120, 204, 0.14);
+  color: #1678cc;
+  font-size: 25px;
+  animation: analytics-float 4s ease-in-out infinite;
+}
+
 .analytics-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   padding: 12px 18px;
   border: 1px solid #1678cc;
   border-radius: 8px;
@@ -6,6 +30,12 @@
   color: white;
   font: inherit;
   cursor: pointer;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.analytics-refresh:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #0968b2;
 }
 
 .analytics-refresh:disabled {
@@ -13,9 +43,51 @@
   cursor: wait;
 }
 
+.analytics-refresh:disabled i {
+  animation: analytics-spin 1.2s linear infinite;
+}
+
 .analytics-refresh:focus-visible {
   outline: 3px solid #12263f;
   outline-offset: 3px;
+}
+
+.analytics-stats .dashboard-stat {
+  min-height: 136px;
+  align-items: flex-start;
+  border-color: #e1eaf2;
+  box-shadow: 0 6px 18px rgba(18, 38, 63, 0.04);
+  animation: analytics-reveal 500ms ease-out backwards;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.analytics-stats .dashboard-stat:nth-child(6n + 2) { animation-delay: 50ms; }
+.analytics-stats .dashboard-stat:nth-child(6n + 3) { animation-delay: 100ms; }
+.analytics-stats .dashboard-stat:nth-child(6n + 4) { animation-delay: 150ms; }
+.analytics-stats .dashboard-stat:nth-child(6n + 5) { animation-delay: 200ms; }
+.analytics-stats .dashboard-stat:nth-child(6n + 6) { animation-delay: 250ms; }
+
+.analytics-stats .dashboard-stat:hover {
+  transform: translateY(-4px);
+  border-color: #b7d8f3;
+  box-shadow: 0 14px 28px rgba(18, 73, 117, 0.1);
+}
+
+.analytics-stats .dashboard-stat > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.analytics-stat-icon {
+  flex: 0 0 48px;
+}
+
+.analytics-stats strong {
+  display: block;
+  margin-top: 5px;
+  color: #12263f;
+  font-size: 26px;
+  letter-spacing: -0.5px;
 }
 
 .analytics-connection,
@@ -69,10 +141,16 @@
   fill: none;
   stroke: #1678cc;
   stroke-width: 3;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: analytics-chart-draw 1.2s ease-out forwards;
 }
 
 .analytics-chart circle {
   fill: #1678cc;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: analytics-point-appear 400ms ease-out both;
 }
 
 .analytics-chart text {
@@ -264,6 +342,29 @@
   border-radius: 8px;
 }
 
+@keyframes analytics-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes analytics-reveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes analytics-chart-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes analytics-point-appear {
+  from { opacity: 0; transform: scale(0.35); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes analytics-spin {
+  to { transform: rotate(360deg); }
+}
+
 @media (max-width: 900px) {
   .analytics-sidebar-sections {
     display: none;
@@ -283,6 +384,19 @@ details summary {
 }
 
 @media (max-width: 600px) {
+  .analytics-heading {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .analytics-hero-icon {
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    font-size: 20px;
+  }
+
   .analytics-stats {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -290,5 +404,20 @@ details summary {
   .page-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .analytics-hero-icon,
+  .analytics-stats .dashboard-stat,
+  .analytics-chart polyline,
+  .analytics-chart circle,
+  .analytics-refresh:disabled i {
+    animation: none;
+  }
+
+  .analytics-stats .dashboard-stat,
+  .analytics-refresh {
+    transition: none;
   }
 }
