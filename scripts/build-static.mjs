@@ -6,6 +6,7 @@ const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 
 // Explicit public files only. New public assets must be reviewed and added here.
 export const PUBLIC_FILES = Object.freeze([
+  "_headers",
   "index.html", "achievements.html", "products.html",
   "style.css", "index.css", "script.js",
   ...["account-deletion", "child-safety", "privacy", "terms"].map(directory => `${directory}/index.html`),

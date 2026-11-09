@@ -1,0 +1,5 @@
+/admin/js/*
+  Cache-Control: no-cache
+
+/supabase/functions/shared/*
+  Cache-Control: no-cache

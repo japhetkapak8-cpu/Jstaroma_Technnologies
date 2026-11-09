@@ -93,7 +93,10 @@ export function createAnalyticsHandler({ env, createClient, fetchImpl = fetch, l
         signal: AbortSignal.timeout(10000),
         redirect: "error"
       });
-      if (!upstream.ok) throw new Error("Wantok aggregate request failed.");
+      if (!upstream.ok) {
+        logger.error(`Wantok aggregate RPC returned HTTP ${upstream.status}.`);
+        throw new Error("Wantok aggregate request failed.");
+      }
       stage = "Wantok aggregate validation";
       const source = await upstream.json();
       if (range && source?.platform?.geography?.provinces !== null) {
@@ -117,7 +120,10 @@ export function createAnalyticsHandler({ env, createClient, fetchImpl = fetch, l
             signal: AbortSignal.timeout(10000),
             redirect: "error"
           });
-          if (!provinceResponse.ok) throw new Error("Province aggregate request failed.");
+          if (!provinceResponse.ok) {
+            logger.error(`Wantok province RPC returned HTTP ${provinceResponse.status}.`);
+            throw new Error("Province aggregate request failed.");
+          }
           const aggregate = validateProvinceAggregate(await provinceResponse.json());
           snapshot.platform.geography.provinces = { status: "available", ...aggregate };
         }

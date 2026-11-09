@@ -207,6 +207,13 @@ polling. Concurrent refresh requests are skipped. Each request still verifies
 administrator membership and uses the existing approved province privacy
 policy. Once this frontend/backend integration is deployed, changes in
 Supabase counts appear on refresh without another website redeployment.
+Cloudflare's `_headers` file makes admin JavaScript and shared analytics
+modules revalidate instead of retaining an old contract for four hours.
+Already-open tabs still need one hard refresh after a code deployment.
+The dashboard distinguishes HTTP 400 (filter), 401 (session), 403
+(administrator/origin), 404 (missing endpoint), 500/503 (backend), successful
+responses with invalid contracts, and rendering errors. Error messages and
+logs do not expose upstream payloads, credentials or profile records.
 
 ### External integration prerequisites (not connected)
 

@@ -697,6 +697,24 @@ test("session, backend and validation failures clear values and display an error
   assert.equal(page.elements.get("registered_users").textContent, "100");
 });
 
+test("frontend distinguishes HTTP errors from invalid successful responses without exposing payloads", async () => {
+  for (const [status, reason] of [
+    [400, /date filter/], [401, /missing or expired/], [403, /access.*denied/],
+    [404, /endpoint was not found/], [500, /backend failed/], [503, /source is unavailable/]
+  ]) {
+    const error = new Error("Private upstream message must not be displayed");
+    error.context = new Response('{"private":"must not be displayed"}', { status });
+    const page = await frontend({ error });
+    const text = page.elements.get("analyticsStatus").textContent;
+    assert.match(text, new RegExp(`HTTP ${status}`));
+    assert.match(text, reason);
+    assert.ok(!text.includes("Private upstream"));
+    assert.equal(page.elements.get("registered_users").textContent, "Not connected");
+  }
+  const page = await frontend({ payload: { invalid: true } });
+  assert.match(page.elements.get("analyticsStatus").textContent, /data failed validation/);
+});
+
 test("all existing admin pages link to Wantok Chat and its static dependencies exist", async () => {
   for (const page of ["dashboard", "projects", "products", "achievements", "wantok-chat"]) {
     const html = await readFile(path.join(root, `admin/${page}.html`), "utf8");

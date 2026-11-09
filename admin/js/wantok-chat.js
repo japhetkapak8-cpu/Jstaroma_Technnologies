@@ -310,26 +310,45 @@ async function loadAnalytics() {
   document.getElementById("provinceStatus").textContent = "Loading province analytics...";
   hero.classList.add("source-loading");
   hero.classList.remove("source-connected", "source-unavailable");
+  let failureDetail = "Your session could not be loaded. Sign in again.";
   try {
     const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
     if (sessionError || !sessionData.session) throw new Error("Admin session unavailable. Please sign in again.");
+    failureDetail = "The backend could not be reached. Check your connection and allowed website origin.";
     const { data, error } = await supabase.functions.invoke("wantok-chat-analytics", {
       body: getDateRange() ? { date_range: getDateRange() } : {},
       headers: { Authorization: `Bearer ${sessionData.session.access_token}` }
     });
-    if (error) throw error;
+    if (error) {
+      const status = error.context instanceof Response ? error.context.status : null;
+      const reasons = {
+        400: "The backend rejected the date filter.",
+        401: "Your session is missing or expired. Sign out and sign in again.",
+        403: "Administrator access or this website origin was denied.",
+        404: "The analytics Edge Function endpoint was not found.",
+        500: "The analytics backend failed. Check its function logs.",
+        503: "The backend or aggregate source is unavailable. Check its function logs and configuration."
+      };
+      if (status !== null) {
+        failureDetail = `HTTP ${status}. ${reasons[status] || "The analytics request failed."}`;
+      }
+      throw error;
+    }
+    failureDetail = "The backend responded, but its data failed validation. Hard-refresh the page and check frontend/backend contract versions.";
     const snapshot = validateSnapshot(data);
+    failureDetail = "The backend data was valid, but dashboard rendering failed. Check the browser console.";
     renderSnapshot(snapshot);
     statusElement.textContent = snapshot.generated_at
       ? "Aggregate snapshot loaded. Any unverified metric remains Not connected."
       : "Not connected. The Wantok Chat aggregate source has not been verified and enabled.";
   }
   catch (error) {
-    console.error("Could not load Wantok Chat analytics:", error);
+    console.error("Could not load Wantok Chat analytics:", failureDetail,
+      error instanceof Error ? error.name : "UnknownError");
     renderSnapshot(disconnectedSnapshot());
     document.getElementById("provinceStatus").textContent = "Province analytics unavailable. Check your admin session and backend, then refresh.";
     statusElement.classList.add("analytics-error");
-    statusElement.textContent = "Could not load analytics. Check your admin session and backend deployment, then refresh. No figures are displayed.";
+    statusElement.textContent = `Could not load analytics. ${failureDetail} No figures are displayed.`;
   }
   finally {
     requestInProgress = false;
