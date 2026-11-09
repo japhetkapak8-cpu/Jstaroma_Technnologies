@@ -21,6 +21,7 @@ export const PUBLIC_FILES = Object.freeze([
     "achievements.js", "projects.js", "products.js", "wantok-chat.js",
     "wantok-maps.js", "wantok-platform-ui.js"
   ].map(file => `admin/js/${file}`),
+  "admin/images/wantok-chat-logo.png",
   ...["boundary-sources.json", "png-provinces.geojson", "world-countries.geojson"]
     .map(file => `admin/data/${file}`),
   "jstaroma-slides/index.html",

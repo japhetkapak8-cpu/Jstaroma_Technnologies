@@ -1105,17 +1105,16 @@ details summary {
 }
 
 .analytics-layout .analytics-hero-icon {
-  flex-basis: 78px;
-  width: 78px;
-  height: 78px;
-  border-radius: 23px;
-  background: linear-gradient(145deg, #a35bff, #526cff 61%, #28b4dc);
-  box-shadow: 0 12px 38px rgba(127, 83, 255, 0.37), inset 0 1px rgba(255, 255, 255, 0.3);
-}
-
-.analytics-layout .analytics-icon-spark {
-  border-color: #141831;
-  background: #45edbd;
+  display: block;
+  flex-basis: 112px;
+  width: 112px;
+  height: 112px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 24px rgba(249, 70, 53, 0.17));
 }
 
 .analytics-layout .analytics-section-nav {
@@ -1171,14 +1170,23 @@ details summary {
 }
 
 .analytics-layout .analytics-stat-icon {
+  display: grid;
   flex-basis: 54px !important;
   width: 54px;
   height: 54px;
+  place-items: center;
   border: 1px solid rgba(148, 127, 255, 0.19);
   border-radius: 17px !important;
   background: linear-gradient(145deg, rgba(111, 76, 222, 0.22), rgba(23, 154, 198, 0.14));
   color: #b9a2ff;
-  font-size: 20px;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.analytics-layout .analytics-stat-icon > i {
+  display: block;
+  font-size: 27px;
+  line-height: 1;
 }
 
 .analytics-layout .dashboard-stat:nth-child(4n + 2) .analytics-stat-icon {
@@ -1423,8 +1431,25 @@ details summary {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .analytics-layout .analytics-hero-icon {
+    flex-basis: 78px;
+    width: 78px;
+    height: 78px;
+  }
+
   .analytics-layout .analytics-stats .dashboard-stat {
     min-height: 120px;
+  }
+
+  .analytics-layout .analytics-stat-icon {
+    flex-basis: 56px !important;
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+
+  .analytics-layout .analytics-stat-icon > i {
+    font-size: 28px;
   }
 
   .analytics-layout .analytics-connection-details {
