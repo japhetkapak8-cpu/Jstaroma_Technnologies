@@ -123,6 +123,9 @@ async function backend(options = {}) {
     async fetchImpl(url, settings) {
       events.push({ type: "wantok", url, settings });
       if (options.networkError) throw new Error("Private upstream details");
+      if (url.endsWith("/wantok_admin_province_counts_v1")) {
+        return new Response(JSON.stringify(options.provinces ?? {}), { status: options.provinceStatus ?? 200 });
+      }
       return new Response(JSON.stringify(options.payload ?? currentRecordSnapshot()), { status: options.upstreamStatus ?? 200 });
     }
   });
@@ -334,17 +337,52 @@ async function rangedSnapshot() {
   };
 }
 
-test("bounded date filters use only the range RPC after auth and forward only whitelisted dates", async () => {
+test("bounded date filters forward whitelisted dates and report province RPC failures separately", async () => {
   const payload = await rangedSnapshot();
   const api = await backend({ payload });
   const response = await api.request({ body: JSON.stringify({
     date_range: payload.period, table: "profiles", credentials: "ignored"
   }) });
   assert.equal(response.status, 200);
-  assert.deepEqual(await response.json(), payload);
-  const upstream = api.events.at(-1);
+  const result = await response.json();
+  assert.deepEqual(result.platform.geography.provinces, { status: "error" });
+  result.platform.geography.provinces = null;
+  assert.deepEqual(result, payload);
+  const upstream = api.events.find(event => event.url?.endsWith("/wantok_admin_analytics_range_v1"));
   assert.equal(upstream.url, "https://patrtlxmcjrzzfvvfcft.supabase.co/rest/v1/rpc/wantok_admin_analytics_range_v1");
   assert.deepEqual(JSON.parse(upstream.settings.body), { p_start: payload.period.start, p_end: payload.period.end });
+});
+
+test("province aggregates require admin access, use a fixed RPC and whitelist bucket data", async () => {
+  const { module } = await loadModule("supabase/functions/shared/wantok-platform.js");
+  const payload = await rangedSnapshot();
+  const provinceCounts = {
+    "Jiwaka Province": 10, "Eastern Highlands Province": 5, "Manus Province": 4,
+    "Southern Highlands Province": 2, "Morobe Province": 2, "Enga Province": 2,
+    "Western Highlands Province": 1, "Gulf Province": 1, "Madang Province": 1,
+    "National Capital District": 1, "Western Province": 1, "East Sepik Province": 1,
+    "Unknown / Not Set": 21
+  };
+  const provinces = { rows: module.PNG_PROVINCES.map(name => ({
+    name, count: provinceCounts[name] ?? 0, privateField: "not forwarded"
+  })) };
+  const api = await backend({ payload, provinces });
+  const response = await api.request({ body: JSON.stringify({ date_range: payload.period }) });
+  const result = await response.json();
+  assert.equal(result.platform.geography.provinces.total, 52);
+  assert.equal(result.platform.geography.provinces.rows.length, 23);
+  assert.equal(result.platform.geography.provinces.rows.find(row => row.name === "Jiwaka Province").count, 10);
+  assert.ok(result.platform.geography.provinces.rows.every(row => !Object.hasOwn(row, "privateField")));
+  const calls = api.events.filter(event => event.type === "wantok");
+  assert.equal(calls.length, 2);
+  assert.match(calls[1].url, /\/wantok_admin_province_counts_v1$/);
+  assert.equal(calls[1].settings.body, "{}");
+  const forbidden = await backend({ nonAdmin: true, payload, provinces });
+  assert.equal((await forbidden.request({ body: JSON.stringify({ date_range: payload.period }) })).status, 403);
+  assert.ok(!forbidden.events.some(event => event.type === "wantok"));
+  const invalid = await backend({ payload, provinces: { rows: [...provinces.rows.slice(1), provinces.rows[1]] } });
+  const bad = await invalid.request({ body: JSON.stringify({ date_range: payload.period }) });
+  assert.deepEqual((await bad.json()).platform.geography.provinces, { status: "error" });
 });
 
 test("invalid ranges/JSON fail explicitly after authorization and never query Wantok", async () => {
@@ -377,7 +415,7 @@ test("range mismatch, old deployed SQL and invented provider statistics fail clo
 
 function element(tag = "div") {
   return {
-    tag, textContent: "", children: [], attributes: {}, disabled: false, listeners: {},
+    tag, textContent: "", children: [], attributes: {}, style: {}, disabled: false, listeners: {},
     classList: { add() {}, remove() {} },
     addEventListener(event, listener) { this.listeners[event] = listener; },
     setAttribute(key, value) { this.attributes[key] = value; },
@@ -391,6 +429,11 @@ async function frontend({ authorized = true, payload = snapshot(), error = null,
   const elements = new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(([, id]) => [id, element()]));
   const requests = [];
   const errors = [];
+  const documentListeners = {};
+  const windowListeners = {};
+  const timers = new Map();
+  let timerId = 0;
+  let elapsed = 0;
   let result = { data: payload, error };
   const client = {
     auth: {
@@ -400,12 +443,23 @@ async function frontend({ authorized = true, payload = snapshot(), error = null,
       invoke: async (...args) => { requests.push(args); return result; }
     }
   };
+  const document = {
+    visibilityState: "visible",
+    addEventListener: (event, listener) => { documentListeners[event] = listener; },
+    getElementById: id => elements.get(id),
+    createElement: element,
+    createElementNS: (namespace, tag) => element(tag)
+  };
   const { context } = await loadModule("admin/js/wantok-chat.js", {
     console: { error: (...args) => errors.push(args) },
-    document: {
-      getElementById: id => elements.get(id),
-      createElement: element,
-      createElementNS: (namespace, tag) => element(tag)
+    document,
+    window: {
+      addEventListener: (event, listener) => { windowListeners[event] = listener; },
+      setInterval(callback, interval) {
+        timers.set(++timerId, { callback, interval, next: elapsed + interval });
+        return timerId;
+      },
+      clearInterval: id => timers.delete(id)
     }
   }, {
     "js/supabase.js": { supabase: client },
@@ -421,12 +475,79 @@ async function frontend({ authorized = true, payload = snapshot(), error = null,
   }, (source, filename) => filename.endsWith("/wantok-chat.js")
     ? source.replace("\ninitialize();", "\nglobalThis.drawTestChart = renderChart;\nglobalThis.ready = initialize();") : source);
   await context.ready;
-  return { elements, requests, errors, drawChart: context.drawTestChart, setResult: value => { result = value; } };
+  return {
+    elements, requests, errors, timers, document, documentListeners, windowListeners,
+    drawChart: context.drawTestChart, setResult: value => { result = value; },
+    async advance(milliseconds) {
+      elapsed += milliseconds;
+      for (const timer of timers.values()) {
+        if (timer.next <= elapsed) {
+          timer.next += timer.interval;
+          await timer.callback();
+        }
+      }
+    }
+  };
 }
 
 test("page uses existing authentication and never requests analytics when unauthorized", async () => {
   const page = await frontend({ authorized: false });
   assert.equal(page.requests.length, 0);
+  assert.equal(page.timers.size, 0);
+  await page.documentListeners.visibilitychange();
+  await page.windowListeners.pageshow({ persisted: true });
+  await page.advance(60000);
+  assert.equal(page.requests.length, 0);
+  assert.equal(page.timers.size, 0);
+});
+
+test("analytics refreshes at 60 seconds, resumes on visibility and stops on page exit or logout", async () => {
+  const page = await frontend();
+  assert.equal(page.requests.length, 1);
+  assert.equal(page.timers.size, 1);
+  await page.advance(59999);
+  assert.equal(page.requests.length, 1);
+  await page.advance(1);
+  assert.equal(page.requests.length, 2);
+  page.document.visibilityState = "hidden";
+  await page.documentListeners.visibilitychange();
+  assert.equal(page.timers.size, 0);
+  await page.advance(60000);
+  assert.equal(page.requests.length, 2);
+  page.document.visibilityState = "visible";
+  await page.documentListeners.visibilitychange();
+  assert.equal(page.requests.length, 3);
+  assert.equal(page.timers.size, 1);
+  page.windowListeners.pagehide();
+  assert.equal(page.timers.size, 0);
+  await page.advance(60000);
+  assert.equal(page.requests.length, 3);
+  await page.windowListeners.pageshow({ persisted: true });
+  assert.equal(page.requests.length, 4);
+  assert.equal(page.timers.size, 1);
+  page.elements.get("logoutBtn").listeners.click();
+  assert.equal(page.timers.size, 0);
+  await page.documentListeners.visibilitychange();
+  assert.equal(page.requests.length, 4);
+});
+
+test("polling, manual and tab-reactivation refreshes never overlap and recover after errors", async () => {
+  const page = await frontend();
+  let release;
+  page.setResult(new Promise(resolve => { release = resolve; }));
+  const active = page.elements.get("refreshAnalytics").listeners.click();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(page.requests.length, 2);
+  await page.advance(60000);
+  await page.documentListeners.visibilitychange();
+  await page.elements.get("refreshAnalytics").listeners.click();
+  assert.equal(page.requests.length, 2);
+  release({ data: null, error: new Error("Unavailable") });
+  await active;
+  page.setResult({ data: snapshot(), error: null });
+  await page.advance(60000);
+  assert.equal(page.requests.length, 3);
+  assert.equal(page.elements.get("registered_users").textContent, "100");
 });
 
 test("current-record totals render without period/completed-call claims or app activity metrics", async () => {
@@ -475,7 +596,11 @@ test("growth selector switches line, pie and bar without refetching or changing 
   const page = await frontend();
   const selector = page.elements.get("growthChartType");
   const chart = id => page.elements.get(id).children[0];
-  const shapes = (id, tag) => chart(id).children.filter(child => child.tag === tag);
+  const shapes = (id, tag) => {
+    const root = chart(id).tag === "svg" ? chart(id) : chart(id).children[0];
+    return root.children.filter(child => child.tag === tag &&
+      !(tag === "rect" && child.attributes.fill === "transparent"));
+  };
   assert.equal(shapes("registeredGrowth", "polyline").length, 1);
   assert.equal(shapes("retentionChart", "circle").length, 2);
   selector.value = "bar";
@@ -493,7 +618,7 @@ test("growth selector switches line, pie and bar without refetching or changing 
   assert.equal(shapes("registeredGrowth", "polyline").length, 0);
   const cohorts = chart("retentionChart").children;
   assert.equal(cohorts.length, 3);
-  const firstPie = cohorts[0].children[2];
+  const firstPie = cohorts[0].children[2].children[0];
   const slices = firstPie.children.filter(child => child.tag === "path");
   assert.equal(slices.length, 2);
   assert.match(slices[0].children[0].textContent, /Returned: 5 \(50%\)/);
@@ -516,13 +641,15 @@ test("growth chart modes handle verified zeros, a full pie, unavailable data and
   assert.equal(page.elements.get("registeredGrowth").textContent, "Not connected");
   assert.equal(page.elements.get("retentionChart").textContent, "Not connected");
   page.drawChart("registrationChart", [{ date: "2026-11-01", count: 0 }], "count", "Registrations");
-  let svg = page.elements.get("registrationChart").children[0];
+  let svg = page.elements.get("registrationChart").children[0].children[0];
   assert.equal(svg.children.filter(child => child.tag === "path" || child.tag === "circle").length, 0);
-  assert.match(svg.children[1].textContent, /Verified zero/);
+  assert.match(svg.children[0].textContent, /Verified zero/);
   page.drawChart("registrationChart", [{ date: "2026-11-01", count: 10 }], "count", "Registrations");
-  svg = page.elements.get("registrationChart").children[0];
+  const pie = page.elements.get("registrationChart").children[0];
+  svg = pie.children[0];
   assert.equal(svg.children.filter(child => child.tag === "circle").length, 1);
-  assert.match(svg.children[1].children[0].textContent, /100%/);
+  assert.match(svg.children[0].children[0].textContent, /Registrations\n2026-11-01: 10 \(100%\)/);
+  assert.equal(pie.children[1].children[0].children[1].textContent, "2026-11-01: 10 (100%)");
   page.drawChart("messageTrend", [{ date: "2026-11-01", count: 10 }], "count", "Messages");
   assert.equal(page.elements.get("messageTrend").children[0].children.filter(child => child.tag === "polyline").length, 1);
   selector.value = "bar";
@@ -541,8 +668,8 @@ test("retention pies distinguish all-returned, none-returned and no-eligible coh
   page.elements.get("growthChartType").value = "pie";
   page.elements.get("growthChartType").listeners.change();
   const cohorts = page.elements.get("retentionChart").children[0].children;
-  assert.match(cohorts[0].children[2].children[1].children[0].textContent, /Returned: 10 \(100%\)/);
-  assert.match(cohorts[2].children[2].children[1].children[0].textContent, /Not returned: 2 \(100%\)/);
+  assert.match(cohorts[0].children[2].children[0].children[0].children[0].textContent, /Returned: 10 \(100%\)/);
+  assert.match(cohorts[2].children[2].children[0].children[0].children[0].textContent, /Not returned: 2 \(100%\)/);
   page.setResult({ data: null, error: new Error("Unavailable") });
   await page.elements.get("refreshAnalytics").listeners.click();
   assert.equal(page.elements.get("retentionChart").textContent, "Not connected");

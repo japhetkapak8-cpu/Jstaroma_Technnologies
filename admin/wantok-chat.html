@@ -59,7 +59,7 @@
             <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
           </div>
           <button id="refreshAnalytics" class="analytics-refresh" type="button" disabled><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Refresh snapshot</button>
-          <small class="analytics-refresh-note"><i class="fa-regular fa-clock" aria-hidden="true"></i> Manual refresh · not a live stream</small>
+          <small class="analytics-refresh-note"><i class="fa-regular fa-clock" aria-hidden="true"></i> Refreshes every 60 seconds while visible · refreshes when you return</small>
         </div>
       </div>
       <nav class="analytics-section-nav" aria-label="Wantok analytics sections">
@@ -110,8 +110,14 @@
       </section>
       <section id="geographySection" class="analytics-detail" aria-labelledby="geographyHeading">
         <h2 id="geographyHeading" class="analytics-section-heading"><i class="fa-solid fa-earth-oceania" aria-hidden="true"></i> Geographic distribution</h2>
-        <p>Countries: Not connected (requires verified Firebase Analytics export). Provinces: Not connected (profile province field and account relationship unverified).</p>
-        <p>Missing locations belong to Unknown, not PNG by default. Groups below 10 users and any complementary totals, percentages or trends must be withheld. Maps show boundaries only until an approved fixed, privacy-safe aggregate is available.</p>
+        <p>Countries: Not connected (requires verified Firebase Analytics export). Province figures count current profiles, not activity or historical growth, and do not follow the date filter.</p>
+        <p>Province counts, including small groups, are visible only to authorized administrators. Missing and unrecognized values are counted as Unknown / Not Set.</p>
+        <div class="dashboard-stats analytics-stats">
+          <div class="dashboard-stat"><div><span>Total profiles</span><strong id="provinceTotal">Not connected</strong></div></div>
+          <div class="dashboard-stat"><div><span>Profiles with recognized province</span><strong id="provinceKnown">Not connected</strong></div></div>
+          <div class="dashboard-stat"><div><span>Unknown / Not Set</span><strong id="provinceMissing">Not connected</strong></div></div>
+        </div>
+        <p id="provinceStatus" role="status" aria-live="polite">Province analytics: Not connected.</p>
         <div class="analytics-charts">
           <article class="admin-card analytics-panel">
             <h3><i class="fa-solid fa-globe" aria-hidden="true"></i> World map</h3>
@@ -130,6 +136,10 @@
             <details><summary>Provincial leaderboard and Unknown</summary><div id="pngLeaderboard" class="analytics-table-wrap">Not connected</div></details>
           </article>
         </div>
+        <article class="admin-card analytics-panel">
+          <h3>Profiles by province</h3>
+          <div id="provinceChart" class="province-chart">Not connected</div>
+        </article>
       </section>
       <section id="growthSection" class="analytics-detail" aria-labelledby="growthSectionHeading">
         <h2 id="growthSectionHeading" class="analytics-section-heading"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> User growth &amp; retention</h2>

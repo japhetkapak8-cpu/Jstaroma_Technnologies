@@ -1,4 +1,11 @@
 const NS = "http://www.w3.org/2000/svg";
+let provinceData = null;
+let updatePngMap = null;
+
+export function renderProvinceMap(data) {
+  provinceData = data;
+  if (updatePngMap) updatePngMap();
+}
 
 function svg(name, attributes = {}) {
   const node = document.createElementNS(NS, name);
@@ -62,11 +69,20 @@ export async function initializeMap(container, kind, fetchImpl = fetch) {
     let view = { ...initial };
     const setView = () => map.setAttribute("viewBox", `${view.x} ${view.y} ${view.width} ${view.height}`);
     setView();
+    let selectedName = null;
+    const describe = name => {
+      if (kind === "png" && provinceData?.status === "available") {
+        const row = provinceData.rows.find(item => item.name === name);
+        return `${name}: ${new Intl.NumberFormat().format(row.count)} profiles`;
+      }
+      return `${name}: Not connected`;
+    };
     const choose = (feature, path) => {
       for (const node of map.querySelectorAll("path")) node.classList.remove("selected");
       path.classList.add("selected");
       const name = featureName(feature, kind);
-      selection.textContent = `${name}: Not connected. User count, percentage and growth require a verified privacy-safe source.`;
+      selectedName = name;
+      selection.textContent = describe(name);
     };
     const dropdown = document.createElement("select");
     dropdown.setAttribute("aria-label", kind === "png" ? "Select a province" : "Select a country");
@@ -87,7 +103,7 @@ export async function initializeMap(container, kind, fetchImpl = fetch) {
         if (["Enter", " "].includes(event.key)) { event.preventDefault(); choose(feature, path); }
       });
       path.addEventListener("pointerenter", () => {
-        status.textContent = `${name}: Not connected`;
+        status.textContent = describe(name);
       });
       map.append(path);
       return { name, feature, path };
@@ -168,7 +184,36 @@ export async function initializeMap(container, kind, fetchImpl = fetch) {
     }
     table.append(body);
     leaderboard.replaceChildren(table);
-    status.textContent = "Boundaries loaded. Counts and rankings: Not connected. Grey means unavailable, blue means selection, neither indicates usage. Ctrl + scroll to zoom; drag to pan.";
+    const update = () => {
+      const available = kind === "png" && provinceData?.status === "available";
+      const values = available ? new Map(provinceData.rows.map(row => [row.name, row.count])) : null;
+      const maximum = available ? Math.max(...provinceData.rows.slice(0, -1).map(row => row.count), 1) : 1;
+      for (const entry of entries) {
+        const description = describe(entry.name);
+        entry.path.setAttribute("aria-label", description);
+        entry.path.querySelector("title").textContent = description;
+        if (available) {
+          const count = values.get(entry.name);
+          const intensity = count / maximum;
+          entry.path.style.fill = count === 0 ? "#29354a" : `hsl(265 75% ${75 - intensity * 35}%)`;
+        } else entry.path.style.removeProperty("fill");
+      }
+      caption.textContent = available ? "Current profile distribution" : "Region directory (not ranked until user counts are verified)";
+      for (const [index, name] of [...entries.map(entry => entry.name), "Unknown"].entries()) {
+        const row = body.children[index];
+        const count = available ? values.get(name === "Unknown" ? "Unknown / Not Set" : name) : null;
+        row.children[1].textContent = available ? new Intl.NumberFormat().format(count) : "Not connected";
+        row.children[2].textContent = available && provinceData.total
+          ? new Intl.NumberFormat(undefined, { style: "percent", maximumFractionDigits: 1 }).format(count / provinceData.total)
+          : available ? "—" : "Not connected";
+      }
+      if (selectedName) selection.textContent = describe(selectedName);
+      status.textContent = available
+        ? "Current profile counts by province; darker purple means more profiles. Ctrl + scroll to zoom; drag to pan."
+        : "Boundaries loaded. Counts and rankings: Not connected. Grey means unavailable, blue means selection. Ctrl + scroll to zoom; drag to pan.";
+    };
+    if (kind === "png") updatePngMap = update;
+    update();
   }
   catch (error) {
     console.error("Could not load analytics map:", error);

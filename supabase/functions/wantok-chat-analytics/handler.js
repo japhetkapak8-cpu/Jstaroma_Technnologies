@@ -1,5 +1,5 @@
 import { disconnectedSnapshot, validateSnapshot } from "../shared/wantok-chat-contract.js";
-import { validateRange } from "../shared/wantok-platform.js";
+import { validateRange, validateProvinceAggregate } from "../shared/wantok-platform.js";
 
 const JSTAROMA_PROJECT_URL = "https://fticsjeytmepljtkfrvm.supabase.co";
 const WANTOK_PROJECT_URL = "https://patrtlxmcjrzzfvvfcft.supabase.co";
@@ -95,10 +95,36 @@ export function createAnalyticsHandler({ env, createClient, fetchImpl = fetch, l
       });
       if (!upstream.ok) throw new Error("Wantok aggregate request failed.");
       stage = "Wantok aggregate validation";
-      const snapshot = validateSnapshot(await upstream.json());
+      const source = await upstream.json();
+      if (range && source?.platform?.geography?.provinces !== null) {
+        throw new Error("Unexpected province data in range snapshot.");
+      }
+      const snapshot = validateSnapshot(source);
       if (snapshot.version !== (range ? 3 : 2) || snapshot.generated_at === null ||
           (range && (snapshot.period.start !== range.start || snapshot.period.end !== range.end))) {
         throw new Error("Verified source returned the wrong aggregate contract or period.");
+      }
+      if (range) {
+        try {
+          const provinceResponse = await fetchImpl(`${wantokUrl}/rest/v1/rpc/wantok_admin_province_counts_v1`, {
+            method: "POST",
+            headers: {
+              apikey: wantokKey,
+              ...(wantokKey.startsWith("sb_secret_") ? {} : { Authorization: `Bearer ${wantokKey}` }),
+              "Content-Type": "application/json"
+            },
+            body: "{}",
+            signal: AbortSignal.timeout(10000),
+            redirect: "error"
+          });
+          if (!provinceResponse.ok) throw new Error("Province aggregate request failed.");
+          const aggregate = validateProvinceAggregate(await provinceResponse.json());
+          snapshot.platform.geography.provinces = { status: "available", ...aggregate };
+        }
+        catch (error) {
+          logger.error("Wantok province aggregate request failed.", error instanceof Error ? error.name : "UnknownError");
+          snapshot.platform.geography.provinces = { status: "error" };
+        }
       }
       return respond(200, snapshot);
     }

@@ -39,6 +39,34 @@ export const CONNECTED_PLATFORM_KEYS = Object.freeze([
   "audio_calls", "video_calls", "total_audio_calls", "total_video_calls", "period_messages", "period_calls"
 ]);
 
+export const PNG_PROVINCES = Object.freeze([
+  "Autonomous Region of Bougainville", "Central Province", "Chimbu (Simbu) Province",
+  "East New Britain Province", "East Sepik Province", "Eastern Highlands Province",
+  "Enga Province", "Gulf Province", "Hela Province", "Jiwaka Province", "Madang Province",
+  "Manus Province", "Milne Bay Province", "Morobe Province", "National Capital District",
+  "New Ireland Province", "Northern (Oro) Province", "Southern Highlands Province",
+  "West New Britain Province", "West Sepik (Sandaun) Province", "Western Highlands Province",
+  "Western Province", "Unknown / Not Set"
+]);
+
+export function validateProvinceAggregate(input) {
+  if (!input || !Array.isArray(input.rows) || input.rows.length !== PNG_PROVINCES.length) {
+    throw new Error("Invalid province aggregate.");
+  }
+  const found = new Map();
+  for (const row of input.rows) {
+    if (!row || !PNG_PROVINCES.includes(row.name) || found.has(row.name) ||
+        !Number.isSafeInteger(row.count) || row.count < 0) {
+      throw new Error("Invalid province bucket.");
+    }
+    found.set(row.name, row.count);
+  }
+  const rows = PNG_PROVINCES.map(name => ({ name, count: found.get(name) }));
+  const total = rows.reduce((sum, row) => sum + row.count, 0);
+  if (!Number.isSafeInteger(total)) throw new Error("Invalid province total.");
+  return { rows, total };
+}
+
 export function validDate(value) {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) &&
     Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;

@@ -1540,6 +1540,66 @@ details summary {
   filter: none;
 }
 
+.analytics-pie-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 8px 0 16px;
+  padding: 0;
+  list-style: none;
+  color: #e8efff;
+  font-size: 13px;
+}
+
+.analytics-pie-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.analytics-pie-legend:focus-visible {
+  outline: 2px solid #b69aff;
+  outline-offset: 3px;
+}
+
+.analytics-pie-swatch {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.province-chart ul {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+
+.province-chart li {
+  display: grid;
+  grid-template-columns: minmax(110px, 220px) minmax(30px, 1fr) 40px;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.province-chart-track {
+  height: 12px;
+  background: #27344a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.province-chart-track span {
+  display: block;
+  height: 100%;
+  background: #a879f3;
+}
+
 .analytics-retention-pies {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

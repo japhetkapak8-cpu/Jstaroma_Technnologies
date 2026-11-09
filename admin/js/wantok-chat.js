@@ -12,6 +12,10 @@ const percentFormat = new Intl.NumberFormat(undefined, { style: "percent", maxim
 const growthChartType = document.getElementById("growthChartType");
 const growthChartIds = new Set(["registrationChart", "registeredGrowth", "activeGrowth", "retentionChart"]);
 let lastSnapshot = null;
+let requestInProgress = false;
+let refreshTimer = null;
+let adminAuthorized = false;
+let dashboardOpen = true;
 
 function svgElement(name, attributes, text) {
   const element = document.createElementNS("http://www.w3.org/2000/svg", name);
@@ -21,29 +25,46 @@ function svgElement(name, attributes, text) {
 }
 
 function pieChart(values, labels, label) {
+  const chart = document.createElement("div");
   const svg = svgElement("svg", { viewBox: "0 0 460 230", role: "img", "aria-label": label });
-  svg.append(svgElement("title", {}, label));
+  chart.append(svg);
   const total = values.reduce((sum, value) => sum + value, 0);
   if (total === 0) {
     svg.append(svgElement("text", { x: 230, y: 115, "text-anchor": "middle" }, "Verified zero; no pie slices."));
-    return svg;
+    return chart;
   }
+  const legend = document.createElement("ul");
+  legend.className = "analytics-pie-legend";
+  legend.setAttribute("aria-label", `${label} legend`);
+  legend.tabIndex = 0;
   let angle = -Math.PI / 2;
   values.forEach((value, index) => {
     if (value === 0) return;
     const end = angle + value / total * Math.PI * 2;
-    const attributes = { class: "analytics-pie-slice", style: `fill: hsl(${(265 + index * 137.5) % 360} 75% 65%)` };
+    const color = `hsl(${(265 + index * 137.5) % 360} 75% 65%)`;
+    const attributes = { class: "analytics-pie-slice", style: `fill: ${color}` };
     const slice = value === total
       ? svgElement("circle", { ...attributes, cx: 230, cy: 115, r: 92 })
       : svgElement("path", {
         ...attributes,
         d: `M 230 115 L ${230 + 92 * Math.cos(angle)} ${115 + 92 * Math.sin(angle)} A 92 92 0 ${end - angle > Math.PI ? 1 : 0} 1 ${230 + 92 * Math.cos(end)} ${115 + 92 * Math.sin(end)} Z`
       });
-    slice.append(svgElement("title", {}, `${labels[index]}: ${numberFormat.format(value)} (${percentFormat.format(value / total)})`));
+    const description = `${labels[index]}: ${numberFormat.format(value)} (${percentFormat.format(value / total)})`;
+    slice.append(svgElement("title", {}, `${label}\n${description}`));
     svg.append(slice);
+    const item = document.createElement("li");
+    const swatch = document.createElement("span");
+    swatch.className = "analytics-pie-swatch";
+    swatch.style.backgroundColor = color;
+    swatch.setAttribute("aria-hidden", "true");
+    const text = document.createElement("span");
+    text.textContent = description;
+    item.append(swatch, text);
+    legend.append(item);
     angle = end;
   });
-  return svg;
+  chart.append(legend);
+  return chart;
 }
 
 function renderChart(id, growth, key, label, options = {}) {
@@ -58,7 +79,6 @@ function renderChart(id, growth, key, label, options = {}) {
   const maximum = options.rate ? 100 : Math.max(...values, 1);
   const type = growthChartIds.has(id) ? growthChartType.value || "line" : "line";
   const svg = svgElement("svg", { viewBox: "0 0 460 230", role: "img", "aria-label": label });
-  svg.append(svgElement("title", {}, label));
   const gradient = svgElement("linearGradient", {
     id: `${id}AreaGradient`,
     x1: "0",
@@ -101,8 +121,18 @@ function renderChart(id, growth, key, label, options = {}) {
     }));
     for (const { x, y, point } of points) {
       const dot = svgElement("circle", { cx: x, cy: y, r: 3 });
-      dot.append(svgElement("title", {}, `${point.date}: ${format(point[key])}`));
+      dot.append(svgElement("title", {}, `${label}\n${point.date}: ${format(point[key])}`));
       svg.append(dot);
+    }
+    for (const [index, { x, point }] of points.entries()) {
+      const left = index === 0 ? 55 : (points[index - 1].x + x) / 2;
+      const right = index === points.length - 1 ? 435 : (x + points[index + 1].x) / 2;
+      const target = svgElement("rect", {
+        x: left, y: 25, width: right - left, height: 155,
+        fill: "transparent", "aria-hidden": "true"
+      });
+      target.append(svgElement("title", {}, `${label}\n${point.date}: ${format(point[key])}`));
+      svg.append(target);
     }
   } else if (type === "bar") {
     const slot = 380 / growth.length;
@@ -111,8 +141,16 @@ function renderChart(id, growth, key, label, options = {}) {
         class: "analytics-chart-bar", x: 55 + index * slot + slot * 0.15,
         y, width: slot * 0.7, height: 180 - y, rx: Math.min(4, slot * 0.1)
       });
-      bar.append(svgElement("title", {}, `${point.date}: ${format(point[key])}`));
+      bar.append(svgElement("title", {}, `${label}\n${point.date}: ${format(point[key])}`));
       svg.append(bar);
+      if (point[key] === 0) {
+        const target = svgElement("rect", {
+          x: 55 + index * slot + slot * 0.15, y: 172, width: slot * 0.7,
+          height: 8, fill: "transparent", "aria-hidden": "true"
+        });
+        target.append(svgElement("title", {}, `${label}\n${point.date}: ${format(point[key])}`));
+        svg.append(target);
+      }
     }
   }
   svg.append(
@@ -123,7 +161,7 @@ function renderChart(id, growth, key, label, options = {}) {
   );
   const details = document.createElement("details");
   const summary = document.createElement("summary");
-  summary.textContent = options.rate ? "View cohort chart values" : "View daily chart values";
+  summary.textContent = options.rate ? "View cohort chart values" : "View chart values";
   const table = document.createElement("table");
   table.className = "analytics-table";
   const caption = document.createElement("caption");
@@ -239,9 +277,6 @@ function renderRetentionChart(retention) {
           [cohort.returning_users, cohort.eligible_users - cohort.returning_users],
           ["Returned", "Not returned"], `Day ${cohort.day} retention: returned versus not returned`
         ));
-        const legend = document.createElement("p");
-        legend.textContent = `Returned: ${numberFormat.format(cohort.returning_users)}; not returned: ${numberFormat.format(cohort.eligible_users - cohort.returning_users)}.`;
-        panel.append(legend);
       }
       pies.append(panel);
     }
@@ -263,6 +298,8 @@ growthChartType.addEventListener("change", () => {
 });
 
 async function loadAnalytics() {
+  if (!adminAuthorized || !dashboardOpen || requestInProgress) return;
+  requestInProgress = true;
   const hero = document.getElementById("analyticsHero");
   refreshButton.disabled = true;
   document.getElementById("applyDateRange").disabled = true;
@@ -270,6 +307,7 @@ async function loadAnalytics() {
   statusElement.textContent = "Loading aggregated statistics...";
   // Clear the previous snapshot on refresh so failures never look like live data.
   renderSnapshot(disconnectedSnapshot());
+  document.getElementById("provinceStatus").textContent = "Loading province analytics...";
   hero.classList.add("source-loading");
   hero.classList.remove("source-connected", "source-unavailable");
   try {
@@ -289,25 +327,69 @@ async function loadAnalytics() {
   catch (error) {
     console.error("Could not load Wantok Chat analytics:", error);
     renderSnapshot(disconnectedSnapshot());
+    document.getElementById("provinceStatus").textContent = "Province analytics unavailable. Check your admin session and backend, then refresh.";
     statusElement.classList.add("analytics-error");
     statusElement.textContent = "Could not load analytics. Check your admin session and backend deployment, then refresh. No figures are displayed.";
   }
   finally {
+    requestInProgress = false;
     refreshButton.disabled = false;
     document.getElementById("applyDateRange").disabled = false;
   }
 }
 
-document.getElementById("logoutBtn").addEventListener("click", logoutAdmin);
+function stopPolling() {
+  if (refreshTimer !== null) {
+    window.clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+}
+
+function startPolling() {
+  stopPolling();
+  if (!adminAuthorized || !dashboardOpen || document.visibilityState === "hidden") return;
+  refreshTimer = window.setInterval(() => {
+    if (document.visibilityState !== "hidden") return loadAnalytics();
+  }, 60000);
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    stopPolling();
+    return;
+  }
+  startPolling();
+  return loadAnalytics();
+});
+
+window.addEventListener("pagehide", () => {
+  dashboardOpen = false;
+  stopPolling();
+});
+
+window.addEventListener("pageshow", event => {
+  if (!event.persisted) return;
+  dashboardOpen = true;
+  startPolling();
+  return loadAnalytics();
+});
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  dashboardOpen = false;
+  stopPolling();
+  logoutAdmin();
+});
 refreshButton.addEventListener("click", loadAnalytics);
 
 async function initialize() {
   const user = await requireAdmin();
   if (!user) return;
+  adminAuthorized = true;
   await Promise.all([
     initializePlatform({ reload: loadAnalytics, renderChart }),
     loadAnalytics()
   ]);
+  startPolling();
 }
 
 initialize();

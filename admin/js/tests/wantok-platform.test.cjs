@@ -141,6 +141,7 @@ function documentFixture(html) {
     const classes = new Set();
     return {
       tag, children: [], attributes: {}, listeners: {}, textContent: "", value: "", disabled: false,
+      style: { removeProperty(name) { delete this[name]; } },
       set id(value) { this._id = value; elements.set(value, this); },
       get id() { return this._id; },
       classList: {
@@ -155,6 +156,7 @@ function documentFixture(html) {
       querySelectorAll(tag) {
         return this.children.flatMap(child => [child.tag === tag ? [child] : [], child.querySelectorAll(tag)]).flat();
       },
+      querySelector(tag) { return this.querySelectorAll(tag)[0] || null; },
       getBoundingClientRect() { return { width: 800, height: 340 }; },
       click() { this.listeners.click?.(); }
     };
@@ -230,6 +232,19 @@ test("platform UI initializes maps, selection, zoom, filters, investor view, int
     const data = await platformSnapshot();
     renderPlatform(data);
     assert.equal(get("summaryMetrics-new_registrations").textContent, "7");
+    const { PNG_PROVINCES } = await moduleAt("supabase/functions/shared/wantok-platform.js");
+    data.platform.geography.provinces = {
+      status: "available", total: 0, rows: PNG_PROVINCES.map(name => ({ name, count: 0 }))
+    };
+    renderPlatform(data);
+    assert.equal(get("provinceStatus").textContent, "No profiles found.");
+    assert.equal(get("provinceMissing").textContent, "—");
+    assert.equal(get("provinceChart").children[0].children.length, 23);
+    data.platform.geography.provinces = { status: "error" };
+    renderPlatform(data);
+    assert.match(get("provinceStatus").textContent, /unavailable/);
+    assert.equal(get("provinceTotal").textContent, "Not connected");
+    data.platform.geography.provinces = null;
     assert.equal(get("financeMetrics-profit").textContent, "Not connected");
     assert.equal(get("exportAnalytics").disabled, false);
     get("registrationInterval").value = "weekly";

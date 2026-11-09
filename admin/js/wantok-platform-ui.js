@@ -1,5 +1,5 @@
 import { PLATFORM_METRICS, presetRange, validateRange, groupSeries, csvRows } from "../../supabase/functions/shared/wantok-platform.js";
-import { initializeMap } from "./wantok-maps.js";
+import { initializeMap, renderProvinceMap } from "./wantok-maps.js";
 
 const GROUPS = {
   summaryMetrics: ["online_users", "new_registrations", "monthly_growth", "total_audio_calls", "total_video_calls", "crash_free_sessions"],
@@ -112,6 +112,42 @@ export function exportSnapshot(snapshot) {
 export function renderPlatform(snapshot) {
   if (!initialized) return;
   lastSnapshot = snapshot;
+  const provinces = snapshot.platform?.geography?.provinces ?? null;
+  renderProvinceMap(provinces);
+  const available = provinces?.status === "available";
+  const number = new Intl.NumberFormat();
+  const unknown = available ? provinces.rows.find(row => row.name === "Unknown / Not Set").count : null;
+  document.getElementById("provinceTotal").textContent = available ? number.format(provinces.total) : "Not connected";
+  document.getElementById("provinceKnown").textContent = available ? number.format(provinces.total - unknown) : "Not connected";
+  document.getElementById("provinceMissing").textContent = available
+    ? provinces.total ? new Intl.NumberFormat(undefined, { style: "percent", maximumFractionDigits: 1 }).format(unknown / provinces.total) : "—"
+    : "Not connected";
+  document.getElementById("provinceStatus").textContent = available
+    ? provinces.total ? "Current profile counts loaded." : "No profiles found."
+    : provinces?.status === "error" ? "Province data unavailable. Check the Wantok province RPC deployment and refresh." : "Province analytics: Not connected.";
+  const chart = document.getElementById("provinceChart");
+  chart.replaceChildren();
+  if (available) {
+    const list = document.createElement("ul");
+    const maximum = Math.max(...provinces.rows.map(row => row.count), 1);
+    for (const row of provinces.rows) {
+      const item = document.createElement("li");
+      item.title = `Profiles by province\n${row.name}: ${number.format(row.count)}`;
+      const name = document.createElement("span");
+      name.textContent = row.name;
+      const track = document.createElement("span");
+      track.className = "province-chart-track";
+      track.setAttribute("aria-hidden", "true");
+      const bar = document.createElement("span");
+      bar.style.width = `${row.count / maximum * 100}%`;
+      track.append(bar);
+      const count = document.createElement("strong");
+      count.textContent = number.format(row.count);
+      item.append(name, track, count);
+      list.append(item);
+    }
+    chart.append(list);
+  } else chart.textContent = provinces?.status === "error" ? "Province data unavailable." : "Not connected";
   for (const [container, keys] of Object.entries(GROUPS)) {
     for (const key of keys) {
       const value = snapshot.platform?.metrics[key] ?? null;

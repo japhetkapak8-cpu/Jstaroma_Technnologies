@@ -1,4 +1,4 @@
-import { PLATFORM_METRICS, CONNECTED_PLATFORM_KEYS, validateRange } from "./wantok-platform.js";
+import { PLATFORM_METRICS, CONNECTED_PLATFORM_KEYS, validateRange, validateProvinceAggregate } from "./wantok-platform.js";
 
 export const METRIC_KEYS = Object.freeze([
   "registered_users", "mau", "dau", "messages", "calls", "groups"
@@ -65,7 +65,7 @@ export function validateSnapshot(input) {
     validateRange(input.period, new Date(input.generated_at));
     if (!record(input.platform) || !record(input.platform.metrics) ||
         !record(input.platform.series) || !record(input.platform.geography) ||
-        input.platform.geography.countries !== null || input.platform.geography.provinces !== null ||
+        input.platform.geography.countries !== null ||
         input.platform.devices !== null) invalid();
     const platformMetrics = {};
     for (const [key] of PLATFORM_METRICS) {
@@ -98,7 +98,16 @@ export function validateSnapshot(input) {
       const metric = { registrations: "new_registrations", messages: "period_messages", calls: "period_calls" }[key];
       if (series[key].reduce((sum, point) => sum + point.count, 0) !== platformMetrics[metric]) invalid();
     }
-    platform = { metrics: platformMetrics, series, geography: { countries: null, provinces: null }, devices: null };
+    const rawProvinces = input.platform.geography.provinces;
+    let provinces = null;
+    if (rawProvinces !== null) {
+      if (rawProvinces?.status === "error") provinces = { status: "error" };
+      else {
+        const aggregate = validateProvinceAggregate(rawProvinces);
+        provinces = { status: "available", ...aggregate };
+      }
+    }
+    platform = { metrics: platformMetrics, series, geography: { countries: null, provinces }, devices: null };
   }
 
   let growth = null;

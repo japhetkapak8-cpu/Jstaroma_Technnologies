@@ -8,11 +8,13 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE_PATH || "playwright")
 const root = path.resolve(__dirname, "../../..");
 
 async function main() {
-  const { PLATFORM_METRICS, CONNECTED_PLATFORM_KEYS } = await import(pathToFileURL(
+  const { PLATFORM_METRICS, CONNECTED_PLATFORM_KEYS, PNG_PROVINCES } = await import(pathToFileURL(
     path.join(root, "supabase/functions/shared/wantok-platform.js")
   ));
   let fail = false;
   let unauthorized = false;
+  let chartData = false;
+  let jiwakaCount = 10;
   const ranges = [];
   const server = http.createServer(async (request, response) => {
     try {
@@ -31,13 +33,22 @@ async function main() {
           growth: null, retention: null,
           platform: {
             metrics: Object.fromEntries(PLATFORM_METRICS.map(([key]) => [key,
-              CONNECTED_PLATFORM_KEYS.includes(key) ? 0 : null])),
+              CONNECTED_PLATFORM_KEYS.includes(key) ? (chartData && key === "new_registrations" ? 5 : 0) : null])),
             series: Object.fromEntries(["registrations", "messages", "calls"].map(key => [
               key, Array.from({ length: days }, (_, index) => ({
-                date: new Date(Date.parse(period.start) + index * 86400000).toISOString().slice(0, 10), count: 0
+                date: new Date(Date.parse(period.start) + index * 86400000).toISOString().slice(0, 10),
+                count: chartData && key === "registrations" && index < 2 ? index + 2 : 0
               }))
             ])),
-            geography: { countries: null, provinces: null }, devices: null
+            geography: { countries: null, provinces: {
+              status: "available", rows: PNG_PROVINCES.map(name => ({
+                name, count: name === "Jiwaka Province" ? jiwakaCount : name === "Eastern Highlands Province" ? 5 :
+                  name === "Manus Province" ? 4 : name === "Southern Highlands Province" || name === "Morobe Province" ||
+                  name === "Enga Province" ? 2 : ["Western Highlands Province", "Gulf Province", "Madang Province",
+                    "National Capital District", "Western Province", "East Sepik Province"].includes(name) ? 1 :
+                    name === "Unknown / Not Set" ? 21 : 0
+              }))
+            } }, devices: null
           }
         };
         response.end(JSON.stringify(output));
@@ -95,6 +106,14 @@ async function main() {
     await page.waitForFunction(() => document.getElementById("registered_users").textContent === "100");
     assert.equal(await page.locator("#pngMap path").count(), 22);
     assert.equal(await page.locator("#worldMap path").count(), 177);
+    await page.waitForFunction(() => document.getElementById("provinceTotal").textContent === "52");
+    assert.equal(await page.locator("#provinceKnown").textContent(), "31");
+    assert.equal(await page.locator("#provinceMissing").textContent(), "40.4%");
+    assert.equal(await page.locator("#provinceChart li").count(), 23);
+    assert.equal(await page.locator('#pngMap path[aria-label="Jiwaka Province: 10 profiles"]').count(), 1);
+    assert.notEqual(await page.locator('#pngMap path[aria-label="Jiwaka Province: 10 profiles"]').evaluate(node => node.style.fill), "");
+    assert.match(await page.locator("#provinceChart").innerText(), /Unknown \/ Not Set\s+21/);
+    assert.equal(await page.locator("#pngLeaderboard tbody tr").count(), 23);
     assert.equal(await page.locator("#mau").textContent(), "Not connected");
     assert.equal(await page.locator("#summaryMetrics-new_registrations").textContent(), "0");
     assert.match(await page.locator("#registrationEmpty").textContent(), /verified zero/);
@@ -106,14 +125,43 @@ async function main() {
     await page.locator("#pngMap button").filter({ hasText: "Zoom in" }).click();
     assert.notEqual(await map.getAttribute("viewBox"), before);
     await page.locator("#pngMap button").filter({ hasText: "Reset map" }).click();
-    await page.locator('#pngMap path[aria-label="Jiwaka Province: Not connected"]').focus();
+    await page.locator('#pngMap path[aria-label="Jiwaka Province: 10 profiles"]').focus();
     await page.keyboard.press("Enter");
-    assert.match(await page.locator("#pngMapSelection").textContent(), /Jiwaka Province: Not connected/);
+    assert.match(await page.locator("#pngMapSelection").textContent(), /Jiwaka Province: 10 profiles/);
 
     await page.selectOption("#datePreset", "7");
+    chartData = true;
     await page.click("#applyDateRange");
     await page.waitForFunction(() => document.querySelectorAll("#registrationChart circle").length === 7);
     assert.equal((Date.parse(ranges.at(-1).end) - Date.parse(ranges.at(-1).start)) / 86400000 + 1, 7);
+    const firstDate = ranges.at(-1).start;
+    const lineTarget = page.locator('#registrationChart rect[fill="transparent"]').first();
+    assert.equal(await lineTarget.locator("title").textContent(), `daily registrations (surviving accounts)\n${firstDate}: 2`);
+    await lineTarget.hover();
+    assert.equal(await page.locator("#messageTrend circle").first().locator("title").textContent(),
+      `Daily messages records\n${firstDate}: 0`);
+
+    await page.selectOption("#growthChartType", "pie");
+    assert.equal(await page.locator("#registrationChart .analytics-pie-slice").count(), 2);
+    assert.equal(await page.locator("#registrationChart .analytics-pie-legend li").count(), 2);
+    assert.equal(await page.locator("#registrationChart .analytics-pie-legend li").first().innerText(), `${firstDate}: 2 (40%)`);
+    assert.equal(await page.locator("#registrationChart .analytics-pie-slice").first().locator("title").textContent(),
+      `daily registrations (surviving accounts)\n${firstDate}: 2 (40%)`);
+    assert.equal(await page.locator("#registrationChart .analytics-pie-slice").first().evaluate(element => element.style.fill),
+      await page.locator("#registrationChart .analytics-pie-swatch").first().evaluate(element => element.style.backgroundColor));
+    const pieSvg = page.locator("#registrationChart svg");
+    const pieBox = await pieSvg.boundingBox();
+    const piePoint = { x: pieBox.x + pieBox.width * 277 / 460, y: pieBox.y + pieBox.height * 100 / 230 };
+    await page.mouse.move(piePoint.x, piePoint.y);
+    assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)
+      .querySelector("title")?.textContent, piePoint), `daily registrations (surviving accounts)\n${firstDate}: 2 (40%)`);
+
+    await page.selectOption("#growthChartType", "bar");
+    const firstBar = page.locator("#registrationChart .analytics-chart-bar").first();
+    assert.equal(await firstBar.locator("title").textContent(), `daily registrations (surviving accounts)\n${firstDate}: 2`);
+    await firstBar.hover();
+    assert.equal(await page.locator('#registrationChart rect[fill="transparent"]').count(), 5);
+    await page.selectOption("#growthChartType", "line");
     await page.selectOption("#registrationInterval", "weekly");
     assert.ok(await page.locator("#registrationChart circle").count() <= 2);
     const downloadEvent = page.waitForEvent("download");
@@ -124,17 +172,23 @@ async function main() {
     assert.equal(await page.locator("#geographySection").isVisible(), false);
     await page.uncheck("#investorView");
 
+    await page.selectOption("#growthChartType", "pie");
     for (const width of [390, 768, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await page.evaluate(() => window.scrollTo(0, 0));
       const sizes = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, width: window.innerWidth }));
       assert.ok(sizes.scroll <= sizes.width, `Horizontal page overflow at ${width}: ${sizes.scroll}`);
     }
+    jiwakaCount = 11;
+    await page.click("#refreshAnalytics");
+    await page.waitForFunction(() => document.getElementById("provinceTotal").textContent === "53");
+    assert.equal(await page.locator('#pngMap path[aria-label="Jiwaka Province: 11 profiles"]').count(), 1);
     fail = true;
     await page.click("#refreshAnalytics");
     await page.waitForFunction(() => document.getElementById("analyticsStatus").textContent.includes("Could not load analytics"));
     assert.equal(await page.locator("#summaryMetrics-new_registrations").textContent(), "Not connected");
     assert.equal(await page.locator("#registrationChart svg").count(), 0);
+    assert.equal(await page.locator("#provinceTotal").textContent(), "Not connected");
     assert.equal(await page.locator("#exportAnalytics").isDisabled(), true);
     fail = false;
     await page.click("#refreshAnalytics");

@@ -1,5 +1,99 @@
 # Jstaroma_Technnologies
 
+## Cloudflare Workers static build
+
+The existing Worker is **`jstaroma-technologies`**. Root
+[`wrangler.jsonc`](wrangler.jsonc) configures `assets.directory: "./dist"`;
+there is no Worker script or `main` entry point. This fixes Wrangler's
+“Missing entry-point to Worker script or to assets directory” error.
+
+Build with Node.js 20 or later (no package installation required):
+
+```sh
+node scripts/build-static.mjs
+```
+
+[`scripts/build-static.mjs`](scripts/build-static.mjs) uses an explicit
+reviewable allowlist, preserves original URL paths and file contents, checks
+local HTML/CSS/module dependencies and map coverage, rejects symlinks and
+recognizable secrets, and replaces only its generated `dist/` directory.
+Add any new local public asset to `PUBLIC_FILES` before publishing it.
+The current inventory includes all 15 HTML pages, root/shared CSS and JS,
+admin CSS/JS, both PNG/world GeoJSON files, boundary-source metadata, Slides
+and GIS pages, and exactly these public Supabase modules:
+
+- `supabase/functions/shared/wantok-chat-contract.js`
+- `supabase/functions/shared/wantok-platform.js`
+
+There are no checked-in image/font files. Existing images loaded from
+Supabase/public content and external Google Fonts/Font Awesome resources
+remain external; the build does not download or rewrite them.
+
+The repository root is **never** the upload directory. SQL, private Edge
+Function handlers, TypeScript entry points, secrets/environment files,
+credentials, tests, git metadata, editor settings, Supabase temporary files
+and documentation are excluded. Only the existing website publishable
+Supabase key belongs in public code; server credentials never do.
+Pattern scanning is an additional guard, not proof against every possible
+secret format: review allowlist changes and uploaded files before release.
+
+### Cloudflare dashboard build settings
+
+In **Workers & Pages > jstaroma-technologies > Settings > Builds**:
+
+| Setting | Value |
+|---|---|
+| Root directory | Repository root (leave blank or use `/`, according to the UI) |
+| Build command | `node scripts/build-static.mjs` |
+| Deploy command | `npx wrangler deploy` |
+| Non-production/preview command | `npx wrangler versions upload` |
+
+The existing preview command can remain unchanged: Wrangler now discovers
+the root configuration and uploads **only `dist/`**, which must be created by
+the build step first. Do not set the build root to `dist/`, upload the entire
+repository, or point the dashboard at a different Worker name. Keep the
+existing domain/routes and Cloudflare build authentication in the dashboard,
+not source code. `CNAME` is GitHub Pages metadata and is not uploaded;
+Cloudflare's configured custom domain continues to control routing.
+
+`html_handling: "auto-trailing-slash"` resolves directory `index.html`
+routes such as `/privacy/` as well as the existing `.html` links and admin
+auth redirects. Cloudflare may canonicalize `.html` requests to extensionless
+URLs; the original files, link targets and relative asset paths remain valid.
+Missing files use a real 404, not an SPA fallback that masks broken
+module paths. No Supabase project, database or deployed Edge Function needs
+to change. These commands describe deployment steps only; they do not imply
+deployment or approval to merge a pull request.
+
+### Static build and regression checks
+
+```sh
+node scripts/build-static.mjs
+node --test scripts/tests/*.test.mjs
+node --experimental-vm-modules --test admin/js/tests/*.test.cjs
+# Validate Wrangler packaging locally without deploying:
+npx wrangler deploy --dry-run
+# Optional local preview:
+npx wrangler dev --local
+```
+
+For an automated URL check, run `npx wrangler dev --local --ip 127.0.0.1
+--port 8791` in one terminal and
+`node scripts/tests/verify-static-http.mjs http://127.0.0.1:8791` in another.
+It compares every public response with the built bytes, checks directory
+pages and confirms private/missing URLs return 404. Stop the preview after
+testing. This check accepts localhost only and never contacts production.
+
+Build tests verify byte-identical/reproducible output, original pages and
+Wantok dependencies, private-file exclusion, missing-link failures, secret
+rejection and symlink protection. `dist/` is gitignored. Local preview should
+resolve `/`, `/products.html`, `/achievements.html`, `/privacy/`, `/terms/`,
+`/account-deletion/`, `/child-safety/`, `/jstaroma-slides/`,
+`/jstaroma-slides/gis-maps/`, every `/admin/*.html` page, admin map files and
+both `/supabase/functions/shared/*.js` dependencies. Auth and live analytics
+still require their existing Supabase configuration and allowed website
+origins; the static build never bypasses authorization.
+
 ## Wantok Chat Analytics
 
 **Admin > Wantok Chat** reuses the existing login, `admins` membership check,
@@ -19,16 +113,17 @@ not zero. Zero is displayed only when supplied by a verified aggregate source.
 
 - **Overview:** existing totals plus online users, new registrations, monthly
   growth, total audio/video call records and crash-free sessions.
-- **Geography:** real zoomable/pannable SVG maps, hover descriptions, clickable
-  and keyboard-selectable regions, accessible region selection, region
-  directories/leaderboard tables and Unknown. Maps load locally only after
-  existing admin authorization. Grey means unavailable, blue means selection:
-  there is **no usage choropleth, percentage, ranking or location growth**
-  until a verified geographic aggregate exists. Never color zero/unavailable
-  regions as though they have usage.
+- **Geography:** real zoomable/pannable SVG maps with keyboard selection.
+  The PNG map, bar chart and directory show current profile province counts
+  when the separate Wantok RPC is installed; zero and unknown locations are
+  included. The country map remains disconnected. These are profile counts,
+  not app activity or historical growth, and do not follow the date filter.
 - **Growth:** daily, Monday-UTC weekly and calendar-month registration charts.
   Partial buckets include only selected dates. Registration series describe
-  surviving accounts, not historical total-account growth. The legacy
+  surviving accounts, not historical total-account growth. Pie chart legends
+  identify each nonzero slice and its share; hover over a slice, bar or line
+  interval for its chart name and value. The chart values table also lists zero
+  intervals. The legacy
   account-total chart, DAU/MAU trends, returning/inactive users, monthly growth
   rate and retention stay disconnected without proper app activity/history.
 - **Engagement:** selected-period text, audio-message/voice-note and
@@ -50,8 +145,8 @@ not zero. Zero is displayed only when supplied by a verified aggregate source.
   markers; formula-prefixed text is escaped.
 
 Provider integrations are **prepared interfaces/source requirements, not
-implemented live API adapters**. No provider account, credentials, profile
-province schema, country export or moderation/financial schema has been
+implemented live API adapters**. No provider account, credentials, country
+export or moderation/financial schema has been
 verified. Server contract v3 rejects values for these unverified sources
 instead of accepting success-shaped placeholders.
 
@@ -77,24 +172,41 @@ Keep the two GeoJSON files in the published static site; they are about
 2.3 MB combined. A boundary failure is independent of metric loading and
 shows an explicit map error with reload instructions.
 
-The user selected a **10-user privacy threshold**. The shared
-`protectGeography` helper requires Unknown and suppresses the **whole
-distribution**, including counts/total, when any positive bucket is below 10.
-This avoids revealing a small bucket by subtraction from remaining totals.
-Current v3 geography is always null, so no user location data leaves Wantok.
-Before enabling a future source, use a fixed geographic snapshot, not
-arbitrary date/region/device filters; enforce suppression on the server.
-Percentages, leaderboards, chart trends, exports and combinations with other
-published totals must obey the same disclosure policy. Thresholds alone do
-not prevent repeated-query or differencing attacks; review cumulative
-disclosures before expanding the allowed geographic contract.
+The user explicitly approved an exception for **exact province counts in the
+authenticated administrator dashboard**, including buckets below 10. The
+existing `protectGeography` 10-user whole-distribution suppression rule
+remains in place for other geographic uses; do not expose this privileged
+province aggregate publicly or reuse it for public reports or exports.
+Repeated admin refreshes can reveal changes in small groups. This exception
+does not authorize filtering by date, region or device.
 
-Do not infer a province from coordinates, free-text names, phone numbers or
-profile existence. Province schema/account join/one-profile-per-account
-invariant is unverified. Country counts must come from a separately verified
+The fixed province RPC counts distinct `profiles.id` and verifies that it is
+the primary key and a foreign key to `auth.users.id` before installation.
+It normalizes approved province names/aliases and counts null, blank and
+unrecognized values as Unknown. It never infers a province from coordinates,
+phone numbers, city or profile existence. Country counts must come from a separately verified
 Firebase Analytics (or equivalent) country aggregate, with a documented
 active-user definition and Unknown category; they are not automatically
 registered-account counts.
+
+To enable province counts, review and run
+[`20261109_admin_province_analytics.sql`](supabase/wantok-chat/sql/20261109_admin_province_analytics.sql)
+in the **Wantok** project's SQL Editor, not the Jstaroma project. It checks
+the schema, installs a read-only security-invoker RPC and grants execution only
+to `service_role`; it does not change RLS or Flutter. Deploy the updated
+Jstaroma `wantok-chat-analytics` Edge Function and static dashboard using the
+existing deployment process. Both projects' existing server configuration and
+`WANTOK_ANALYTICS_VERIFIED=true` are required. Until the RPC is installed,
+the dashboard explicitly reports province data unavailable while preserving
+other analytics. No credentials or individual profile records are sent to the
+browser. Verify live counts with an authorized admin after deployment.
+The open dashboard fetches fresh server aggregates on initial load, every
+60 seconds while visible, and when the tab becomes active again. Polling
+pauses in hidden tabs and stops on page exit or logout; restored pages resume
+polling. Concurrent refresh requests are skipped. Each request still verifies
+administrator membership and uses the existing approved province privacy
+policy. Once this frontend/backend integration is deployed, changes in
+Supabase counts appear on refresh without another website redeployment.
 
 ### External integration prerequisites (not connected)
 
@@ -334,12 +446,17 @@ V3 preserves v2 current `metrics`, `metric_scope`, timestamps and null
 - `platform.series`: `registrations`, `messages`, `calls`; null or one ordered
   `{ date, count }` entry per selected UTC day, including genuine zeros.
   Counts must sum to their corresponding period metric.
-- `platform.geography`: `{ countries: null, provinces: null }`.
+- `platform.geography`: the range RPC must return null for both fields. After
+  authorization, the Edge Function separately fetches the fixed current
+  province RPC and returns `{ status: "available", rows, total }`, or
+  `{ status: "error" }` when that RPC fails; countries stay null.
 - `platform.devices`: `null`.
 
 Extra properties are stripped on the server. Malformed series, missing keys,
-unsafe values, invalid periods, impossible subtotal sums, location payloads
-or invented provider results return HTTP 503; the browser clears all values.
+unsafe values, invalid periods, impossible subtotal sums, unexpected range-RPC
+location payloads or invented provider results return HTTP 503; the browser
+clears all values. Invalid province responses are reported separately without
+discarding the other valid analytics.
 The base no-range v2 interface and legacy v1 rendering tests remain intact.
 The new frontend requires the reviewed range RPC; an older deployment shows
 an explicit error rather than silently using unrelated totals for filters.
@@ -405,6 +522,9 @@ docker cp supabase/wantok-chat wantok-platform-sql-test:/tmp/wantok-chat
 docker exec wantok-platform-sql-test psql -v ON_ERROR_STOP=1 -U postgres \
   -f /tmp/wantok-chat/tests/platform.sql
 docker stop wantok-platform-sql-test
+# Province tests create fixture roles, so use a separate fresh container.
+docker run --rm -v "$PWD/supabase/wantok-chat:/tests:ro" postgres:17 bash -c \
+  'install -d -o postgres -g postgres /tmp/pgdata /tmp/pgsocket && runuser -u postgres -- initdb -D /tmp/pgdata -A trust >/dev/null && runuser -u postgres -- pg_ctl -D /tmp/pgdata -o "-k /tmp/pgsocket" -w start >/dev/null && psql -h /tmp/pgsocket -U postgres -v ON_ERROR_STOP=1 -f /tests/tests/provinces.sql'
 ```
 
 The fixture creates local roles/tables, installs both RPCs, reruns the range
