@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-  <div class="admin-layout">
+  <div class="admin-layout analytics-layout">
     <aside class="admin-sidebar">
       <div class="admin-brand">
         <div class="small-brand-mark">JT</div>
@@ -36,7 +36,7 @@
         <button id="logoutBtn" class="logout-btn" type="button"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout</button>
       </div>
     </aside>
-    <main class="admin-main" id="analyticsMain">
+    <main class="admin-main analytics-console" id="analyticsMain">
       <div class="page-header analytics-hero source-loading" id="analyticsHero">
         <div class="analytics-heading">
           <span class="analytics-hero-icon" aria-hidden="true">
@@ -112,12 +112,12 @@
         </article>
       </section>
       <section id="geographySection" class="analytics-detail" aria-labelledby="geographyHeading">
-        <h2 id="geographyHeading">Geographic distribution</h2>
+        <h2 id="geographyHeading" class="analytics-section-heading"><i class="fa-solid fa-earth-oceania" aria-hidden="true"></i> Geographic distribution</h2>
         <p>Countries: Not connected (requires verified Firebase Analytics export). Provinces: Not connected (profile province field and account relationship unverified).</p>
         <p>Missing locations belong to Unknown, not PNG by default. Groups below 10 users and any complementary totals, percentages or trends must be withheld. Maps show boundaries only until an approved fixed, privacy-safe aggregate is available.</p>
         <div class="analytics-charts">
           <article class="admin-card analytics-panel">
-            <h3>World map</h3>
+            <h3><i class="fa-solid fa-globe" aria-hidden="true"></i> World map</h3>
             <p id="worldMapStatus" role="status">Boundaries not loaded.</p>
             <div id="worldMap" class="interactive-map"></div>
             <p id="worldMapSelection" aria-live="polite">Select a country to inspect source availability.</p>
@@ -125,7 +125,7 @@
             <details><summary>Country leaderboard and Unknown</summary><div id="worldLeaderboard" class="analytics-table-wrap">Not connected</div></details>
           </article>
           <article class="admin-card analytics-panel">
-            <h3>Papua New Guinea: 22 provinces</h3>
+            <h3><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> Papua New Guinea: 22 provinces</h3>
             <p id="pngMapStatus" role="status">Boundaries not loaded.</p>
             <div id="pngMap" class="interactive-map"></div>
             <p id="pngMapSelection" aria-live="polite">Select a province to inspect source availability.</p>
@@ -135,9 +135,9 @@
         </div>
       </section>
       <section id="growthSection" class="analytics-detail" aria-labelledby="growthSectionHeading">
-        <h2 id="growthSectionHeading">User growth &amp; retention</h2>
+        <h2 id="growthSectionHeading" class="analytics-section-heading"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> User growth &amp; retention</h2>
         <article class="admin-card analytics-panel">
-          <h3>Registrations in selected period</h3>
+          <h3><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Registrations in selected period</h3>
           <label>Chart interval <select id="registrationInterval"><option value="daily">Daily</option><option value="weekly">Weekly (Monday UTC)</option><option value="monthly">Monthly (UTC)</option></select></label>
           <p>Counts use surviving accounts' registration dates. Deleted accounts are absent; partial weeks/months contain only selected dates. This is not reconstructed historical account growth.</p>
           <div id="registrationChart" class="analytics-chart">Not connected</div>
@@ -146,19 +146,19 @@
         <div id="growthMetrics" class="dashboard-stats analytics-stats"></div>
         <div class="analytics-charts">
         <section class="admin-card analytics-panel" aria-labelledby="growthHeading">
-          <h2 id="growthHeading">Registered user growth</h2>
+          <h2 id="growthHeading"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Registered user growth</h2>
           <p>Daily total registered users.</p>
           <div id="registeredGrowth" class="analytics-chart">Not connected</div>
         </section>
         <section class="admin-card analytics-panel" aria-labelledby="activityHeading">
-          <h2 id="activityHeading">Daily active user trend</h2>
+          <h2 id="activityHeading"><i class="fa-solid fa-wave-square" aria-hidden="true"></i> Daily active user trend</h2>
           <p>Daily unique active users.</p>
           <div id="activeGrowth" class="analytics-chart">Not connected</div>
           <p>MAU trend: Not connected. App activity tracking is required.</p>
         </section>
         </div>
         <section class="admin-card analytics-panel" aria-labelledby="retentionHeading">
-          <h2 id="retentionHeading">User retention</h2>
+          <h2 id="retentionHeading"><i class="fa-solid fa-rotate" aria-hidden="true"></i> User retention</h2>
           <p>Day 1, 7 and 30 return rates for eligible registration cohorts. App activity tracking is not connected.</p>
           <p id="retentionStatus">Not connected</p>
           <div class="analytics-table-wrap">
@@ -175,7 +175,7 @@
         </section>
       </section>
       <section id="engagementSection" class="analytics-detail" aria-labelledby="engagementHeading">
-          <h2 id="engagementHeading">Messaging &amp; calls</h2>
+          <h2 id="engagementHeading" class="analytics-section-heading"><i class="fa-solid fa-comments" aria-hidden="true"></i> Messaging &amp; calls</h2>
           <p>Selected UTC period. Message aggregates exclude call-type and deleted-for-everyone rows. Call type counts include all statuses; completion, missed-status column and duration definitions remain unverified.</p>
           <div id="engagementMetrics" class="dashboard-stats analytics-stats"></div>
           <div class="analytics-charts">
@@ -185,7 +185,7 @@
           <p>Message/call trends are engagement events, never MAU, DAU or unique app-active users.</p>
         </section>
         <section id="performanceSection" class="analytics-detail" aria-labelledby="performanceHeading">
-          <h2 id="performanceHeading">App performance &amp; devices</h2>
+          <h2 id="performanceHeading" class="analytics-section-heading"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> App performance &amp; devices</h2>
           <div id="performanceMetrics" class="dashboard-stats analytics-stats"></div>
           <article class="admin-card analytics-panel">
             <h3>Devices and installation trends</h3>
@@ -198,17 +198,17 @@
           </article>
         </section>
         <section id="financeSection" class="analytics-detail" aria-labelledby="financeHeading">
-          <h2 id="financeHeading">Infrastructure &amp; finance</h2>
+          <h2 id="financeHeading" class="analytics-section-heading"><i class="fa-solid fa-server" aria-hidden="true"></i> Infrastructure &amp; finance</h2>
           <p>Billing currency, tax, reconciliation and period attribution must be verified before presenting financial totals. No currency is assumed.</p>
           <div id="financeMetrics" class="dashboard-stats analytics-stats"></div>
         </section>
         <section id="safetySection" class="analytics-detail" aria-labelledby="safetyHeading">
-          <h2 id="safetyHeading">Trust &amp; safety</h2>
+          <h2 id="safetyHeading" class="analytics-section-heading"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Trust &amp; safety</h2>
           <p>Aggregate workflows only. No reporter identity, account identity, private conversations, GPS coordinates or recordings are exposed.</p>
           <div id="safetyMetrics" class="dashboard-stats analytics-stats"></div>
         </section>
         <section id="sourcesSection" class="analytics-detail admin-card analytics-panel" aria-labelledby="sourcesHeading">
-          <h2 id="sourcesHeading">Verified source coverage</h2>
+          <h2 id="sourcesHeading"><i class="fa-solid fa-database" aria-hidden="true"></i> Verified source coverage</h2>
           <p>Prepared integrations are not live connections. Only server-validated Wantok aggregates can populate verified fields. No Firebase, Google Play, LiveKit, billing or moderation API has been configured.</p>
           <div id="sourceRegistry" class="analytics-table-wrap"></div>
         </section>

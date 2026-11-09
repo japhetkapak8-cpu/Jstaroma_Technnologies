@@ -28,12 +28,42 @@ function renderChart(id, growth, key, label) {
   const maximum = Math.max(...values, 1);
   const svg = svgElement("svg", { viewBox: "0 0 460 230", role: "img", "aria-label": label });
   svg.append(svgElement("title", {}, label));
+  const gradient = svgElement("linearGradient", {
+    id: `${id}AreaGradient`,
+    x1: "0",
+    x2: "0",
+    y1: "0",
+    y2: "1"
+  });
+  gradient.append(
+    svgElement("stop", { offset: "0%", "stop-color": "#bd7dff", "stop-opacity": "0.5" }),
+    svgElement("stop", { offset: "100%", "stop-color": "#6f46db", "stop-opacity": "0.02" })
+  );
+  const defs = svgElement("defs", {});
+  defs.append(gradient);
+  svg.append(defs);
   const points = growth.map((point, index) => ({
     x: 55 + index * 380 / Math.max(growth.length - 1, 1),
     y: 180 - point[key] / maximum * 145,
     point
   }));
+  const grid = svgElement("g", { class: "analytics-chart-grid", "aria-hidden": "true" });
+  for (const y of [35, 83, 132, 180]) {
+    grid.append(svgElement("line", { x1: 55, y1: y, x2: 435, y2: y }));
+  }
+  svg.append(grid);
+  svg.append(svgElement("polygon", {
+    class: "analytics-chart-area",
+    fill: `url(#${id}AreaGradient)`,
+    points: [
+      `${points[0].x},180`,
+      ...points.map(point => `${point.x},${point.y}`),
+      `${points[points.length - 1].x},180`
+    ].join(" "),
+    "aria-hidden": "true"
+  }));
   svg.append(svgElement("polyline", {
+    class: "analytics-chart-line",
     points: points.map(point => `${point.x},${point.y}`).join(" "),
     pathLength: 1
   }));
