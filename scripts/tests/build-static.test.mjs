@@ -132,6 +132,7 @@ test("Wrangler targets the confirmed existing Worker and only generated static a
   assert.match(await readFile(path.join(root, ".gitignore"), "utf8"), /^\/dist\/$/m);
   assert.ok(PUBLIC_FILES.includes("_headers"));
   const headers = await readFile(path.join(root, "_headers"), "utf8");
+  assert.match(headers, /\/admin\/css\/\*\s+Cache-Control: no-cache/);
   assert.match(headers, /\/admin\/js\/\*\s+Cache-Control: no-cache/);
   assert.match(headers, /\/supabase\/functions\/shared\/\*\s+Cache-Control: no-cache/);
 });
