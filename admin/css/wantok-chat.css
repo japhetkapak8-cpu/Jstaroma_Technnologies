@@ -1185,7 +1185,7 @@ details summary {
 
 .analytics-layout .analytics-stat-icon > i {
   display: block;
-  font-size: 27px;
+  font-size: 36px !important;
   line-height: 1;
 }
 
@@ -1449,11 +1449,38 @@ details summary {
   }
 
   .analytics-layout .analytics-stat-icon > i {
-    font-size: 28px;
+    font-size: 34px !important;
   }
 
   .analytics-layout .analytics-connection-details {
     grid-column: 1 / -1;
+  }
+}
+
+.analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon {
+  display: flex;
+  flex: 0 0 64px !important;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+}
+
+.analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon > i {
+  display: block;
+  font-size: 36px !important;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon {
+    flex-basis: 60px !important;
+    width: 60px;
+    height: 60px;
+  }
+
+  .analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon > i {
+    font-size: 34px !important;
   }
 }
 
