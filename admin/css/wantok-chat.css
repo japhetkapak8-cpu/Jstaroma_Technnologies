@@ -1457,30 +1457,31 @@ details summary {
   }
 }
 
-.analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon {
+.analytics-stats .dashboard-stat > .analytics-stat-icon {
   display: flex;
-  flex: 0 0 64px !important;
+  flex: 0 0 68px !important;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50% !important;
 }
 
-.analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon > i {
+.analytics-stats .dashboard-stat > .analytics-stat-icon > i {
   display: block;
-  font-size: 36px !important;
+  font-size: 44px !important;
   line-height: 1;
 }
 
 @media (max-width: 600px) {
-  .analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon {
-    flex-basis: 60px !important;
-    width: 60px;
-    height: 60px;
+  .analytics-stats .dashboard-stat > .analytics-stat-icon {
+    flex-basis: 64px !important;
+    width: 64px;
+    height: 64px;
   }
 
-  .analytics-layout .analytics-stats .dashboard-stat > .analytics-stat-icon > i {
-    font-size: 34px !important;
+  .analytics-stats .dashboard-stat > .analytics-stat-icon > i {
+    font-size: 40px !important;
   }
 }
 
