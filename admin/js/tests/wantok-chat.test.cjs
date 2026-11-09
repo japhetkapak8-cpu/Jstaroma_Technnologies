@@ -419,9 +419,9 @@ async function frontend({ authorized = true, payload = snapshot(), error = null,
       getDateRange: () => null
     }
   }, (source, filename) => filename.endsWith("/wantok-chat.js")
-    ? source.replace("\ninitialize();", "\nglobalThis.ready = initialize();") : source);
+    ? source.replace("\ninitialize();", "\nglobalThis.drawTestChart = renderChart;\nglobalThis.ready = initialize();") : source);
   await context.ready;
-  return { elements, requests, errors, setResult: value => { result = value; } };
+  return { elements, requests, errors, drawChart: context.drawTestChart, setResult: value => { result = value; } };
 }
 
 test("page uses existing authentication and never requests analytics when unauthorized", async () => {
@@ -469,6 +469,85 @@ test("disconnected source displays no invented metrics, charts or retention", as
     assert.equal(page.elements.get(id).textContent, "Not connected");
   }
   assert.equal(page.errors.length, 0);
+});
+
+test("growth selector switches line, pie and bar without refetching or changing retention tables", async () => {
+  const page = await frontend();
+  const selector = page.elements.get("growthChartType");
+  const chart = id => page.elements.get(id).children[0];
+  const shapes = (id, tag) => chart(id).children.filter(child => child.tag === tag);
+  assert.equal(shapes("registeredGrowth", "polyline").length, 1);
+  assert.equal(shapes("retentionChart", "circle").length, 2);
+  selector.value = "bar";
+  selector.listeners.change();
+  assert.equal(shapes("registeredGrowth", "rect").length, 30);
+  assert.equal(shapes("registeredGrowth", "polyline").length, 0);
+  assert.equal(shapes("activeGrowth", "rect").length, 30);
+  const bars = shapes("retentionChart", "rect");
+  assert.equal(bars.length, 2);
+  assert.equal(Number(bars[0].attributes.height), 72.5);
+  assert.equal(Number(bars[1].attributes.height), 72.5);
+  selector.value = "pie";
+  selector.listeners.change();
+  assert.equal(shapes("registeredGrowth", "path").length, 30);
+  assert.equal(shapes("registeredGrowth", "polyline").length, 0);
+  const cohorts = chart("retentionChart").children;
+  assert.equal(cohorts.length, 3);
+  const firstPie = cohorts[0].children[2];
+  const slices = firstPie.children.filter(child => child.tag === "path");
+  assert.equal(slices.length, 2);
+  assert.match(slices[0].children[0].textContent, /Returned: 5 \(50%\)/);
+  assert.match(slices[1].children[0].textContent, /Not returned: 5 \(50%\)/);
+  assert.equal(cohorts[1].children[1].textContent, "No eligible users");
+  assert.equal(cohorts[1].children.length, 2);
+  assert.equal(page.elements.get("retentionRows").children[0].children[3].textContent, "50%");
+  selector.value = "line";
+  selector.listeners.change();
+  assert.equal(shapes("registeredGrowth", "polyline").length, 1);
+  assert.equal(page.requests.length, 1);
+  assert.equal(page.errors.length, 0);
+});
+
+test("growth chart modes handle verified zeros, a full pie, unavailable data and non-growth charts", async () => {
+  const page = await frontend({ payload: currentRecordSnapshot() });
+  const selector = page.elements.get("growthChartType");
+  selector.value = "pie";
+  selector.listeners.change();
+  assert.equal(page.elements.get("registeredGrowth").textContent, "Not connected");
+  assert.equal(page.elements.get("retentionChart").textContent, "Not connected");
+  page.drawChart("registrationChart", [{ date: "2026-11-01", count: 0 }], "count", "Registrations");
+  let svg = page.elements.get("registrationChart").children[0];
+  assert.equal(svg.children.filter(child => child.tag === "path" || child.tag === "circle").length, 0);
+  assert.match(svg.children[1].textContent, /Verified zero/);
+  page.drawChart("registrationChart", [{ date: "2026-11-01", count: 10 }], "count", "Registrations");
+  svg = page.elements.get("registrationChart").children[0];
+  assert.equal(svg.children.filter(child => child.tag === "circle").length, 1);
+  assert.match(svg.children[1].children[0].textContent, /100%/);
+  page.drawChart("messageTrend", [{ date: "2026-11-01", count: 10 }], "count", "Messages");
+  assert.equal(page.elements.get("messageTrend").children[0].children.filter(child => child.tag === "polyline").length, 1);
+  selector.value = "bar";
+  page.drawChart("registrationChart", [{ date: "2026-11-01", count: 0 }], "count", "Registrations");
+  const bar = page.elements.get("registrationChart").children[0].children.find(child => child.tag === "rect");
+  assert.equal(Number(bar.attributes.height), 0);
+  assert.ok(Number(bar.attributes.width) > 0);
+  assert.equal(page.errors.length, 0);
+});
+
+test("retention pies distinguish all-returned, none-returned and no-eligible cohorts", async () => {
+  const payload = snapshot();
+  payload.retention[0].returning_users = payload.retention[0].eligible_users;
+  payload.retention[2].returning_users = 0;
+  const page = await frontend({ payload });
+  page.elements.get("growthChartType").value = "pie";
+  page.elements.get("growthChartType").listeners.change();
+  const cohorts = page.elements.get("retentionChart").children[0].children;
+  assert.match(cohorts[0].children[2].children[1].children[0].textContent, /Returned: 10 \(100%\)/);
+  assert.match(cohorts[2].children[2].children[1].children[0].textContent, /Not returned: 2 \(100%\)/);
+  page.setResult({ data: null, error: new Error("Unavailable") });
+  await page.elements.get("refreshAnalytics").listeners.click();
+  assert.equal(page.elements.get("retentionChart").textContent, "Not connected");
+  page.elements.get("growthChartType").listeners.change();
+  assert.equal(page.elements.get("retentionChart").textContent, "Not connected");
 });
 
 test("session, backend and validation failures clear values and display an error; refresh recovers", async () => {

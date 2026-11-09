@@ -1493,3 +1493,66 @@ details summary {
     animation: none;
   }
 }
+
+.analytics-chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.analytics-chart-controls label {
+  font-weight: 700;
+}
+
+.analytics-chart-controls select {
+  padding: 10px 14px;
+  border: 1px solid #333d5b;
+  border-radius: 10px;
+  background: #10182b;
+  color: #e8efff;
+  color-scheme: dark;
+  font: inherit;
+}
+
+.analytics-chart-controls p {
+  flex-basis: 100%;
+  margin: 0;
+  color: #9caac3;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.analytics-chart-controls select:focus-visible {
+  outline: 2px solid #b69aff;
+  outline-offset: 3px;
+}
+
+.analytics-chart-bar {
+  fill: #a879f3;
+}
+
+.analytics-chart .analytics-pie-slice {
+  stroke: #10182b;
+  stroke-width: 1;
+  animation: none;
+  filter: none;
+}
+
+.analytics-retention-pies {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.analytics-retention-pies > div {
+  min-width: 0;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .analytics-retention-pies {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

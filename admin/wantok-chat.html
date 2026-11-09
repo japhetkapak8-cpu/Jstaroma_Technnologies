@@ -133,6 +133,15 @@
       </section>
       <section id="growthSection" class="analytics-detail" aria-labelledby="growthSectionHeading">
         <h2 id="growthSectionHeading" class="analytics-section-heading"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> User growth &amp; retention</h2>
+        <div class="analytics-chart-controls">
+          <label for="growthChartType">Graph style</label>
+          <select id="growthChartType">
+            <option value="line" selected>Line graph</option>
+            <option value="pie">Pie chart</option>
+            <option value="bar">Bar chart</option>
+          </select>
+          <p>Changes the growth and retention graphs only. Pie slices show each interval's share of the series sum, not unique users; retention pies show returned versus not returned within each cohort.</p>
+        </div>
         <article class="admin-card analytics-panel">
           <h3><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Registrations in selected period</h3>
           <label>Chart interval <select id="registrationInterval"><option value="daily">Daily</option><option value="weekly">Weekly (Monday UTC)</option><option value="monthly">Monthly (UTC)</option></select></label>
@@ -156,8 +165,9 @@
         </div>
         <section class="admin-card analytics-panel" aria-labelledby="retentionHeading">
           <h2 id="retentionHeading"><i class="fa-solid fa-rotate" aria-hidden="true"></i> User retention</h2>
-          <p>Day 1, 7 and 30 return rates for eligible registration cohorts. App activity tracking is not connected.</p>
+          <p>Day 1, 7 and 30 return rates for eligible registration cohorts. Charts omit cohorts with no eligible users rather than displaying a zero return rate. App activity tracking is not connected.</p>
           <p id="retentionStatus">Not connected</p>
+          <div id="retentionChart" class="analytics-chart" aria-live="polite">Not connected</div>
           <div class="analytics-table-wrap">
             <table class="analytics-table">
               <caption>Retention by days since registration</caption>
