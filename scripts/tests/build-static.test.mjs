@@ -51,13 +51,37 @@ test("build preserves every public page/dependency byte-for-byte and is reproduc
   await writeFile(path.join(directory, "dist", "stale.env"), "must not survive");
   await buildStatic(directory);
   assert.equal(await digest(path.join(directory, "dist")), first);
-  assert.equal(PUBLIC_FILES.filter(filename => filename.endsWith(".html")).length, 15);
+  assert.equal(PUBLIC_FILES.filter(filename => filename.endsWith(".html")).length, 17);
   for (const file of [
     "admin/wantok-chat.html", "admin/js/wantok-maps.js", "admin/css/wantok-chat.css",
     "admin/images/wantok-chat-logo.png",
     "admin/data/png-provinces.geojson", "admin/data/world-countries.geojson",
     "supabase/functions/shared/wantok-chat-contract.js", "supabase/functions/shared/wantok-platform.js"
   ]) assert.ok(PUBLIC_FILES.includes(file));
+});
+
+test("Wantok policies share a canonical version, public routes and no draft-only notes", async () => {
+  const manifest = JSON.parse(await readFile(path.join(root, "wantok-chat/policies.json"), "utf8"));
+  assert.equal(manifest.android_package, "com.wantok.chat");
+  assert.match(manifest.version, /^wantok-legal-\d{4}-\d{2}-\d{2}-v\d+$/);
+  for (const name of ["terms", "privacy"]) {
+    const filename = `wantok-chat/${name}/index.html`;
+    assert.ok(PUBLIC_FILES.includes(filename));
+    const html = await readFile(path.join(root, filename), "utf8");
+    const url = `https://jstaromatechnologies.com/wantok-chat/${name}/`;
+    assert.equal(manifest[`${name}_url`], url);
+    assert.ok(html.includes(`<meta name="wantok-policy-version" content="${manifest.version}">`));
+    assert.ok(html.includes(`<link rel="canonical" href="${url}">`));
+    assert.doesNotMatch(html, /\[(?:CONFIRM|BEFORE PUBLICATION|TO BE APPROVED)|DRAFT FOR|subject to final publication approval/);
+    assert.equal((html.match(/<h1>/g) || []).length, 1);
+    assert.ok(html.includes('href="/css/legal.css"'));
+    assert.ok(html.includes('src="/js/legal.js"'));
+    const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
+    assert.equal(new Set(ids).size, ids.length);
+    for (const [, anchor] of html.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.includes(anchor));
+  }
+  assert.ok(PUBLIC_FILES.includes("wantok-chat/policies.json"));
+  assert.ok(!PUBLIC_FILES.some(file => file.startsWith("legal-review/")));
 });
 
 test("allowlist never copies private functions, SQL, secrets, tests, config or git metadata", async t => {
