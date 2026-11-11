@@ -1,6 +1,7 @@
 import { supabase } from "../../js/supabase.js";
 import { requireAdmin, logoutAdmin } from "./admin-auth.js";
 import { initializePlatform, renderPlatform, getDateRange } from "./wantok-platform-ui.js";
+import { initializeTransport } from "./wantok-transport.js";
 import {
   METRIC_KEYS, disconnectedSnapshot, validateSnapshot
 } from "../../supabase/functions/shared/wantok-chat-contract.js";
@@ -405,6 +406,7 @@ async function initialize() {
   if (!user) return;
   adminAuthorized = true;
   await Promise.all([
+    initializeTransport({ renderChart }),
     initializePlatform({ reload: loadAnalytics, renderChart }),
     loadAnalytics()
   ]);

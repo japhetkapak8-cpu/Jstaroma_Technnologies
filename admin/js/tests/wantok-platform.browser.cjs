@@ -4,6 +4,7 @@ const { readFile } = require("node:fs/promises");
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE_PATH || "playwright");
+const transportFixture = require("./transport-fixture.cjs");
 
 const root = path.resolve(__dirname, "../../..");
 
@@ -15,13 +16,50 @@ async function main() {
   let unauthorized = false;
   let chartData = false;
   let jiwakaCount = 10;
+  let transportConnected = false;
+  let reviewedStatus = "pending";
+  let reviewedTripStatus = "published";
+  const decisions = [];
   const ranges = [];
+  const transportRanges = [];
   const server = http.createServer(async (request, response) => {
     try {
       if (request.url === "/mock-analytics") {
         const chunks = [];
         for await (const chunk of request) chunks.push(chunk);
         const input = JSON.parse(Buffer.concat(chunks).toString());
+        if (input.action === "transport_decide") {
+          decisions.push(input);
+          if (input.kind === "operator") reviewedStatus = input.status;
+          else reviewedTripStatus = input.status;
+          response.setHeader("Content-Type", "application/json");
+          response.end('{"version":1,"status":"saved"}');
+          return;
+        }
+        if (input.action === "transport_snapshot") {
+          transportRanges.push(input.date_range);
+          response.setHeader("Content-Type", "application/json");
+          response.writeHead(fail ? 503 : 200);
+          const transport = transportConnected ? transportFixture(input.date_range) : { version: 1, status: "schema_required" };
+          if (transportConnected) {
+            transport.operators.rows[0].status = reviewedStatus;
+            transport.trips.rows[0].status = reviewedTripStatus;
+            transport.metrics.pending_operators = reviewedStatus === "pending" ? 1 : 0;
+            transport.metrics.approved_operators = reviewedStatus === "approved" ? 1 : 0;
+            if (input.operators?.search === "nomatch") transport.operators = { page: 0, total: 0, rows: [] };
+            if (input.operators?.search === "many") {
+              const row = transport.operators.rows[0];
+              transport.operators = {
+                page: input.operators.page, total: 26,
+                rows: Array.from({ length: input.operators.page === 0 ? 25 : 1 }, (_, index) => ({
+                  ...row, id: `10000000-0000-0000-0000-${String(input.operators.page * 25 + index).padStart(12, "0")}`
+                }))
+              };
+            }
+          }
+          response.end(JSON.stringify(fail ? { error: "Unavailable test source" } : { transport }));
+          return;
+        }
         const period = input.date_range;
         ranges.push(period);
         response.setHeader("Content-Type", "application/json");
@@ -104,6 +142,65 @@ async function main() {
     });
     await page.goto(`${origin}/admin/wantok-chat.html`);
     await page.waitForFunction(() => document.getElementById("registered_users").textContent === "100");
+    await page.waitForFunction(() => document.getElementById("transportStatus").textContent.includes("authorization verified"));
+    assert.equal(await page.locator("#transportMetrics strong").count(), 10);
+    assert.equal(await page.locator('#transportMetrics strong').allTextContents().then(values =>
+      values.every(value => value === "Not connected")), true);
+    assert.equal(await page.locator("#transportCharts .analytics-chart").count(), 8);
+    assert.equal(await page.locator('#transportApprovals input[type="search"]').isDisabled(), true);
+    assert.equal(await page.locator('#transportTrips input[type="search"]').isDisabled(), true);
+    assert.equal(await page.locator('nav[aria-label="Wantok Transport sections"] a').count(), 7);
+    await page.selectOption("#transportDatePreset", "7");
+    await page.click("#transportRefresh");
+    await page.waitForFunction(() => document.getElementById("transportStatus").textContent.includes("authorization verified"));
+    transportConnected = true;
+    await page.click("#transportRefresh");
+    await page.waitForFunction(() => document.getElementById("transportStatus").textContent.includes("Verified transport snapshot"));
+    assert.equal(await page.locator("#transportMetrics strong").nth(6).innerText(), "4");
+    assert.equal(await page.locator("#transportOperatorSearch").isEnabled(), true);
+    assert.match(await page.locator("#transportOperatorRows").innerText(), /Test PMV/);
+    await page.locator("#transportOperatorRows summary").click();
+    assert.match(await page.locator("#transportOperatorRows").innerText(), /TEST-123/);
+    assert.match(await page.locator("#transportOperatorRows").innerText(), /A town -> B town -> C town/);
+    await page.locator("#transportTripRows summary").click();
+    assert.match(await page.locator("#transportTripRows").innerText(), /Segment 1: 2 reserved \/ 1 remaining/);
+    await page.selectOption("#transportBookingInterval", "weekly");
+    assert.ok(await page.locator("#transportChart_bookings circle").count() <= 6);
+    assert.match(await page.locator("#transportChart_occupancy").innerText(), /66.7%/);
+    await page.getByRole("button", { name: "Approve", exact: true }).click();
+    assert.equal(await page.locator("#transportDecisionDialog").isVisible(), true);
+    await page.fill("#transportDecisionReason", "Application checked");
+    await page.click("#transportDecisionConfirm");
+    await page.waitForFunction(() => document.getElementById("transportDecisionStatus").textContent.includes("saved and audited"));
+    await page.waitForFunction(() => document.getElementById("transportOperatorRows").textContent.includes("approved"));
+    assert.equal(decisions.length, 1);
+    assert.equal(decisions[0].expected_status, "pending");
+    assert.equal(decisions[0].actor_id, undefined);
+    await page.getByRole("button", { name: "Cancel trip", exact: true }).click();
+    assert.match(await page.locator("#transportDecisionWarning").innerText(), /cancels confirmed reservations/);
+    await page.fill("#transportDecisionReason", "Safety check required");
+    await page.click("#transportDecisionConfirm");
+    await page.waitForFunction(() => document.getElementById("transportTripRows").textContent.includes("cancelled"));
+    assert.equal(decisions.at(-1).kind, "trip");
+    assert.equal(decisions.at(-1).status, "cancelled");
+    await page.fill("#transportOperatorSearch", "nomatch");
+    await page.getByRole("button", { name: "Search operators", exact: true }).click();
+    await page.waitForFunction(() => document.getElementById("transportOperatorRows").textContent.includes("No records match"));
+    await page.fill("#transportOperatorSearch", "many");
+    await page.getByRole("button", { name: "Search operators", exact: true }).click();
+    await page.waitForFunction(() => document.querySelectorAll("#transportOperatorRows tbody tr").length === 25);
+    await page.click("#transportOperatorNext");
+    await page.waitForFunction(() => document.getElementById("transportOperatorPage").textContent.includes("page 2"));
+    assert.equal(await page.locator("#transportOperatorRows tbody tr").count(), 1);
+    await page.click("#transportOperatorPrevious");
+    await page.waitForFunction(() => document.querySelectorAll("#transportOperatorRows tbody tr").length === 25);
+    for (const width of [390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true,
+        `Transport table overflow at ${width}`);
+    }
+    assert.equal((Date.parse(transportRanges.at(-1).end) - Date.parse(transportRanges.at(-1).start)) / 86400000 + 1, 7);
+    assert.equal(ranges.length, 1);
     assert.equal(await page.locator("#pngMap path").count(), 22);
     assert.equal(await page.locator("#worldMap path").count(), 177);
     await page.waitForFunction(() => document.getElementById("provinceTotal").textContent === "52");
@@ -184,6 +281,10 @@ async function main() {
     await page.waitForFunction(() => document.getElementById("provinceTotal").textContent === "53");
     assert.equal(await page.locator('#pngMap path[aria-label="Jiwaka Province: 11 profiles"]').count(), 1);
     fail = true;
+    await page.click("#transportRefresh");
+    await page.waitForFunction(() => document.getElementById("transportStatus").textContent.includes("backend unavailable"));
+    assert.equal(await page.locator('#transportMetrics strong').allTextContents().then(values =>
+      values.every(value => value === "Not connected")), true);
     await page.click("#refreshAnalytics");
     await page.waitForFunction(() => document.getElementById("analyticsStatus").textContent.includes("Could not load analytics"));
     assert.equal(await page.locator("#summaryMetrics-new_registrations").textContent(), "Not connected");
@@ -191,15 +292,19 @@ async function main() {
     assert.equal(await page.locator("#provinceTotal").textContent(), "Not connected");
     assert.equal(await page.locator("#exportAnalytics").isDisabled(), true);
     fail = false;
+    await page.click("#transportRefresh");
+    await page.waitForFunction(() => document.getElementById("transportStatus").textContent.includes("Verified transport snapshot"));
     await page.click("#refreshAnalytics");
     await page.waitForFunction(() => document.getElementById("registered_users").textContent === "100");
     unauthorized = true;
     const previousRequests = ranges.length;
+    const previousTransportRequests = transportRanges.length;
     await page.goto(`${origin}/admin/wantok-chat.html`);
     await page.waitForURL(`${origin}/admin/index.html`);
     assert.equal(ranges.length, previousRequests);
+    assert.equal(transportRanges.length, previousTransportRequests);
     assert.deepEqual(pageErrors, []);
-    console.log("PASS: authenticated desktop/mobile rendering, real maps, keyboard selection, zoom, date filters, intervals, CSV, investor view, failure/recovery and unauthorized gating");
+    console.log("PASS: authenticated desktop/mobile rendering, maps, charts, filters, CSV, transport schema-required/error states, failure/recovery and unauthorized gating");
   }
   finally {
     if (browser) await browser.close();

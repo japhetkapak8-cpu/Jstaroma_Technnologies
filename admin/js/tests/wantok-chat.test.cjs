@@ -3,6 +3,7 @@ const { readFile } = require("node:fs/promises");
 const path = require("node:path");
 const { test } = require("node:test");
 const vm = require("node:vm");
+const transportFixture = require("./transport-fixture.cjs");
 
 const root = path.resolve(__dirname, "../../..");
 
@@ -92,7 +93,7 @@ async function backend(options = {}) {
             events.push({ type: "auth", token });
             return options.invalidToken
               ? { data: { user: null }, error: new Error("Invalid token") }
-              : { data: { user: { id: "verified-admin-id" } }, error: null };
+              : { data: { user: options.user ?? { id: "verified-admin-id" } }, error: null };
           }
         },
         from(table) {
@@ -173,6 +174,124 @@ test("missing, malformed, invalid and non-admin tokens never contact Wantok", as
     const api = await backend(options);
     assert.equal((await api.request({ headers })).status, expected);
     assert.ok(!api.events.some(event => event.type === "wantok"));
+  }
+});
+
+test("transport preparation checks server-side admin membership and never queries Wantok", async () => {
+  for (const verified of ["true", "false"]) {
+    const api = await backend({ env: { WANTOK_ANALYTICS_VERIFIED: verified, WANTOK_ANALYTICS_KEY: undefined } });
+    const response = await api.request({ body: JSON.stringify({ action: "transport_snapshot" }) });
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { transport: { version: 1, status: "schema_required" } });
+    assert.deepEqual(api.events.map(event => event.type), ["client", "auth", "table", "admin"]);
+    assert.equal(response.headers.get("Cache-Control"), "no-store");
+  }
+  for (const [options, headers, expected] of [
+    [{}, { Authorization: null }, 401],
+    [{ invalidToken: true }, {}, 401],
+    [{ nonAdmin: true }, {}, 403],
+    [{ adminError: true }, {}, 503],
+    [{}, { Origin: "https://not-allowed.example" }, 403]
+  ]) {
+    const api = await backend(options);
+    const response = await api.request({ headers, body: JSON.stringify({ action: "transport_snapshot" }) });
+    assert.equal(response.status, expected);
+    assert.ok(!api.events.some(event => event.type === "wantok"));
+  }
+});
+
+test("transport requests reject invalid filters, untrusted parameters and all mutations without writes", async () => {
+  for (const [input, expected] of [
+    [{ action: "transport_snapshot", date_range: { start: "invalid", end: "invalid" } }, 400],
+    [{ action: "transport_snapshot", operator_id: "self", approved: true }, 400],
+    [{ action: "transport_snapshot", rpc: "arbitrary_rpc" }, 400],
+    [{ action: "transport_approve" }, 409],
+    [{ action: "transport_reject" }, 409],
+    [{ action: "transport_suspend" }, 409],
+    [{ action: "transport_moderate" }, 409],
+    [{ action: "transport_book" }, 409],
+    [{ action: "arbitrary_rpc" }, 400],
+    [{ action: null }, 400]
+  ]) {
+    const api = await backend();
+    const response = await api.request({ body: JSON.stringify(input) });
+    assert.equal(response.status, expected);
+    assert.equal(typeof (await response.json()).error, "string");
+    assert.deepEqual(api.events.map(event => event.type), ["client", "auth", "table", "admin"]);
+  }
+  const options = {};
+  const api = await backend(options);
+  const body = JSON.stringify({ action: "transport_snapshot" });
+  assert.equal((await api.request({ body })).status, 200);
+  options.nonAdmin = true;
+  assert.equal((await api.request({ body })).status, 403);
+  assert.equal(api.events.filter(event => event.type === "admin").length, 2);
+  assert.ok(!api.events.some(event => event.type === "wantok"));
+});
+
+test("verified transport uses bounded fixed RPC parameters and rejects wrong contracts", async () => {
+  const { presetRange } = (await loadModule("supabase/functions/shared/wantok-platform.js")).module;
+  const range = presetRange(7);
+  const source = transportFixture(range);
+  source.passenger_data = ["private"];
+  const api = await backend({ env: { WANTOK_TRANSPORT_VERIFIED: "true", WANTOK_ANALYTICS_VERIFIED: "false" }, payload: source });
+  const response = await api.request({ body: JSON.stringify({
+    action: "transport_snapshot", date_range: range, operators: { search: "Test", status: "pending" },
+    trips: { status: "published" }
+  }) });
+  assert.equal(response.status, 200);
+  const output = await response.json();
+  assert.equal(output.transport.passenger_data, undefined);
+  assert.equal(output.transport.metrics.seats_reserved, 4);
+  const upstream = api.events.at(-1);
+  assert.ok(upstream.url.endsWith("/wantok_admin_transport_snapshot_v1"));
+  assert.deepEqual(JSON.parse(upstream.settings.body), {
+    p_start: range.start, p_end: range.end, p_operator_search: "Test", p_operator_status: "pending",
+    p_operator_page: 0, p_trip_search: "", p_trip_status: "published", p_trip_page: 0
+  });
+  for (const payload of [currentRecordSnapshot(), { ...source, period: { start: "2000-01-01", end: "2000-01-01" } }]) {
+    const invalid = await backend({ env: { WANTOK_TRANSPORT_VERIFIED: "true" }, payload });
+    assert.equal((await invalid.request({ body: JSON.stringify({ action: "transport_snapshot", date_range: range }) })).status, 503);
+  }
+});
+
+test("transport decisions derive audit actor only from verified Jstaroma authentication", async () => {
+  const input = {
+    action: "transport_decide", kind: "operator", target_id: "00000000-0000-0000-0000-000000000001",
+    expected_status: "pending", expected_updated_at: "2026-11-11T12:00:00+00:00",
+    status: "approved", reason: "Application verified"
+  };
+  const user = { id: "verified-admin-id", email: "admin@example.invalid", email_confirmed_at: "2026-01-01T00:00:00Z" };
+  const options = { env: { WANTOK_TRANSPORT_VERIFIED: "true" }, user, payload: { version: 1, status: "saved" } };
+  const api = await backend(options);
+  const response = await api.request({ body: JSON.stringify(input) });
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { version: 1, status: "saved" });
+  const upstream = api.events.at(-1);
+  assert.ok(upstream.url.endsWith("/wantok_admin_transport_decide_v1"));
+  assert.deepEqual(JSON.parse(upstream.settings.body), {
+    p_actor_id: user.id, p_actor_email: user.email, p_kind: "operator", p_target_id: input.target_id,
+    p_expected_status: "pending", p_expected_updated_at: input.expected_updated_at,
+    p_status: "approved", p_reason: "Application verified"
+  });
+  for (const override of [
+    { nonAdmin: true }, { invalidToken: true }, { user: { id: user.id } },
+    { user: { ...user, email_confirmed_at: null } }, { env: { WANTOK_TRANSPORT_VERIFIED: "false" } }
+  ]) {
+    const denied = await backend({ ...options, ...override });
+    assert.ok((await denied.request({ body: JSON.stringify(input) })).status >= 400);
+    assert.ok(!denied.events.some(event => event.type === "wantok"));
+  }
+  for (const extra of [{ actor_id: "forged" }, { actor_email: "forged@example.invalid" }, { rpc: "other" }]) {
+    const denied = await backend(options);
+    assert.equal((await denied.request({ body: JSON.stringify({ ...input, ...extra }) })).status, 400);
+    assert.ok(!denied.events.some(event => event.type === "wantok"));
+  }
+  for (const code of [400, 403, 409, 500]) {
+    const failed = await backend({ ...options, upstreamStatus: code });
+    const response = await failed.request({ body: JSON.stringify(input) });
+    assert.equal(response.status, code === 500 ? 503 : code);
+    assert.match((await response.json()).error, /Decision not confirmed/);
   }
 });
 
@@ -471,6 +590,9 @@ async function frontend({ authorized = true, payload = snapshot(), error = null,
       initializePlatform: async () => {},
       renderPlatform() {},
       getDateRange: () => null
+    },
+    "admin/js/wantok-transport.js": {
+      initializeTransport: async () => {}
     }
   }, (source, filename) => filename.endsWith("/wantok-chat.js")
     ? source.replace("\ninitialize();", "\nglobalThis.drawTestChart = renderChart;\nglobalThis.ready = initialize();") : source);
@@ -722,7 +844,7 @@ test("all existing admin pages link to Wantok Chat and its static dependencies e
   }
   const html = await readFile(path.join(root, "admin/wantok-chat.html"), "utf8");
   for (const [, relativePath] of html.matchAll(/(?:href|src)="((?:css|js)\/[^"]+)"/g)) {
-    assert.ok((await readFile(path.join(root, "admin", relativePath))).length);
+    assert.ok((await readFile(path.join(root, "admin", relativePath.split(/[?#]/)[0]))).length);
   }
   const script = await readFile(path.join(root, "admin/js/wantok-chat.js"), "utf8");
   assert.ok(!/sb_secret_|service_role|WANTOK_ANALYTICS_KEY/.test(script));

@@ -1,5 +1,6 @@
 import { disconnectedSnapshot, validateSnapshot } from "../shared/wantok-chat-contract.js";
 import { validateRange, validateProvinceAggregate } from "../shared/wantok-platform.js";
+import { transportInput, validateTransport } from "../shared/wantok-transport.js";
 
 const JSTAROMA_PROJECT_URL = "https://fticsjeytmepljtkfrvm.supabase.co";
 const WANTOK_PROJECT_URL = "https://patrtlxmcjrzzfvvfcft.supabase.co";
@@ -59,18 +60,41 @@ export function createAnalyticsHandler({ env, createClient, fetchImpl = fetch, l
       if (!admin) return respond(403, { error: "Jstaroma administrator access required." });
 
       let range = null;
+      let action = null;
+      let transport = null;
       try {
         const body = await request.text();
         if (body.length > 2048) throw new Error("Request too large.");
         const input = body ? JSON.parse(body) : {};
         if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Invalid request.");
+        if (Object.hasOwn(input, "action")) {
+          if (typeof input.action !== "string") throw new Error("Invalid action.");
+          action = input.action;
+          if (["transport_snapshot", "transport_decide"].includes(action)) {
+            transport = transportInput(input);
+          } else if (Object.keys(input).some(key => !["action", "date_range"].includes(key))) {
+            throw new Error("Unexpected action parameters.");
+          }
+        }
         if (Object.hasOwn(input, "date_range")) range = validateRange(input.date_range);
       }
       catch {
         logger.error("Wantok analytics: invalid date filter.");
         return respond(400, { error: "Invalid filter. Choose 1-366 complete UTC days ending before today." });
       }
-      if (env("WANTOK_ANALYTICS_VERIFIED") !== "true") {
+      if (transport && env("WANTOK_TRANSPORT_VERIFIED") !== "true") {
+        return action === "transport_snapshot"
+          ? respond(200, { transport: { version: 1, status: "schema_required" } })
+          : respond(409, { error: "Transport management has not been verified and enabled." });
+      }
+      if (action !== null && !transport) {
+        return respond(action.startsWith("transport_") ? 409 : 400, {
+          error: action.startsWith("transport_")
+            ? "Transport operations are disabled until the existing schema and permissions are verified."
+            : "Unsupported analytics action."
+        });
+      }
+      if (!transport && env("WANTOK_ANALYTICS_VERIFIED") !== "true") {
         return respond(200, disconnectedSnapshot());
       }
       stage = "Wantok configuration";
@@ -78,6 +102,54 @@ export function createAnalyticsHandler({ env, createClient, fetchImpl = fetch, l
       const wantokKey = env("WANTOK_ANALYTICS_KEY");
       if (!wantokKey || wantokUrl !== WANTOK_PROJECT_URL) {
         throw new Error("Invalid separate Wantok project configuration.");
+      }
+      if (transport) {
+        stage = "Wantok transport";
+        const decision = action === "transport_decide";
+        if (decision && (!data.user.email || !data.user.email_confirmed_at)) {
+          return respond(403, { error: "A verified administrator email is required for transport decisions." });
+        }
+        if (!decision && !transport.range) return respond(400, { error: "A transport date range is required." });
+        const rpc = decision ? "wantok_admin_transport_decide_v1" : "wantok_admin_transport_snapshot_v1";
+        const parameters = decision ? {
+          p_actor_id: data.user.id, p_actor_email: data.user.email,
+          p_kind: transport.kind, p_target_id: transport.target_id,
+          p_expected_status: transport.expected_status, p_expected_updated_at: transport.expected_updated_at,
+          p_status: transport.status, p_reason: transport.reason
+        } : {
+          p_start: transport.range.start, p_end: transport.range.end,
+          p_operator_search: transport.operators.search, p_operator_status: transport.operators.status,
+          p_operator_page: transport.operators.page,
+          p_trip_search: transport.trips.search, p_trip_status: transport.trips.status, p_trip_page: transport.trips.page
+        };
+        const upstream = await fetchImpl(`${wantokUrl}/rest/v1/rpc/${rpc}`, {
+          method: "POST",
+          headers: {
+            apikey: wantokKey,
+            ...(wantokKey.startsWith("sb_secret_") ? {} : { Authorization: `Bearer ${wantokKey}` }),
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(parameters), signal: AbortSignal.timeout(10000), redirect: "error"
+        });
+        if (!upstream.ok) {
+          logger.error(`Wantok transport RPC returned HTTP ${upstream.status}.`);
+          // Do not forward database messages that may contain private values.
+          const code = decision && [400, 403, 409].includes(upstream.status) ? upstream.status : 503;
+          return respond(code, { error: decision
+            ? "Decision not confirmed. Refresh to check the current status. Verify the transition, reason, self-review rules and future boardings before retrying."
+            : "Transport data unavailable. Verify the reviewed SQL and server configuration." });
+        }
+        const source = await upstream.json();
+        if (decision) {
+          if (source?.version !== 1 || source.status !== "saved") throw new Error("Invalid decision response.");
+          return respond(200, { version: 1, status: "saved" });
+        }
+        const snapshot = validateTransport(source);
+        if (snapshot.period.start !== transport.range.start || snapshot.period.end !== transport.range.end ||
+            snapshot.operators.page !== transport.operators.page || snapshot.trips.page !== transport.trips.page) {
+          throw new Error("Transport period or page mismatch.");
+        }
+        return respond(200, { transport: snapshot });
       }
       // Only fixed aggregate RPCs and bounded UTC dates are accepted.
       stage = "Wantok aggregate request";

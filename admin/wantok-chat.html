@@ -32,6 +32,18 @@
           <a href="#safetySection">Trust &amp; safety</a><a href="#sourcesSection">Sources</a>
         </nav>
       </details>
+      <details class="analytics-sidebar-sections" open>
+        <summary>Wantok Transport</summary>
+        <nav aria-label="Wantok Transport sections">
+          <a href="#transportOverview">Transport Overview</a>
+          <a href="#transportApprovals">Operator Approvals</a>
+          <a href="#transportOperators">PMV Operators</a>
+          <a href="#transportTrips">Trips &amp; Routes</a>
+          <a href="#transportBookings">Bookings &amp; Seats</a>
+          <a href="#transportAnalytics">Transport Analytics</a>
+          <a href="#transportSafety">Reports &amp; Safety</a>
+        </nav>
+      </details>
       <div class="sidebar-footer">
         <button id="logoutBtn" class="logout-btn" type="button"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Logout</button>
       </div>
@@ -229,6 +241,90 @@
           <p>Prepared integrations are not live connections. Only server-validated Wantok aggregates can populate verified fields. No Firebase, Google Play, LiveKit, billing or moderation API has been configured.</p>
           <div id="sourceRegistry" class="analytics-table-wrap"></div>
         </section>
+      <div id="transportConsole" class="transport-console">
+        <section id="transportOverview" aria-labelledby="transportHeading">
+          <h2 id="transportHeading" class="analytics-section-heading"><i class="fa-solid fa-bus" aria-hidden="true"></i> Wantok Transport</h2>
+          <div class="admin-card analytics-panel">
+            <h3>Transport Overview <span id="transportSourceBadge" class="transport-status">Not connected</span></h3>
+            <p id="transportStatus" role="status" aria-live="polite">Checking administrator access. Transport data is not connected.</p>
+            <p>Wantok Chat transport records, read through the authorized analytics backend. Unavailable data is never displayed as zero. Management stays disabled until the reviewed transport SQL is installed and enabled.</p>
+            <form id="transportFilters" class="analytics-toolbar">
+              <label>Transport UTC date range
+                <select id="transportDatePreset" disabled><option value="7">Last 7 complete days</option><option value="30" selected>Last 30 complete days</option><option value="90">Last 90 complete days</option><option value="custom">Custom</option></select>
+              </label>
+              <label>Start <input id="transportDateStart" type="date" required disabled></label>
+              <label>End <input id="transportDateEnd" type="date" required disabled></label>
+              <button id="transportRefresh" type="submit" disabled>Refresh transport</button>
+            </form>
+            <p id="transportPeriod">Transport filters are independent of chat filters.</p>
+            <p>KPI totals describe current stored records. Active trips require a known future final arrival. Available through-seats sum each approved published trip's minimum remaining capacity across its future boarding segments, not the legacy available_seats column.</p>
+          </div>
+          <div id="transportMetrics" class="dashboard-stats analytics-stats"></div>
+        </section>
+        <section id="transportApprovals" class="analytics-detail admin-card analytics-panel" aria-labelledby="transportApprovalsHeading">
+          <h2 id="transportApprovalsHeading">Operator Approvals</h2>
+          <p>Every decision requires a reason and is audited server-side. Rejection also cancels the operator's published trips and confirmed reservations using the existing backend workflow. Self-review is prohibited.</p>
+          <form id="transportOperatorFilters">
+            <fieldset id="transportOperatorControls" disabled class="transport-controls">
+              <legend>Operator filters</legend>
+              <label>Search <input id="transportOperatorSearch" type="search" maxlength="100" placeholder="Operator, contact or plate"></label>
+              <label>Status <select id="transportOperatorStatus"><option value="">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></label>
+              <button type="submit">Search operators</button>
+            </fieldset>
+          </form>
+          <p>Suspension is not supported by the existing schema and is not offered.</p>
+          <div id="transportOperatorRows" class="analytics-table-wrap">Not connected.</div>
+          <div class="transport-pagination"><button id="transportOperatorPrevious" type="button" disabled>Previous operators</button><span id="transportOperatorPage"></span><button id="transportOperatorNext" type="button" disabled>Next operators</button></div>
+        </section>
+        <section id="transportOperators" class="analytics-detail admin-card analytics-panel" aria-labelledby="transportOperatorsHeading">
+          <h2 id="transportOperatorsHeading">PMV Operators</h2>
+          <p>The directory above includes registered vehicles, plates, capacities, operating area and saved routes. Use the Approved filter to view approved PMV operators.</p>
+          <a href="#transportApprovals">Open operator directory and approvals</a>
+          <p>The existing backend permits publishing and transport operations only for approved operators. App-side Transport Settings navigation still needs verification in the Wantok app source.</p>
+        </section>
+        <section id="transportTrips" class="analytics-detail admin-card analytics-panel" aria-labelledby="transportTripsHeading">
+          <h2 id="transportTripsHeading">Trips &amp; Routes</h2>
+          <form id="transportTripFilters">
+            <fieldset id="transportTripControls" disabled class="transport-controls">
+              <legend>Trip filters</legend>
+              <label>Search <input id="transportTripSearch" type="search" maxlength="100" placeholder="Operator, origin, destination or stop"></label>
+              <label>Status <select id="transportTripStatus"><option value="">All statuses</option><option value="published">Published</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></label>
+              <button type="submit">Search trips</button>
+            </fieldset>
+          </form>
+          <p>Lists show current records, independently of chart dates. Expand trip details for ordered connections and segment capacity. Completion preserves the existing future-boarding restriction; cancellation notifies affected passengers.</p>
+          <div id="transportTripRows" class="analytics-table-wrap">Not connected.</div>
+          <div class="transport-pagination"><button id="transportTripPrevious" type="button" disabled>Previous trips</button><span id="transportTripPage"></span><button id="transportTripNext" type="button" disabled>Next trips</button></div>
+        </section>
+        <section id="transportBookings" class="analytics-detail admin-card analytics-panel" aria-labelledby="transportBookingsHeading">
+          <h2 id="transportBookingsHeading">Bookings &amp; Seats</h2>
+          <p id="transportBookingSummary">Not connected.</p>
+          <p>Bookings count reservation records; seats reserved sum confirmed passenger quantities. Cancelled and trip-cancelled reservations consume no seats. A seat can be reused on non-overlapping legs, so passenger quantities across a journey can exceed vehicle capacity.</p>
+          <p>Expand a trip above to inspect each segment. Available seats come only from the backend. Existing transactional reservation functions enforce capacity; this dashboard does not change bookings or request passenger identities.</p>
+        </section>
+        <section id="transportAnalytics" class="analytics-detail" aria-labelledby="transportAnalyticsHeading">
+          <h2 id="transportAnalyticsHeading" class="analytics-section-heading">Transport Analytics</h2>
+          <p>UTC event trends use reservation/operator creation dates and cancellation timestamps. Route, operator, origin/destination, outcome and occupancy charts use trips departing in the selected UTC period. Top breakdowns show up to 20 groups; lists and KPI totals are not date-filtered.</p>
+          <label>Booking trend interval <select id="transportBookingInterval"><option value="daily">Daily</option><option value="weekly">Weekly (Monday UTC)</option><option value="monthly">Monthly</option></select></label>
+          <div id="transportCharts" class="analytics-charts"></div>
+          <p>Fares are stored in PGK, but no verified payment ledger was supplied. Revenue is not reported. Occupancy measures confirmed passenger-seat segments divided by capacity-seat segments on non-cancelled trips, not the sum of reservations divided by vehicle capacity.</p>
+        </section>
+        <section id="transportSafety" class="analytics-detail admin-card analytics-panel" aria-labelledby="transportSafetyHeading">
+          <h2 id="transportSafetyHeading">Reports &amp; Safety</h2>
+          <p>Latest 50 decisions from this integration, including Jstaroma actor ID, target, state transition, reason and timestamp. Earlier decisions made outside this integration may not appear. No transport incident/report table was supplied; safety incident reporting remains not connected.</p>
+          <p id="transportDecisionStatus" role="status" aria-live="polite"></p>
+          <div id="transportAuditRows" class="analytics-table-wrap">Not connected.</div>
+        </section>
+        <dialog id="transportDecisionDialog" class="transport-dialog" aria-labelledby="transportDecisionHeading" aria-describedby="transportDecisionWarning">
+          <form id="transportDecisionForm">
+            <h2 id="transportDecisionHeading">Review transport decision</h2>
+            <p id="transportDecisionWarning"></p>
+            <label>Reason (required)<textarea id="transportDecisionReason" maxlength="500" required rows="4"></textarea></label>
+            <p id="transportDecisionError" role="alert"></p>
+            <div class="transport-pagination"><button id="transportDecisionConfirm" type="submit">Confirm decision</button><button id="transportDecisionCancel" type="button">Cancel</button></div>
+          </form>
+        </dialog>
+      </div>
       <noscript><p class="analytics-error">JavaScript is required to verify admin access and load analytics.</p></noscript>
     </main>
   </div>

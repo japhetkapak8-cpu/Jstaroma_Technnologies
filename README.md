@@ -24,6 +24,7 @@ and GIS pages, and exactly these public Supabase modules:
 
 - `supabase/functions/shared/wantok-chat-contract.js`
 - `supabase/functions/shared/wantok-platform.js`
+- `supabase/functions/shared/wantok-transport.js`
 
 There are no checked-in image/font files. Existing images loaded from
 Supabase/public content and external Google Fonts/Font Awesome resources
@@ -90,7 +91,7 @@ rejection and symlink protection. `dist/` is gitignored. Local preview should
 resolve `/`, `/products.html`, `/achievements.html`, `/privacy/`, `/terms/`,
 `/account-deletion/`, `/child-safety/`, `/jstaroma-slides/`,
 `/jstaroma-slides/gis-maps/`, every `/admin/*.html` page, admin map files and
-both `/supabase/functions/shared/*.js` dependencies. Auth and live analytics
+the `/supabase/functions/shared/*.js` dependencies. Auth and live analytics
 still require their existing Supabase configuration and allowed website
 origins; the static build never bypasses authorization.
 
@@ -108,6 +109,165 @@ both growth charts and day 1/7/30 retention remain **Not connected**.
 Refresh clears old values before loading; failures
 show an explicit error, not fabricated counts. `null` means **Not connected**,
 not zero. Zero is displayed only when supplied by a verified aggregate source.
+
+### Wantok Transport: integrated, deployment gated
+
+The seven **Wantok Transport** sections are part of the existing Wantok Chat
+Analytics page, not another application. They reuse its admin login, styles,
+SVG time-series charts and UTC grouping helpers. Transport's 7/30/90-day/custom
+filter is independent of chat filters. Until explicitly enabled, all figures
+remain **Not connected**, with no simulated data or management access.
+
+#### Verified schema and preserved behavior
+
+The operator supplied the real table/column inventory, constraints, RLS
+policies, function definitions and function grants on 2026-11-11:
+
+- `transport_operators`: `pending`, `approved`, `rejected`; review note and time.
+  **Suspended is not supported** and is deliberately not added.
+- `transport_vehicles`: vehicle type, registration number and capacity.
+- `transport_saved_routes` / `transport_saved_route_stops`: named, ordered routes.
+- `transport_trips`, `transport_trip_stops`, `transport_trip_fares`: published,
+  completed or cancelled journeys with ordered stops, segment fares and timezones.
+- `transport_reservations`: `quantity` passengers, `confirmed`, `cancelled` or
+  `trip_cancelled`; `fare_per_seat` is a fare, not a verified payment.
+- `transport_reserve_seats` locks the approved operator and trip, checks
+  overlapping segment occupancy, and handles request-ID idempotency.
+  `transport_cancel_reservation` releases seats by changing the reservation
+  status. These functions are **not replaced or modified**.
+- The service-only `transport_review_operator` changes the source-of-truth
+  status and cancels published trips/confirmed bookings on rejection through
+  `transport_cancel_trip_reservations`, including booking notices.
+- `transport_assert_approved_operator` already gates trip publishing and other
+  transport settings operations. App-side settings navigation/cache refresh
+  cannot be verified without the Wantok app source.
+
+The supplied policies were SELECT-only and helper EXECUTE grants were
+server-only. Table/column grants and RLS-enabled flags still need live review:
+the proposed migration **fails closed** if RLS is off, if direct ordinary-user
+write grants exist, or if existing review/cancellation helpers are executable
+by ordinary users. If a guard fails, inspect the grants before proposing any
+change; do not bypass the guard or silently rewrite app permissions.
+
+#### Files and database changes for review
+
+- `admin/wantok-chat.html`, `admin/js/wantok-transport.js`,
+  `admin/css/wantok-chat.css`: KPIs, chart panels, operator/trip search and status
+  filters, 25-row pagination, route/vehicle/segment details, reason-required
+  decision dialog, empty/loading/error states and latest audit decisions.
+- `admin/js/wantok-chat.js`: initializes transport only after `requireAdmin()`.
+- `supabase/functions/shared/wantok-transport.js`: strict input validation,
+  response projection, count/date/status/segment checks, no passenger identities.
+- `supabase/functions/wantok-chat-analytics/handler.js`: adds only two fixed
+  actions, `transport_snapshot` and `transport_decide`. Every action rechecks
+  Jstaroma token validity and current server-side `admins` membership before
+  contacting the existing Wantok project. Client-selected URLs/RPCs/tables and
+  actor IDs/emails are not accepted.
+- [`20261111_admin_transport.sql`](supabase/wantok-chat/sql/20261111_admin_transport.sql):
+  **review-only**, outside automatic Jstaroma migrations. Adds the new
+  integration-owned `wantok_transport_admin_audit` table, a server-only segment
+  aggregate view, a read-only snapshot RPC and an audited decision RPC.
+  It does not modify existing booking functions or statuses.
+- `scripts/build-static.mjs`: explicitly includes the two browser-safe modules;
+  SQL and Edge Function handlers remain excluded from published assets.
+- [`inspect_transport_schema.sql`](supabase/wantok-chat/sql/inspect_transport_schema.sql)
+  remains a read-only catalog inspection script, not a migration. Execute its
+  SELECT sections individually when SQL Editor shows only the final result.
+
+Approvals/rejections and trip cancellation/completion require a nonblank reason.
+The SQL checks both expected status and `updated_at` under locks; stale reviews
+fail rather than overwrite newer changes. Rejection preserves existing
+cancellation/notice behavior. Completion preserves the existing restriction on
+confirmed future boardings. Decision and audit insert commit together or both
+roll back. No retry is automatic after an uncertain network result: refresh and
+inspect the current state/audit first.
+
+The actor is the authenticated **Jstaroma** administrator, not a Wantok UUID
+assumed from another project. Decisions additionally require a confirmed admin
+email; the SQL rejects reviews of a Wantok account with the same UUID or
+matching email. Neither actor ID nor email is taken from the browser body.
+Audit stores the Jstaroma project/UUID, not email; the new table permits no
+ordinary-user reads/writes or direct service-role modifications. Existing
+server credentials still have Supabase's broad RLS bypass; these RPC grants
+do not make that credential a dedicated least-privilege role.
+
+#### Metric definitions
+
+- KPI totals and operator/trip directories are **current stored records**,
+  independent of chart dates. Total bookings includes all reservation statuses.
+  Seats reserved sums only confirmed `quantity`, not reservation count.
+- Upcoming trips are published with future departure. Active trips are
+  published, departed, and have a known final arrival later than now; missing
+  arrival times are not guessed. Expired published trips are not inferred completed.
+- Available through-seats sums the **minimum segment remainder per approved,
+  published trip across its future boarding segments**. It is not a sum of all
+  seat-legs, and the legacy `transport_trips.available_seats` field is not used.
+  Trip detail lists show the whole-journey segment minimum and each leg.
+- Booking/registration trends use creation timestamps; cancellation trends use
+  `cancelled_at` for both cancellation statuses. Daily UTC buckets include zero
+  days, weekly buckets start Monday, and monthly buckets are calendar months.
+- Route/operator/origin/destination/outcome charts select trips by departure in
+  the UTC range. Popular routes rank confirmed reservation counts, not passenger
+  quantities. Breakdown charts show up to 20 groups; names are display labels.
+- Occupancy is confirmed passenger-seat segments divided by capacity-seat
+  segments on non-cancelled period trips. Zero denominator is shown explicitly.
+  A passenger count across disjoint legs can legitimately exceed vehicle capacity.
+- No payment ledger or transport incident table was supplied. Revenue and
+  incident reporting remain unavailable. Audit shows the latest 50 decisions
+  through this integration, not a fabricated complete historical audit.
+
+Visible dashboards refresh every 60 seconds and on return to the tab, and
+immediately after decisions. Open decision dialogs are not disrupted by
+polling. Booking/cancellation updates therefore appear without copying data
+or opening cross-project Realtime passenger subscriptions. The actual Wantok
+app still needs a source-code check for UI gating and cache/refresh behavior.
+
+#### Local verification and activation (confirmation required)
+
+Dependency-free Node checks:
+
+```sh
+node --experimental-vm-modules --test admin/js/tests/wantok-chat.test.cjs admin/js/tests/wantok-transport.test.cjs
+node --test scripts/tests/build-static.test.mjs
+node scripts/build-static.mjs
+```
+
+SQL tests create synthetic tables and copies of the supplied booking/review
+functions, then exercise the proposed migration in a fresh PostgreSQL 17
+container. They must **never** run in a real project:
+
+```sh
+docker run --rm --network none -v "$PWD/supabase/wantok-chat:/tests:ro" postgres:17 bash -c \
+  'install -d -o postgres -g postgres /tmp/pgdata /tmp/pgsocket && runuser -u postgres -- initdb -D /tmp/pgdata -A trust >/dev/null && runuser -u postgres -- pg_ctl -D /tmp/pgdata -o "-k /tmp/pgsocket" -w start >/dev/null && psql -h /tmp/pgsocket -U postgres -v ON_ERROR_STOP=1 -f /tests/tests/transport.sql'
+```
+
+Tests cover non-admin/revoked access, token-derived audit actors, self-review,
+blank reasons, stale decisions, audit rollback, multi-passenger/non-overlapping
+segments, concurrent capacity contention, cancellation exclusion and real SQL aggregates.
+The existing Chromium test also covers connected/disconnected/error states,
+approval dialog and refresh, charts, search/pagination and mobile overflow
+using **synthetic test-only responses**, not production connections.
+
+After review and explicit production approval:
+
+1. Verify the Wantok Chat project selector (`patrtlxmcjrzzfvvfcft`).
+   Review the SQL and live grants; test on an isolated/staging copy first.
+2. Apply only the reviewed `20261111_admin_transport.sql` to **Wantok Chat**,
+   never Jstaroma. It is a one-time migration, not an idempotent rerun script.
+   Keep the existing transport booking/publishing permissions intact.
+3. Publish the updated existing analytics Edge Function to **Jstaroma**, using
+   the existing server-only Wantok key. Set `WANTOK_TRANSPORT_VERIFIED=true`
+   only after SQL/grant/source validation. This flag is independent of the
+   existing `WANTOK_ANALYTICS_VERIFIED` chat flag. Default is false; rollback
+   to false disables transport management without disrupting chat analytics.
+4. Publish the existing static site build. Compare dashboard values against
+   reviewed SQL, and verify an operator's app refreshes its status and that
+   pending/rejected operators cannot publish. App changes need its source.
+
+An older handler's chat-only response is rejected, never presented as transport
+data. **No production SQL, deployment, secrets update or data mutation was
+performed during this implementation. Do not perform those steps without
+explicit confirmation.**
 
 ### Platform increment and honest availability
 

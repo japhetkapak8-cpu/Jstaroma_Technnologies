@@ -20,7 +20,7 @@ export const PUBLIC_FILES = Object.freeze([
   ...[
     "admin-auth.js", "login.js", "dashboard.js", "content-data.js",
     "achievements.js", "projects.js", "products.js", "wantok-chat.js",
-    "wantok-maps.js", "wantok-platform-ui.js"
+    "wantok-maps.js", "wantok-platform-ui.js", "wantok-transport.js"
   ].map(file => `admin/js/${file}`),
   "admin/images/wantok-chat-logo.png",
   ...["boundary-sources.json", "png-provinces.geojson", "world-countries.geojson"]
@@ -31,7 +31,8 @@ export const PUBLIC_FILES = Object.freeze([
   "jstaroma-slides/gis-maps/gis-maps.css",
   "jstaroma-slides/gis-maps/gis-maps.js",
   "supabase/functions/shared/wantok-chat-contract.js",
-  "supabase/functions/shared/wantok-platform.js"
+  "supabase/functions/shared/wantok-platform.js",
+  "supabase/functions/shared/wantok-transport.js"
 ].sort());
 
 export function assertNoSecrets(content, filename) {
