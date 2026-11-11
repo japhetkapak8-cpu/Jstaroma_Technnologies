@@ -64,24 +64,33 @@ test("Wantok policies share a canonical version, public routes and no draft-only
   const manifest = JSON.parse(await readFile(path.join(root, "wantok-chat/policies.json"), "utf8"));
   assert.equal(manifest.android_package, "com.wantok.chat");
   assert.match(manifest.version, /^wantok-legal-\d{4}-\d{2}-\d{2}-v\d+$/);
-  for (const name of ["terms", "privacy"]) {
-    const filename = `wantok-chat/${name}/index.html`;
+  for (const name of ["terms", "privacy", "account-deletion"]) {
+    const filename = `${name}/index.html`;
     assert.ok(PUBLIC_FILES.includes(filename));
     const html = await readFile(path.join(root, filename), "utf8");
-    const url = `https://jstaromatechnologies.com/wantok-chat/${name}/`;
-    assert.equal(manifest[`${name}_url`], url);
+    const url = `https://jstaromatechnologies.com/${name}/`;
+    assert.equal(manifest[`${name.replaceAll("-", "_")}_url`], url);
     assert.ok(html.includes(`<meta name="wantok-policy-version" content="${manifest.version}">`));
     assert.ok(html.includes(`<link rel="canonical" href="${url}">`));
     assert.doesNotMatch(html, /\[(?:CONFIRM|BEFORE PUBLICATION|TO BE APPROVED)|DRAFT FOR|subject to final publication approval/);
     assert.equal((html.match(/<h1>/g) || []).length, 1);
-    assert.ok(html.includes('href="/css/legal.css"'));
-    assert.ok(html.includes('src="/js/legal.js"'));
+    assert.match(html, /href="(?:\/|\.\.\/)css\/legal.css"/);
+    assert.match(html, /src="(?:\/|\.\.\/)js\/legal.js"/);
     const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
     assert.equal(new Set(ids).size, ids.length);
     for (const [, anchor] of html.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.includes(anchor));
   }
   assert.ok(PUBLIC_FILES.includes("wantok-chat/policies.json"));
   assert.ok(!PUBLIC_FILES.some(file => file.startsWith("legal-review/")));
+});
+
+test("duplicate Wantok routes redirect to the existing policy pages without duplicating text", async () => {
+  for (const name of ["terms", "privacy"]) {
+    const html = await readFile(path.join(root, `wantok-chat/${name}/index.html`), "utf8");
+    assert.ok(html.includes(`<meta http-equiv="refresh" content="0;url=/${name}/">`));
+    assert.ok(html.includes(`<link rel="canonical" href="https://jstaromatechnologies.com/${name}/">`));
+    assert.doesNotMatch(html, /<section/);
+  }
 });
 
 test("allowlist never copies private functions, SQL, secrets, tests, config or git metadata", async t => {

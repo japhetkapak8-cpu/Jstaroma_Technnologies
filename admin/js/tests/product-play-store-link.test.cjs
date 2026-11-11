@@ -197,6 +197,7 @@ test("published product cards use configured download links and preserve existin
     lifecycle_status: "published",
     play_store_url: playStoreUrl
   });
+
   const download = findByClass(linkedCard, "product-primary-btn");
   assert.equal(download.href, playStoreUrl);
   assert.equal(download.target, "_blank");
@@ -225,4 +226,26 @@ test("published product cards use configured download links and preserve existin
     lifecycle_status: "in_production"
   });
   assert.equal(findByClass(inProductionCard, "product-status").textContent, "IN PRODUCTION");
+});
+
+test("Wantok product always links existing canonical legal pages, preserving other products' configuration", async () => {
+  const createProductCard = await loadPublicCard();
+  for (const product of [
+    { name: "Wantok Chat" },
+    {
+      name: "Wantok Chat",
+      terms_of_use_url: "https://jstaromatechnologies.com/wantok-chat/terms/",
+      privacy_policy_url: "https://old.example/privacy/",
+      account_deletion_url: "https://old.example/delete/"
+    }
+  ]) {
+    const links = findByClass(createProductCard(product), "product-legal-links");
+    assert.deepEqual(links.children.map(link => link.href), [
+      "/privacy/", "/terms/", "/account-deletion/", "/child-safety/"
+    ]);
+  }
+  const links = findByClass(createProductCard({
+    name: "Other Product", privacy_policy_url: "https://other.example/privacy/"
+  }), "product-legal-links");
+  assert.deepEqual(links.children.map(link => link.href), ["https://other.example/privacy/"]);
 });

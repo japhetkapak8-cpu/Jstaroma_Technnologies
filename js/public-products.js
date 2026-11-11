@@ -574,34 +574,15 @@ function createProductCard(
       );
 
 
-  const defaultPolicyLinks =
-    configuredPolicyLinks.length === 0 &&
+  const visiblePolicyLinks =
     isWantokChat
       ? [
-          {
-            label: "Privacy Policy",
-            url: "/privacy/"
-          },
-          {
-            label: "Terms of Use",
-            url: "/terms/"
-          },
-          {
-            label: "Account Deletion",
-            url: "/account-deletion/"
-          },
-          {
-            label: "Child Safety Standards",
-            url: "/child-safety/"
-          }
+          { label: "Privacy Policy", url: "/privacy/" },
+          { label: "Terms of Use", url: "/terms/" },
+          { label: "Account Deletion", url: "/account-deletion/" },
+          { label: "Child Safety Standards", url: "/child-safety/" }
         ]
-      : [];
-
-
-  const visiblePolicyLinks =
-    configuredPolicyLinks.length > 0
-      ? configuredPolicyLinks
-      : defaultPolicyLinks;
+      : configuredPolicyLinks;
 
 
   if (
