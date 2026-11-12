@@ -1479,7 +1479,8 @@ details summary {
   color: #c1a7ff;
 }
 
-#transportTrips .transport-controls {
+#transportTrips .transport-controls,
+#transportApprovals .transport-controls {
   align-items: end;
   gap: 16px;
   padding: 18px;
@@ -1489,18 +1490,23 @@ details summary {
 }
 
 #transportTrips .transport-controls legend,
-#transportTrips .transport-controls label {
+#transportTrips .transport-controls label,
+#transportApprovals .transport-controls legend,
+#transportApprovals .transport-controls label {
   color: #c5cee2;
 }
 
-#transportTrips .transport-controls label {
+#transportTrips .transport-controls label,
+#transportApprovals .transport-controls label {
   gap: 8px;
   font-size: 13px;
   font-weight: 700;
 }
 
 #transportTrips .transport-controls input,
-#transportTrips .transport-controls select {
+#transportTrips .transport-controls select,
+#transportApprovals .transport-controls input,
+#transportApprovals .transport-controls select {
   min-height: 44px;
   padding: 10px 12px;
   border: 1px solid #333d5b;
@@ -1513,13 +1519,24 @@ details summary {
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
+#transportApprovals #transportOperatorSearch {
+  width: 240px;
+}
+
+#transportApprovals #transportOperatorStatus {
+  min-width: 180px;
+}
+
 #transportTrips .transport-controls input:focus,
-#transportTrips .transport-controls select:focus {
+#transportTrips .transport-controls select:focus,
+#transportApprovals .transport-controls input:focus,
+#transportApprovals .transport-controls select:focus {
   border-color: #8d71f5;
   box-shadow: 0 0 0 3px rgba(141, 113, 245, 0.2);
 }
 
-#transportTrips .transport-controls > button {
+#transportTrips .transport-controls > button,
+#transportApprovals .transport-controls > button {
   min-height: 44px;
   padding: 10px 18px;
   border: 1px solid #8064ed;
@@ -1533,7 +1550,8 @@ details summary {
   transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
 
-#transportTrips .transport-controls > button:hover:not(:disabled) {
+#transportTrips .transport-controls > button:hover:not(:disabled),
+#transportApprovals .transport-controls > button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 11px 22px rgba(92, 75, 204, 0.32);
   filter: brightness(1.1);
@@ -1541,13 +1559,18 @@ details summary {
 
 #transportTrips .transport-controls > button:focus-visible,
 #transportTrips .transport-pagination button:focus-visible,
-#transportTrips .transport-actions button:focus-visible {
+#transportTrips .transport-actions button:focus-visible,
+#transportApprovals .transport-controls > button:focus-visible,
+#transportApprovals .transport-pagination button:focus-visible,
+#transportApprovals .transport-actions button:focus-visible {
   outline: 3px solid #a68cff;
   outline-offset: 3px;
 }
 
 #transportTrips .transport-controls > button:disabled,
-#transportTrips .transport-pagination button:disabled {
+#transportTrips .transport-pagination button:disabled,
+#transportApprovals .transport-controls > button:disabled,
+#transportApprovals .transport-pagination button:disabled {
   border-color: #343d55;
   background: #171f33;
   box-shadow: none;
@@ -1555,11 +1578,13 @@ details summary {
   cursor: not-allowed;
 }
 
-#transportTrips .transport-pagination {
+#transportTrips .transport-pagination,
+#transportApprovals .transport-pagination {
   gap: 10px;
 }
 
-#transportTrips .transport-pagination > button {
+#transportTrips .transport-pagination > button,
+#transportApprovals .transport-pagination > button {
   min-height: 38px;
   padding: 8px 13px;
   border: 1px solid #39415f;
@@ -1572,22 +1597,26 @@ details summary {
   transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
 }
 
-#transportTrips .transport-pagination > button:hover:not(:disabled) {
+#transportTrips .transport-pagination > button:hover:not(:disabled),
+#transportApprovals .transport-pagination > button:hover:not(:disabled) {
   border-color: #7862d1;
   background: #211f42;
   color: #fff;
 }
 
-#transportTrips .transport-pagination > span {
+#transportTrips .transport-pagination > span,
+#transportApprovals .transport-pagination > span {
   color: #b6c1d9;
   font-size: 14px;
 }
 
-#transportTrips .transport-actions {
+#transportTrips .transport-actions,
+#transportApprovals .transport-actions {
   gap: 8px;
 }
 
-#transportTrips .transport-actions button {
+#transportTrips .transport-actions button,
+#transportApprovals .transport-actions button {
   min-height: 36px;
   padding: 7px 11px;
   border: 1px solid #39415f;
@@ -1601,15 +1630,23 @@ details summary {
   transition: transform 150ms ease, border-color 150ms ease, filter 150ms ease;
 }
 
-#transportTrips .transport-actions button:hover {
+#transportTrips .transport-actions button:hover,
+#transportApprovals .transport-actions button:hover {
   transform: translateY(-1px);
   filter: brightness(1.15);
 }
 
-#transportTrips .transport-actions .transport-action-cancel {
+#transportTrips .transport-actions .transport-action-cancel,
+#transportApprovals .transport-actions .transport-action-reject {
   border-color: rgba(255, 115, 139, 0.42);
   background: rgba(157, 48, 77, 0.2);
   color: #ff9aab;
+}
+
+#transportApprovals .transport-actions .transport-action-approve {
+  border-color: rgba(66, 211, 176, 0.38);
+  background: rgba(26, 132, 112, 0.18);
+  color: #73e5c4;
 }
 
 #transportTrips .transport-actions .transport-action-complete {

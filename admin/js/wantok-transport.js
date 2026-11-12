@@ -172,6 +172,8 @@ export async function initializeTransport({ renderChart } = {}) {
   function action(kind, row, next) {
     const control = node("button", next === "approved" ? "Approve" : next === "rejected" ? "Reject" : next === "completed" ? "Complete trip" : "Cancel trip");
     control.type = "button";
+    if (next === "approved") control.className = "transport-action-approve";
+    if (next === "rejected") control.className = "transport-action-reject";
     if (next === "cancelled") control.className = "transport-action-cancel";
     if (next === "completed") control.className = "transport-action-complete";
     control.addEventListener("click", () => {

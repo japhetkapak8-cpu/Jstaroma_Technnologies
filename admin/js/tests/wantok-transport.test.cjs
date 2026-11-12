@@ -203,6 +203,8 @@ test("available transport renders real multi-passenger totals, lists, chart grou
   assert.equal(find(page.elements.get("transportTripRows"), "Complete trip").className, "transport-action-complete");
   const approve = find(page.elements.get("transportOperatorRows"), "Approve");
   assert.ok(approve);
+  assert.equal(approve.className, "transport-action-approve");
+  assert.equal(find(page.elements.get("transportOperatorRows"), "Reject").className, "transport-action-reject");
   approve.listeners.click();
   assert.equal(page.elements.get("transportDecisionDialog").open, true);
   const submit = page.elements.get("transportDecisionForm").listeners.submit;
