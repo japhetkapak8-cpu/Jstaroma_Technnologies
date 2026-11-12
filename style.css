@@ -347,11 +347,13 @@ a {
 
 .admin-login-btn {
 
-  min-height: 42px !important;
+  width: 36px;
 
-  padding:
-    0
-    17px !important;
+  min-height: 36px !important;
+
+  padding: 0 !important;
+
+  flex: 0 0 36px;
 
   border:
     1px solid
@@ -376,7 +378,7 @@ a {
     var(--blue) !important;
 
   font-size:
-    0.79rem !important;
+    0.9rem !important;
 
   font-weight:
     700 !important;
@@ -5371,9 +5373,15 @@ a {
   .main-nav
   .admin-login-btn {
 
+    width: 36px;
+
+    align-self: center;
+
     justify-content: center;
 
     margin-top: 13px;
+
+    border-bottom: 0;
 
   }
 
