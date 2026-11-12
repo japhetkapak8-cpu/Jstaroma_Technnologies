@@ -1479,6 +1479,145 @@ details summary {
   color: #c1a7ff;
 }
 
+#transportTrips .transport-controls {
+  align-items: end;
+  gap: 16px;
+  padding: 18px;
+  border-color: #29314c;
+  border-radius: 14px;
+  background: rgba(8, 14, 28, 0.45);
+}
+
+#transportTrips .transport-controls legend,
+#transportTrips .transport-controls label {
+  color: #c5cee2;
+}
+
+#transportTrips .transport-controls label {
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#transportTrips .transport-controls input,
+#transportTrips .transport-controls select {
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #333d5b;
+  border-radius: 10px;
+  outline: none;
+  background: #10182b;
+  color: #e8efff;
+  font: inherit;
+  color-scheme: dark;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+#transportTrips .transport-controls input:focus,
+#transportTrips .transport-controls select:focus {
+  border-color: #8d71f5;
+  box-shadow: 0 0 0 3px rgba(141, 113, 245, 0.2);
+}
+
+#transportTrips .transport-controls > button {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid #8064ed;
+  border-radius: 10px;
+  background: linear-gradient(120deg, #7554e8, #3f85dc);
+  box-shadow: 0 8px 18px rgba(92, 75, 204, 0.22);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+#transportTrips .transport-controls > button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 22px rgba(92, 75, 204, 0.32);
+  filter: brightness(1.1);
+}
+
+#transportTrips .transport-controls > button:focus-visible,
+#transportTrips .transport-pagination button:focus-visible,
+#transportTrips .transport-actions button:focus-visible {
+  outline: 3px solid #a68cff;
+  outline-offset: 3px;
+}
+
+#transportTrips .transport-controls > button:disabled,
+#transportTrips .transport-pagination button:disabled {
+  border-color: #343d55;
+  background: #171f33;
+  box-shadow: none;
+  color: #77839e;
+  cursor: not-allowed;
+}
+
+#transportTrips .transport-pagination {
+  gap: 10px;
+}
+
+#transportTrips .transport-pagination > button {
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid #39415f;
+  border-radius: 9px;
+  background: #151d32;
+  color: #d3ddf2;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+#transportTrips .transport-pagination > button:hover:not(:disabled) {
+  border-color: #7862d1;
+  background: #211f42;
+  color: #fff;
+}
+
+#transportTrips .transport-pagination > span {
+  color: #b6c1d9;
+  font-size: 14px;
+}
+
+#transportTrips .transport-actions {
+  gap: 8px;
+}
+
+#transportTrips .transport-actions button {
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid #39415f;
+  border-radius: 9px;
+  background: #171f33;
+  color: #d3ddf2;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform 150ms ease, border-color 150ms ease, filter 150ms ease;
+}
+
+#transportTrips .transport-actions button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.15);
+}
+
+#transportTrips .transport-actions .transport-action-cancel {
+  border-color: rgba(255, 115, 139, 0.42);
+  background: rgba(157, 48, 77, 0.2);
+  color: #ff9aab;
+}
+
+#transportTrips .transport-actions .transport-action-complete {
+  border-color: rgba(66, 211, 176, 0.38);
+  background: rgba(26, 132, 112, 0.18);
+  color: #73e5c4;
+}
+
 @media (max-width: 1100px) {
   .analytics-layout .analytics-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));

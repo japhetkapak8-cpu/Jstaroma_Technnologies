@@ -1,6 +1,9 @@
 import { supabase }
 from "./supabase.js";
 
+import { safeHttpsUrl }
+from "./safe-url.js";
+
 
 let achievements = [];
 let activeFilter = "All";
@@ -887,14 +890,13 @@ function openAchievementModal(
 
   if (modalCredential) {
 
+    const credentialHref = safeHttpsUrl(achievement.credential_url);
 
-    if (
-      achievement.credential_url
-    ) {
+    if (credentialHref) {
 
 
       modalCredential.href =
-        achievement.credential_url;
+        credentialHref;
 
 
       modalCredential.style.display =
@@ -905,6 +907,7 @@ function openAchievementModal(
 
     else {
 
+      modalCredential.removeAttribute("href");
 
       modalCredential.style.display =
         "none";
@@ -918,14 +921,13 @@ function openAchievementModal(
 
   if (modalAttachment) {
 
+    const attachmentHref = safeHttpsUrl(achievement.attachment_url);
 
-    if (
-      achievement.attachment_url
-    ) {
+    if (attachmentHref) {
 
 
       modalAttachment.href =
-        achievement.attachment_url;
+        attachmentHref;
 
 
       modalAttachment.style.display =
@@ -936,6 +938,7 @@ function openAchievementModal(
 
     else {
 
+      modalAttachment.removeAttribute("href");
 
       modalAttachment.style.display =
         "none";

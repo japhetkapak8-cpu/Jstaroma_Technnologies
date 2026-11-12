@@ -132,11 +132,6 @@ document.addEventListener(
   "DOMContentLoaded",
   async () => {
 
-    console.log(
-      "JSTAROMA public-projects.js loaded"
-    );
-
-
     setupFilters();
 
     setupProjectGrid();
@@ -201,12 +196,6 @@ async function loadProjects() {
       throw error;
 
     }
-
-
-    console.log(
-      "Public projects:",
-      data
-    );
 
 
     allProjects =

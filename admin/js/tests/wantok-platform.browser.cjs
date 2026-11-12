@@ -17,11 +17,13 @@ async function main() {
   let chartData = false;
   let jiwakaCount = 10;
   let transportConnected = false;
+  let transportEmpty = false;
   let reviewedStatus = "pending";
   let reviewedTripStatus = "published";
   const decisions = [];
   const ranges = [];
   const transportRanges = [];
+  const entryRequests = [];
   const server = http.createServer(async (request, response) => {
     try {
       if (request.url === "/mock-analytics") {
@@ -55,6 +57,15 @@ async function main() {
                   ...row, id: `10000000-0000-0000-0000-${String(input.operators.page * 25 + index).padStart(12, "0")}`
                 }))
               };
+            }
+            if (transportEmpty) {
+              transport.metrics = Object.fromEntries(Object.keys(transport.metrics).map(key => [key, 0]));
+              transport.daily = transport.daily.map(point => ({ ...point, bookings: 0, registrations: 0, cancellations: 0 }));
+              for (const key of ["routes", "origins", "destinations", "by_operator", "audit"]) transport[key] = [];
+              transport.occupancy = { reserved: 0, capacity: 0 };
+              transport.outcomes = { completed: 0, cancelled: 0 };
+              transport.operators = { page: input.operators.page, total: 0, rows: [] };
+              transport.trips = { page: input.trips.page, total: 0, rows: [] };
             }
           }
           response.end(JSON.stringify(fail ? { error: "Unavailable test source" } : { transport }));
@@ -119,6 +130,14 @@ async function main() {
       if (!url.startsWith(origin)) {
         await route.fulfill({ status: 200, contentType: "text/css", body: "" }); return;
       }
+      if (new URL(url).pathname === "/admin/js/wantok-chat.js") {
+        entryRequests.push(url);
+        if (!new URL(url).searchParams.has("v")) {
+          // Simulate an old cached entry that does not initialize transport.
+          await route.fulfill({ contentType: "text/javascript", body: "globalThis.staleAnalyticsEntryLoaded = true;" });
+          return;
+        }
+      }
       if (url.endsWith("/js/supabase.js")) {
         await route.fulfill({ contentType: "text/javascript", body: `
           export const supabase = {
@@ -143,6 +162,8 @@ async function main() {
     await page.goto(`${origin}/admin/wantok-chat.html`);
     await page.waitForFunction(() => document.getElementById("registered_users").textContent === "100");
     await page.waitForFunction(() => document.getElementById("transportStatus").textContent.includes("authorization verified"));
+    assert.equal(new URL(entryRequests[0]).searchParams.get("v"), "transport-0b591c7");
+    assert.equal(await page.evaluate(() => globalThis.staleAnalyticsEntryLoaded), undefined);
     assert.equal(await page.locator("#transportMetrics strong").count(), 10);
     assert.equal(await page.locator('#transportMetrics strong').allTextContents().then(values =>
       values.every(value => value === "Not connected")), true);
@@ -292,6 +313,13 @@ async function main() {
     assert.equal(await page.locator("#provinceTotal").textContent(), "Not connected");
     assert.equal(await page.locator("#exportAnalytics").isDisabled(), true);
     fail = false;
+    transportEmpty = true;
+    await page.click("#transportRefresh");
+    await page.waitForFunction(() => Array.from(document.querySelectorAll("#transportMetrics strong")).every(node => node.textContent === "0"));
+    assert.match(await page.locator("#transportOperatorRows").innerText(), /No records match/);
+    assert.match(await page.locator("#transportTripRows").innerText(), /No records match/);
+    assert.match(await page.locator("#transportStatus").innerText(), /Verified transport snapshot/);
+    transportEmpty = false;
     await page.click("#transportRefresh");
     await page.waitForFunction(() => document.getElementById("transportStatus").textContent.includes("Verified transport snapshot"));
     await page.click("#refreshAnalytics");
@@ -304,7 +332,7 @@ async function main() {
     assert.equal(ranges.length, previousRequests);
     assert.equal(transportRanges.length, previousTransportRequests);
     assert.deepEqual(pageErrors, []);
-    console.log("PASS: authenticated desktop/mobile rendering, maps, charts, filters, CSV, transport schema-required/error states, failure/recovery and unauthorized gating");
+    console.log("PASS: versioned entry bypasses stale cache; authenticated desktop/mobile rendering, approvals, moderation, filters, verified zeros, failure/recovery and unauthorized gating");
   }
   finally {
     if (browser) await browser.close();

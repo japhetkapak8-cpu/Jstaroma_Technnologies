@@ -12,7 +12,7 @@ export const PUBLIC_FILES = Object.freeze([
   ...["account-deletion", "child-safety", "privacy", "terms"].map(directory => `${directory}/index.html`),
   "wantok-chat/terms/index.html", "wantok-chat/privacy/index.html", "wantok-chat/policies.json",
   ...["achievements.css", "legal.css", "products.css"].map(file => `css/${file}`),
-  ...["legal.js", "public-achievements.js", "public-products.js", "public-projects.js", "supabase.js"]
+  ...["legal.js", "public-achievements.js", "public-products.js", "public-projects.js", "safe-url.js", "supabase.js"]
     .map(file => `js/${file}`),
   ...["index", "dashboard", "achievements", "projects", "products", "wantok-chat"]
     .map(page => `admin/${page}.html`),

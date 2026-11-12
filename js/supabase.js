@@ -1,5 +1,5 @@
 import { createClient } from
-  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/+esm";
 
 
 const SUPABASE_URL =

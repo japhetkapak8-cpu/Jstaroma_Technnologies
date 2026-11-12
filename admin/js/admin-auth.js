@@ -40,12 +40,6 @@ export async function requireAdmin() {
     }
 
 
-    console.log(
-      "Authenticated user:",
-      user.email
-    );
-
-
     /*
       Verify that the current user
       exists in the admins table.
@@ -100,11 +94,6 @@ export async function requireAdmin() {
       return null;
 
     }
-
-
-    console.log(
-      "Admin verified."
-    );
 
 
     return user;

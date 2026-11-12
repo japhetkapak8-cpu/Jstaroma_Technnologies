@@ -545,6 +545,7 @@ function element(tag = "div") {
 
 async function frontend({ authorized = true, payload = snapshot(), error = null, session = true } = {}) {
   const html = await readFile(path.join(root, "admin/wantok-chat.html"), "utf8");
+  assert.match(html, /<script type="module" src="js\/wantok-chat\.js\?v=transport-0b591c7"><\/script>/);
   const elements = new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(([, id]) => [id, element()]));
   const requests = [];
   const errors = [];

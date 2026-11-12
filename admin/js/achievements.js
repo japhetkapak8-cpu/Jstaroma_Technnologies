@@ -4,6 +4,9 @@ from "../../js/supabase.js";
 import { loadAllRows }
 from "./content-data.js";
 
+import { safeHttpsUrl }
+from "../../js/safe-url.js";
+
 
 /* =========================================================
    CONFIGURATION
@@ -2945,6 +2948,25 @@ async function saveAchievement(
 
   }
 
+  const credentialUrlValue =
+    credentialUrl
+      ?.value
+      .trim()
+    || "";
+
+  const safeCredentialUrl =
+    credentialUrlValue
+      ? safeHttpsUrl(credentialUrlValue)
+      : null;
+
+  if (credentialUrlValue && !safeCredentialUrl) {
+    showMessage(
+      "Credential URL must be a valid HTTPS link.",
+      "error"
+    );
+    return;
+  }
+
 
 
   const imageFile =
@@ -3087,11 +3109,6 @@ async function saveAchievement(
         uploadedImageUrl;
 
 
-      console.log(
-        "Uploaded image:",
-        finalImageUrl
-      );
-
     }
 
 
@@ -3128,11 +3145,6 @@ async function saveAchievement(
       finalAttachmentUrl =
         uploadedDocumentUrl;
 
-
-      console.log(
-        "Uploaded document:",
-        finalAttachmentUrl
-      );
 
     }
 
@@ -3186,11 +3198,7 @@ async function saveAchievement(
 
 
         credential_url:
-          credentialUrl
-            ?.value
-            .trim()
-            ||
-          null,
+          safeCredentialUrl,
 
 
         image_url:
@@ -3224,13 +3232,6 @@ async function saveAchievement(
             .toISOString()
 
       };
-
-
-
-    console.log(
-      "Achievement payload:",
-      payload
-    );
 
 
 
@@ -3281,10 +3282,6 @@ async function saveAchievement(
 
 
 
-      console.log(
-        "Achievement updated successfully."
-      );
-
     }
 
 
@@ -3323,10 +3320,6 @@ async function saveAchievement(
       }
 
 
-
-      console.log(
-        "Achievement created successfully."
-      );
 
     }
 

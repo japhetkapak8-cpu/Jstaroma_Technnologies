@@ -165,7 +165,13 @@ test("Wrangler targets the confirmed existing Worker and only generated static a
   assert.match(await readFile(path.join(root, ".gitignore"), "utf8"), /^\/dist\/$/m);
   assert.ok(PUBLIC_FILES.includes("_headers"));
   const headers = await readFile(path.join(root, "_headers"), "utf8");
+  assert.match(headers, /X-Content-Type-Options: nosniff/);
+  assert.match(headers, /Referrer-Policy: strict-origin-when-cross-origin/);
+  assert.match(headers, /X-Frame-Options: DENY/);
+  assert.match(headers, /Content-Security-Policy: .*base-uri 'self'.*object-src 'none'.*frame-ancestors 'none'/);
   assert.match(headers, /\/admin\/css\/\*\s+Cache-Control: no-cache/);
   assert.match(headers, /\/admin\/js\/\*\s+Cache-Control: no-cache/);
   assert.match(headers, /\/supabase\/functions\/shared\/\*\s+Cache-Control: no-cache/);
+  assert.ok(PUBLIC_FILES.includes("js/safe-url.js"));
+  assert.match(await readFile(path.join(root, "js/supabase.js"), "utf8"), /@supabase\/supabase-js@\d+\.\d+\.\d+\/\+esm/);
 });

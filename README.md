@@ -112,6 +112,34 @@ not zero. Zero is displayed only when supplied by a verified aggregate source.
 
 ### Wantok Transport: integrated, deployment gated
 
+#### If transport remains at "Checking administrator access"
+
+That sentence is static startup HTML, not a database/RPC error. The production
+site was observed serving the new page while dashboard JavaScript had
+`Cache-Control: max-age=14400` (four hours), through GitHub Pages behind
+Cloudflare. The repository's Cloudflare Workers `_headers` file was not applied
+on that serving path. An older cached `wantok-chat.js` did not initialize the
+new transport section. A hard refresh resolved the reported incident.
+
+The page now loads `js/wantok-chat.js?v=transport-0b591c7` so the transport
+release cannot reuse the old unversioned entry in the browser/CDN cache.
+Update this release query when changing dashboard startup behavior, as with
+the portal's versioned admin stylesheet. Do not rely solely on `_headers`
+unless response headers confirm the active host honors it.
+
+For this symptom, try Ctrl+Shift+R (Cmd+Shift+R on macOS) first; do not rerun
+the one-time SQL migration. Once startup runs, transport shows either a
+verified snapshot, an explicit disabled state, or an error. Empty verified
+tables produce **0** and empty lists, not **Not connected**.
+
+The 2026-11-11 diagnosis confirmed both transport RPCs installed in Wantok,
+server-only EXECUTE grants, the active Jstaroma Edge Function and enabled
+transport flag, and successful website-origin CORS preflight. Read-only
+aggregate checks returned existing operator/trip/reservation records. The
+diagnostic CLI's restricted read-only database role cannot execute the
+server-only snapshot RPC (SQLSTATE `42501`); this is expected least privilege,
+not evidence that the Edge Function's service role is denied.
+
 The seven **Wantok Transport** sections are part of the existing Wantok Chat
 Analytics page, not another application. They reuse its admin login, styles,
 SVG time-series charts and UTC grouping helpers. Transport's 7/30/90-day/custom

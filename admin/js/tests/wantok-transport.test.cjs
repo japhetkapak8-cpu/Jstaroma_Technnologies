@@ -199,6 +199,8 @@ test("available transport renders real multi-passenger totals, lists, chart grou
   assert.match(page.elements.get("transportChart_occupancy").children[0].textContent, /66.7%/);
   const find = (root, text) => root.children.flatMap(child => [child, ...findAll(child)]).find(el => el.tag === "button" && el.textContent === text);
   const findAll = root => root.children.flatMap(child => [child, ...findAll(child)]);
+  assert.equal(find(page.elements.get("transportTripRows"), "Cancel trip").className, "transport-action-cancel");
+  assert.equal(find(page.elements.get("transportTripRows"), "Complete trip").className, "transport-action-complete");
   const approve = find(page.elements.get("transportOperatorRows"), "Approve");
   assert.ok(approve);
   approve.listeners.click();
